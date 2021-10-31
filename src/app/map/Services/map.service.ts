@@ -140,7 +140,4 @@ export class MapService {
     this.dialog.closeAll();
   }
 
- 
-
-
 }
