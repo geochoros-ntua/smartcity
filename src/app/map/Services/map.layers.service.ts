@@ -20,7 +20,7 @@ import Geometry from 'ol/geom/Geometry';
 })
 export class MapLayersService {
     
-    private MPL_PRIVATE_URL = 'http://fearofcrime.com/smartcity/loadMapilaryData.php';
+    private MPL_PRIVATE_URL = 'http://fearofcrime.com/smartcity/php/loadMapilaryData.php';
 
     private OSMLayer:TileLayer<OSM>;
     private GOSMLayer:TileLayer<OSM>;
@@ -50,27 +50,27 @@ export class MapLayersService {
     }
 
     
-   public getGOSMLayer():TileLayer<OSM> {
+   public get GosmLayer():TileLayer<OSM> {
     return this.GOSMLayer;
    }
 
-   public getOSMLayer():TileLayer<OSM> {
+   public get OsmLayer():TileLayer<OSM> {
     return this.OSMLayer;
    }
 
-   public getCartoDarkLayer():TileLayer<XYZ> {
+   public get cartoDarkLayer():TileLayer<XYZ> {
     return this.cartoDBDark;
    }
 
-   public getMlSequencesLayer():VectorLayer<VectorSource<LineString | MultiLineString>> {
+   public get MlSequencesLayer():VectorLayer<VectorSource<LineString | MultiLineString>> {
     return this.MPL_SEQUENCES;
    }
 
-   public getMlImagesLayer():VectorLayer<VectorSource<Point>> {
+   public get MlImagesLayer():VectorLayer<VectorSource<Point>> {
     return this.MPL_IMAGES;
    }
 
-   public getSelectionLayer():VectorLayer<VectorSource<Geometry>> {
+   public get SelectionLayer():VectorLayer<VectorSource<Geometry>> {
     return this.selectionLayer;
    }
 

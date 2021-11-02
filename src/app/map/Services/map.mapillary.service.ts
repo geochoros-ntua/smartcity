@@ -7,12 +7,13 @@ import * as mapillary from 'mapillary-js';
   export class MapMapillaryService {
 
     private MPL_KEY = 'MLY|4195156090570097|6a0d147f286068b5fc9a83bb734dc467';
+    private viewer: mapillary.Viewer;
 
 
     constructor( ) {}
 
 
-    public initMapillaryViewer(imageId, mapillaryDivId): mapillary.Viewer {
+    public initMapillaryViewer(imageId, mapillaryDivId): void {
         const options: mapillary.ViewerOptions = {
             accessToken: this.MPL_KEY,
             component: { cover: false }, 
@@ -20,9 +21,12 @@ import * as mapillary from 'mapillary-js';
             cameraControls: mapillary.CameraControls.Street,
             imageId: imageId +''
           };
-          
-          return new mapillary.Viewer(options);
-    
+          this.viewer = new mapillary.Viewer(options);
+    }
+
+    public get mapillaryViewer(): mapillary.Viewer{
+        return this.viewer;
+
     }
 
 
