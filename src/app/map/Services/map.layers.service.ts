@@ -20,7 +20,7 @@ import Geometry from 'ol/geom/Geometry';
 })
 export class MapLayersService {
     
-    private MPL_PRIVATE_URL = 'http://fearofcrime.com/smartcity/php/loadMapilaryData.php';
+    private MPL_PRIVATE_URL = 'https://smartcity.fearofcrime.com/php/loadMapilaryData.php';
 
     private OSMLayer:TileLayer<OSM>;
     private GOSMLayer:TileLayer<OSM>;

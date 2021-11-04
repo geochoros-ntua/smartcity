@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Map from 'ol/Map';
 import { MapService } from './Services/map.service';
-import { SmartCityMapConfig } from './api/map.interfaces';
+import { MapillaryLayerNames, SmartCityMapConfig } from './api/map.interfaces';
 import * as mapillary from 'mapillary-js';
 import * as olProj from 'ol/proj';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,14 +11,6 @@ import { MapLayersService } from './Services/map.layers.service';
 import { MapillaryPopupComponent } from './Controls/mapillary-popup/mapillary-popup.component';
 import Point from 'ol/geom/Point';
 import { MapMapillaryService } from './Services/map.mapillary.service';
-
-
-const enum MapillaryLayerNames {
-  seq = 'mpl_sequences',
-  img = 'mpl_images',
-  point = 'mpl_points'
-}
-
 
 @Component({
   selector: 'app-map',
