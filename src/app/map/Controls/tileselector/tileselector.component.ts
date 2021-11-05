@@ -15,36 +15,36 @@ export class TileselectorComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  setTileLayer (val: TileLayerNames) {
-    switch(val) { 
-      case TileLayerNames.OsmLayer: { 
+  setTileLayer(val: TileLayerNames) {
+    switch (val) {
+      case TileLayerNames.OsmLayer: {
         this.mapLayersService.cartoDarkLayer.setVisible(false);
-        this.mapLayersService.OsmLayer.setVisible(true); 
+        this.mapLayersService.OsmLayer.setVisible(true);
         this.mapLayersService.GosmLayer.setVisible(false);
-        break; 
-      } 
-      case TileLayerNames.GosmLayer: { 
+        break;
+      }
+      case TileLayerNames.GosmLayer: {
         this.mapLayersService.cartoDarkLayer.setVisible(false);
-        this.mapLayersService.OsmLayer.setVisible(false); 
+        this.mapLayersService.OsmLayer.setVisible(false);
         this.mapLayersService.GosmLayer.setVisible(true);
-        break; 
-      } 
-      case TileLayerNames.cartoDarkLayer: { 
+        break;
+      }
+      case TileLayerNames.cartoDarkLayer: {
         this.mapLayersService.cartoDarkLayer.setVisible(true);
-        this.mapLayersService.OsmLayer.setVisible(false); 
+        this.mapLayersService.OsmLayer.setVisible(false);
         this.mapLayersService.GosmLayer.setVisible(false);
-        break; 
-      } 
-      case TileLayerNames.none: { 
+        break;
+      }
+      case TileLayerNames.none: {
         this.mapLayersService.cartoDarkLayer.setVisible(false);
-        this.mapLayersService.OsmLayer.setVisible(false); 
+        this.mapLayersService.OsmLayer.setVisible(false);
         this.mapLayersService.GosmLayer.setVisible(false);
-        break; 
-      } 
-      default: { 
-        throw new Error(`No such tile layer exist: ${ val }`);
-      } 
-   } 
+        break;
+      }
+      default: {
+        throw new Error(`No such tile layer exist: ${val}`);
+      }
+    }
   }
 
 }

@@ -3,9 +3,9 @@ export enum TileLayerNames {
     GosmLayer = 'GOSM',
     cartoDarkLayer = 'CARTODARK',
     none = 'NONE'
-  }
+}
 
-  
+
 export enum MapillaryLayerNames {
     seq = 'mpl_sequences',
     img = 'mpl_images',
@@ -15,7 +15,7 @@ export enum MapillaryLayerNames {
 export interface SmartCityMapConfig {
     mapDivId: string;
     mapillaryDivId: string;
-    zoomLevel:number;
+    zoomLevel: number;
     center: number[];
 }
-  
+

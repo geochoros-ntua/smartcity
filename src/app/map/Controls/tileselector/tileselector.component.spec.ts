@@ -1,4 +1,6 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MapLayersService } from '../../Services/map.layers.service';
 
 import { TileselectorComponent } from './tileselector.component';
 
@@ -8,7 +10,8 @@ describe('TileselectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TileselectorComponent ]
+      declarations: [ TileselectorComponent ],
+      providers: [MapLayersService, HttpClient, HttpHandler],
     })
     .compileComponents();
   }));

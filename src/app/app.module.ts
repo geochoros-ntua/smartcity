@@ -27,7 +27,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { DragDropModule } from '@angular/cdk/drag-drop'; 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MapillaryPopupComponent } from './map/Controls/mapillary-popup/mapillary-popup.component';
 import { TileselectorComponent } from './map/Controls/tileselector/tileselector.component';
 
@@ -40,12 +40,11 @@ import { TileselectorComponent } from './map/Controls/tileselector/tileselector.
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
-    MatIconModule, MatButtonModule, MatButtonToggleModule, MatSidenavModule, MatToolbarModule, 
-    MatSelectModule, MatMenuModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule, 
-    MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule, 
-    MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, 
-    HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule  
-
+    MatIconModule, MatButtonModule, MatButtonToggleModule, MatSidenavModule, MatToolbarModule,
+    MatSelectModule, MatMenuModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
+    MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
+    MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
+    HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]
