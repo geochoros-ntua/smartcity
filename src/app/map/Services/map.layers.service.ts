@@ -13,6 +13,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
+import { MapillaryLayerNames } from '../api/map.interfaces';
 
 
 @Injectable({
@@ -126,13 +127,15 @@ export class MapLayersService {
         const minCoords = olProj.transform([extent[0], extent[1]], 'EPSG:3857', 'EPSG:4326');
         const maxCoords = olProj.transform([extent[2], extent[3]], 'EPSG:3857', 'EPSG:4326');
         const filterPolCoords =
-          minCoords[0].toFixed(4) + ' ' + minCoords[1].toFixed(4) + ', ' +
-          maxCoords[0].toFixed(4) + ' ' + minCoords[1].toFixed(4) + ', ' +
-          maxCoords[0].toFixed(4) + ' ' + maxCoords[1].toFixed(4) + ', ' +
-          minCoords[0].toFixed(4) + ' ' + maxCoords[1].toFixed(4) + ', ' +
-          minCoords[0].toFixed(4) + ' ' + minCoords[1].toFixed(4);
+          `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
+          `${maxCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
+          `${maxCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
+          `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
+          `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
 
-        this.http.get(this.MPL_PRIVATE_URL + '?layer=sequences&bbox=' + filterPolCoords)
+        this.http.get(this.MPL_PRIVATE_URL + 
+          '?layer=' + MapillaryLayerNames.seq +
+          '&bbox=' + filterPolCoords)
           .subscribe(data => {
             this.mplSeqSource.addFeatures(format.readFeatures(data));
           });
@@ -164,13 +167,15 @@ export class MapLayersService {
         const minCoords = olProj.transform([extent[0], extent[1]], 'EPSG:3857', 'EPSG:4326');
         const maxCoords = olProj.transform([extent[2], extent[3]], 'EPSG:3857', 'EPSG:4326');
         const filterPolCoords =
-          minCoords[0].toFixed(4) + ' ' + minCoords[1].toFixed(4) + ', ' +
-          maxCoords[0].toFixed(4) + ' ' + minCoords[1].toFixed(4) + ', ' +
-          maxCoords[0].toFixed(4) + ' ' + maxCoords[1].toFixed(4) + ', ' +
-          minCoords[0].toFixed(4) + ' ' + maxCoords[1].toFixed(4) + ', ' +
-          minCoords[0].toFixed(4) + ' ' + minCoords[1].toFixed(4);
+        `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
+        `${maxCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
+        `${maxCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
+        `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
+        `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
 
-        this.http.get(this.MPL_PRIVATE_URL + '?layer=images&bbox=' + filterPolCoords)
+         this.http.get(this.MPL_PRIVATE_URL + 
+          '?layer=' + MapillaryLayerNames.img +
+          '&bbox=' + filterPolCoords)
           .subscribe(data => {
             console.log('data', data);
             this.mplImgource.addFeatures(format.readFeatures(data));

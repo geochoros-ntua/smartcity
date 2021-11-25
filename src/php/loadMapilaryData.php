@@ -12,21 +12,21 @@ $image_attrs = array('id','compass_angle', 'sequence_id');
 $sql = '';
 $attrs = [];
 
-if ($layer == 'sequences'){
+if ($layer == 'mpl_sequences'){
     $sql = 'select OGR_FID, ST_AsGeoJSON(GEOM) as GEOM, ' . implode(', ', $sequence_attrs) . ' from mapillary_sequences where 
     MBRIntersects(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         GEOM
     ) = 1';
     $attrs = $sequence_attrs;
-} else if ($layer == 'images'){
+} else if ($layer == 'mpl_images'){
     $sql = 'select OGR_FID, ST_AsGeoJSON(GEOM) as GEOM, ' . implode(', ', $image_attrs) . ' from mapillary_images where 
     MBRContains(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         GEOM
     ) = 1';
     $attrs = $image_attrs;
-} else if ($layer == 'points'){
+} else if ($layer == 'mpl_points'){
     //to be implemented
     
 } else {

@@ -8,14 +8,14 @@ import { Fill, Icon, Stroke, Style, Circle, Text } from 'ol/style';
 })
 export class MapStyleService {
 
-  public mplSquencesStyle = new Style({
+  public mplSquencesStyle: Style = new Style({
     stroke: new Stroke({
       color: 'blue',
       width: 2
     })
   });
 
-  public mplPointStyle = new Style({
+  public mplPointStyle: Style = new Style({
     image: new Circle({
       radius: 5,
       fill: new Fill({ color: 'blue' }),
@@ -31,7 +31,7 @@ export class MapStyleService {
    * @returns Style[]
    */
   public mplImagePointsStyle(feature: Feature<Point>): Style[] {
-    const rotation = feature.get('compass_angle') * Math.PI / 180;
+    const rotation: number = feature.get('compass_angle') * Math.PI / 180;
     // console.log('rotation', rotation)
     const bearingStyle: Style = new Style({
       text: new Text({

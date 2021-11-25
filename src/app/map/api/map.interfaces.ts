@@ -1,3 +1,5 @@
+import { Coordinate } from "ol/coordinate";
+
 export enum TileLayerNames {
     OsmLayer = 'OSM',
     GosmLayer = 'GOSM',
@@ -16,6 +18,6 @@ export interface SmartCityMapConfig {
     mapDivId: string;
     mapillaryDivId: string;
     zoomLevel: number;
-    center: number[];
+    center: Coordinate;
 }
 
