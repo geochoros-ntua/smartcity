@@ -42,12 +42,12 @@ export class MapLayersService {
 
 
   public initLayers(): void {
-    this.initCartoDarkLayer();
-    this.initOSMLayer();
-    this.initGOSMLayer();
-    this.initMapillarySequences();
-    this.initMapillaryImages();
-    this.initSelectionLayer();
+    this.initCartoDarkLayer(true);
+    this.initOSMLayer(false);
+    this.initGOSMLayer(false);
+    this.initMapillarySequences(true);
+    this.initMapillaryImages(true);
+    this.initSelectionLayer(true);
   }
 
 
@@ -79,25 +79,26 @@ export class MapLayersService {
    * PRIVATES
    */
 
-  private initSelectionLayer = (): void => {
+  private initSelectionLayer = (visible: boolean): void => {
     this.selectionLayer = new VectorLayer({
       source: new VectorSource<Geometry>(),
+      visible,
       style: this.mapStyleService.mplImagePointsStyle
     });
   }
 
 
-  private initOSMLayer = (): void => {
+  private initOSMLayer = (visible: boolean): void => {
     this.OSMLayer = new TileLayer({
-      visible: false,
+      visible,
       source: new OSM()
     });
   }
 
 
-  private initGOSMLayer = (): void => {
+  private initGOSMLayer = (visible: boolean): void => {
     this.GOSMLayer = new TileLayer({
-      visible: true,
+      visible,
       source: new OSM({
         url: 'http://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
       })
@@ -105,9 +106,9 @@ export class MapLayersService {
   }
 
 
-  private initCartoDarkLayer = (): void => {
+  private initCartoDarkLayer = (visible: boolean): void => {
     this.cartoDBDark = new TileLayer({
-      visible: false,
+      visible,
       source: new XYZ({
         url: 'https://cartodb-basemaps-b.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
       })
@@ -115,7 +116,7 @@ export class MapLayersService {
   }
 
 
-  private initMapillarySequences = (): void => {
+  private initMapillarySequences = (visible: boolean): void => {
     const format = new GeoJSON({
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
@@ -142,7 +143,7 @@ export class MapLayersService {
       }
     });
     this.MPL_SEQUENCES = new VectorLayer({
-      visible: true,
+      visible,
       opacity: 1.0,
       minZoom: 10,
       maxZoom: 17,
@@ -153,7 +154,7 @@ export class MapLayersService {
 
 
 
-  private initMapillaryImages = (): void => {
+  private initMapillaryImages = (visible: boolean): void => {
 
     const format = new GeoJSON({
       dataProjection: 'EPSG:4326',

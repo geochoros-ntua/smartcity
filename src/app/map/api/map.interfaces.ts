@@ -1,4 +1,6 @@
 import { Coordinate } from "ol/coordinate";
+import Layer from "ol/layer/Layer";
+import Map from "ol/Map";
 
 export enum TileLayerNames {
     OsmLayer = 'OSM',
@@ -19,5 +21,12 @@ export interface SmartCityMapConfig {
     mapillaryDivId: string;
     zoomLevel: number;
     center: Coordinate;
+    layers: Layer<any>[];
+}
+
+export interface MapillaryViewerConfig {
+    imageId: string;
+    mapillaryDivId: string;
+    map: Map;
 }
 

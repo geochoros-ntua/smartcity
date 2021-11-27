@@ -58,7 +58,7 @@ $geojson = array(
 
 # Loop through rows to build features
 while($row = mysqli_fetch_assoc($rs)) {
-    $props = array('layer' => 'mpl_' . $layer);
+    $props = array('layer' => $layer);
     foreach($attrs as $attr) {
         $props[$attr] = $row[$attr];
     }
