@@ -7,7 +7,6 @@ import XYZ from 'ol/source/XYZ';
 import LineString from 'ol/geom/LineString';
 import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
-import Cluster from 'ol/source/Cluster';
 import * as olProj from 'ol/proj';
 import { HttpClient } from '@angular/common/http';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
@@ -16,7 +15,6 @@ import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
 import { LoadingMethodObject } from '../api/map.interfaces';
 import { MapillaryLayerNames } from '../api/map.enums';
-import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
 
 
 
@@ -227,5 +225,4 @@ export class MapLayersService {
         loadingMethodObject.source.addFeatures(this.mplFormat.readFeatures(data));
       });
   }
- 
 }

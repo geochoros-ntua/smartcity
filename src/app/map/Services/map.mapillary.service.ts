@@ -5,7 +5,7 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { MapLayersService } from './map.layers.service';
-import { DetectionFeature, SmartCityMapillaryConfig } from '../api/map.interfaces';
+import { DetectionFeature, DetectionGeometry, SmartCityMapillaryConfig } from '../api/map.interfaces';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
@@ -23,8 +23,7 @@ export class MapMapillaryService {
     private viewer: mapillary.Viewer;
     private mapillaryDialogRefP: MatDialogRef<MapillaryViewerModalComponent> = null;
     private tagComponent: mapillary.TagComponent;
-    private removeDetection: boolean = false;
-    
+    private removeDetection: boolean;
 
     constructor(private http: HttpClient, public dialog: MatDialog, private mapLayersService: MapLayersService) { }
 
@@ -37,7 +36,6 @@ export class MapMapillaryService {
     }
 
     public initMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
-        
         const options: mapillary.ViewerOptions = {
             accessToken: this.MPL_KEY,
             component: {
@@ -59,7 +57,7 @@ export class MapMapillaryService {
             const detections = [];
             smartCityMapillaryConfig.detection.geometry.forEach( (geom, i) => {
                 const coordinates = geom.coordinates;
-                coordinates.push(coordinates[0])
+                coordinates.push(coordinates[0]);
                 const tagGeometry: mapillary.PolygonGeometry = new mapillary.PolygonGeometry(coordinates);
                 const objOptions: mapillary.OutlineTagOptions = {
                     domain: mapillary.TagDomain.ThreeDimensional,
@@ -70,11 +68,11 @@ export class MapMapillaryService {
                     text: smartCityMapillaryConfig.detection.value,
                     textColor: 0xffffff,
                 };
-                const detection = new mapillary.OutlineTag('clicked-tag-'+i, tagGeometry, objOptions);  
+                const detection = new mapillary.OutlineTag('clicked-tag-' + i, tagGeometry, objOptions);
                 detections.push(detection);
-            })
+            });
             this.tagComponent.add(detections);
-        }    
+        }
     }
 
     public showMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
@@ -124,7 +122,7 @@ export class MapMapillaryService {
             this.mapLayersService.SelectionLayer.getSource().clear();
             this.mapLayersService.SelectionLayer.getSource().addFeature(selFeature);
             if (this.removeDetection){
-                this.tagComponent.removeAll();  
+                this.tagComponent.removeAll();
             }
             this.removeDetection = true;
 
@@ -133,20 +131,21 @@ export class MapMapillaryService {
 
     public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry>){
         const featid = feature.get('feature_id');
-        this.http.get(this.MPL_DETECTIONS_URL + '?feature_id='+featid)
+        this.http.get(this.MPL_DETECTIONS_URL + '?feature_id=' + featid)
         .subscribe((result: any[]) => {
             // This is trivial
             // There are varius images related to the feature. More than 3 for sure.
             // We do select the one holding the geometry with the largest @boundingExtent
-            const feature: DetectionFeature = result
+            const detectfeature: DetectionFeature = result
             .map(df => {
-                return {...df, geometry: eval(df.geometry), extentArea: eval(df.geometry)
+                const geometry: DetectionGeometry[] = JSON.parse(df.geometry.replace(/'/g, '"'));
+                return {...df, geometry, extentArea: geometry
                     .map( (gg: { coordinates: number[][] }) => boundingExtent(gg.coordinates))
                     .map( (ext: number[]) => getArea(ext))
-                    .reduce((a: number, b: number) => a + b)}
+                    .reduce((a: number, b: number) => a + b)};
             })
             .sort((a: DetectionFeature, b: DetectionFeature) => (a.extentArea < b.extentArea) ? 1 : -1)[0];
-            const newConfig = {...mapillaryViewerConfig, imageId: feature.image_id, detection: feature};
+            const newConfig = {...mapillaryViewerConfig, imageId: detectfeature.image_id, detection: detectfeature};
             this.removeDetection = false;
             this.showMapillaryViewer(newConfig);
         });

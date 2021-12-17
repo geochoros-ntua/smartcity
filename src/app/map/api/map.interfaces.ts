@@ -35,7 +35,7 @@ export interface DetectionFeature {
 
 export interface DetectionGeometry {
     type: string;
-    coordinates: number[][]
+    coordinates: number[][];
 }
 
 export interface LoadingMethodObject {

@@ -56,7 +56,6 @@ export class MapService {
   public onMapClicked(event: MapBrowserEvent<any>): void {
     this.map.forEachFeatureAtPixel(event.pixel, (feature: Feature<Geometry>) => {
       if (feature.get('layer')) {
-        console.log('feature', feature)
         switch (feature.get('layer')) {
           case MapillaryLayerNames.seq: {
             const mapillaryViewerConfig: SmartCityMapillaryConfig = {
