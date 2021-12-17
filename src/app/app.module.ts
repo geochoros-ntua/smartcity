@@ -29,12 +29,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TileselectorComponent } from './map/Controls/tileselector/tileselector.component';
+import { MapillaryViewerModalComponent } from './map/Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     TileselectorComponent,
+    MapillaryViewerModalComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

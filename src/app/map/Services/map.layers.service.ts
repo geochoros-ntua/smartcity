@@ -7,13 +7,17 @@ import XYZ from 'ol/source/XYZ';
 import LineString from 'ol/geom/LineString';
 import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
+import Cluster from 'ol/source/Cluster';
 import * as olProj from 'ol/proj';
 import { HttpClient } from '@angular/common/http';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
-import { MapillaryLayerNames } from '../api/map.interfaces';
+import { LoadingMethodObject } from '../api/map.interfaces';
+import { MapillaryLayerNames } from '../api/map.enums';
+import AnimatedCluster from 'ol-ext/layer/AnimatedCluster';
+
 
 
 @Injectable({
@@ -33,13 +37,19 @@ export class MapLayersService {
   private mplImgource: VectorSource<Point>;
   private MPL_IMAGES: VectorLayer<VectorSource<Point>>;
 
+  private mplPntSource: VectorSource<Point>;
+  private MPL_POINTS: VectorLayer<VectorSource<Point>>;
+
+  private mplFormat: GeoJSON;
+
   private selectionLayer: VectorLayer<VectorSource<Geometry>>;
 
-
   constructor(private http: HttpClient, private mapStyleService: MapStyleService) {
-
+    this.mplFormat = new GeoJSON({
+      dataProjection: 'EPSG:4326',
+      featureProjection: 'EPSG:3857'
+    });
   }
-
 
   public initLayers(): void {
     this.initCartoDarkLayer(true);
@@ -47,9 +57,9 @@ export class MapLayersService {
     this.initGOSMLayer(false);
     this.initMapillarySequences(true);
     this.initMapillaryImages(true);
+    this.initMapillaryPoints(true);
     this.initSelectionLayer(true);
   }
-
 
   public get GosmLayer(): TileLayer<OSM> {
     return this.GOSMLayer;
@@ -69,6 +79,10 @@ export class MapLayersService {
 
   public get MlImagesLayer(): VectorLayer<VectorSource<Point>> {
     return this.MPL_IMAGES;
+  }
+
+  public get MlPointsLayer(): VectorLayer<VectorSource<Point>> {
+    return this.MPL_POINTS;
   }
 
   public get SelectionLayer(): VectorLayer<VectorSource<Geometry>> {
@@ -117,29 +131,17 @@ export class MapLayersService {
 
 
   private initMapillarySequences = (visible: boolean): void => {
-    const format = new GeoJSON({
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857'
-    });
     this.mplSeqSource = new VectorSource({
-      format,
+      format: this.mplFormat,
       strategy: bboxStrategy,
       loader: (extent, resolution, projection) => {
-        const minCoords = olProj.transform([extent[0], extent[1]], 'EPSG:3857', 'EPSG:4326');
-        const maxCoords = olProj.transform([extent[2], extent[3]], 'EPSG:3857', 'EPSG:4326');
-        const filterPolCoords =
-          `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
-          `${maxCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
-          `${maxCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
-          `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
-          `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
-
-        this.http.get(this.MPL_PRIVATE_URL + 
-          '?layer=' + MapillaryLayerNames.seq +
-          '&bbox=' + filterPolCoords)
-          .subscribe(data => {
-            this.mplSeqSource.addFeatures(format.readFeatures(data));
-          });
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          layerName: MapillaryLayerNames.seq,
+          source: this.mplSeqSource
+        });
       }
     });
     this.MPL_SEQUENCES = new VectorLayer({
@@ -156,41 +158,74 @@ export class MapLayersService {
 
   private initMapillaryImages = (visible: boolean): void => {
 
-    const format = new GeoJSON({
-      dataProjection: 'EPSG:4326',
-      featureProjection: 'EPSG:3857'
-    });
-
     this.mplImgource = new VectorSource({
-      format,
+      format: this.mplFormat,
       strategy: bboxStrategy,
       loader: (extent, resolution, projection) => {
-        const minCoords = olProj.transform([extent[0], extent[1]], 'EPSG:3857', 'EPSG:4326');
-        const maxCoords = olProj.transform([extent[2], extent[3]], 'EPSG:3857', 'EPSG:4326');
-        const filterPolCoords =
-        `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
-        `${maxCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
-        `${maxCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
-        `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
-        `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
-
-         this.http.get(this.MPL_PRIVATE_URL + 
-          '?layer=' + MapillaryLayerNames.img +
-          '&bbox=' + filterPolCoords)
-          .subscribe(data => {
-            console.log('data', data);
-            this.mplImgource.addFeatures(format.readFeatures(data));
-          });
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          layerName: MapillaryLayerNames.img,
+          source: this.mplImgource
+        });
       }
     });
 
     this.MPL_IMAGES = new VectorLayer({
-      visible: true,
+      visible,
       opacity: 0.7,
       minZoom: 17,
-      style: this.mapStyleService.mplPointStyle,
+      // renderBuffer: 100,
+      style: this.mapStyleService.mplImgPointStyle,
       source: this.mplImgource
     });
   }
 
+
+
+  private initMapillaryPoints = (visible: boolean): void => {
+
+    this.mplPntSource = new VectorSource({
+      format: this.mplFormat,
+      strategy: bboxStrategy,
+      loader: (extent, resolution, projection) => {
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          layerName: MapillaryLayerNames.point,
+          source: this.mplPntSource
+        });
+      }
+    });
+
+    this.MPL_POINTS = new VectorLayer({
+      visible,
+      opacity: 0.7,
+      minZoom: 18,
+      style: (feature) => this.mapStyleService.mplPointStyle(feature),
+      source: this.mplPntSource
+    });
+  }
+
+  private loadingFn(loadingMethodObject: LoadingMethodObject): void {
+    const minCoords = olProj.transform([loadingMethodObject.extent[0], loadingMethodObject.extent[1]], 'EPSG:3857', 'EPSG:4326');
+    const maxCoords = olProj.transform([loadingMethodObject.extent[2], loadingMethodObject.extent[3]], 'EPSG:3857', 'EPSG:4326');
+    const filterPolCoords =
+      `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
+      `${maxCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
+      `${maxCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
+      `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
+      `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
+
+    this.http.get(this.MPL_PRIVATE_URL +
+      '?layer=' + loadingMethodObject.layerName +
+      '&bbox=' + filterPolCoords)
+      .subscribe(data => {
+        console.log('data', data);
+        loadingMethodObject.source.addFeatures(this.mplFormat.readFeatures(data));
+      });
+  }
+ 
 }

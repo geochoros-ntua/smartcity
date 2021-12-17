@@ -3,13 +3,13 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
-import { MapLayersService } from './map.layers.service';
-import { MapillaryLayerNames, MapillaryViewerConfig, SmartCityMapConfig } from '../api/map.interfaces';
+import { SmartCityMapillaryConfig, SmartCityMapConfig } from '../api/map.interfaces';
 import Notification from 'ol-ext/control/Notification';
 import { MapMapillaryService } from './map.mapillary.service';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import { MapBrowserEvent } from 'ol';
+import { MapillaryLayerNames } from '../api/map.enums';
 
 
 @Injectable({
@@ -19,9 +19,8 @@ export class MapService {
   private map: Map;
   private notification: Notification;
   private smartCityMapConfig: SmartCityMapConfig;
-  
 
-  constructor(private mapLayersService: MapLayersService, private mapMapillaryService: MapMapillaryService) { }
+  constructor(private mapMapillaryService: MapMapillaryService) { }
 
   public initMap(smartCityMapConfig: SmartCityMapConfig): void {
     this.smartCityMapConfig = smartCityMapConfig;
@@ -37,13 +36,9 @@ export class MapService {
     });
     // add any custom map controls
     this.addNotificationControl();
-
-    // add the mapillary popup overlay
-    this.mapMapillaryService.initMapillaryPopup(this.map);
-
   }
 
-  public get currentMap(): Map {
+  public get smartCityMap(): Map {
     return this.map;
   }
 
@@ -60,39 +55,34 @@ export class MapService {
 
   public onMapClicked(event: MapBrowserEvent<any>): void {
     this.map.forEachFeatureAtPixel(event.pixel, (feature: Feature<Geometry>) => {
-      console.log('feature',feature)
       if (feature.get('layer')) {
-        console.log(feature.get('layer'))
-
-        this.mapMapillaryService.removeMapillaryViewer();
-        this.mapMapillaryService.setMapillaryPopUp(feature);
+        console.log('feature', feature)
         switch (feature.get('layer')) {
           case MapillaryLayerNames.seq: {
-            const mapillaryViewerConfig: MapillaryViewerConfig = {
-              imageId:feature.get('image_id'),
+            const mapillaryViewerConfig: SmartCityMapillaryConfig = {
+              imageId: feature.get('image_id'),
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
-              map:this.currentMap
-            }
+              map: this.smartCityMap
+            };
             this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
             break;
           }
           case MapillaryLayerNames.img: {
-            const mapillaryViewerConfig: MapillaryViewerConfig = {
-              imageId:feature.get('id'),
+            const mapillaryViewerConfig: SmartCityMapillaryConfig = {
+              imageId: feature.get('id'),
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
-              map:this.currentMap
-            }
+              map: this.smartCityMap
+            };
             this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
             break;
           }
           case MapillaryLayerNames.point: {
-            // @TODO to be implemented
-            const mapillaryViewerConfig: MapillaryViewerConfig = {
-              imageId:feature.get('id'),
+            const mapillaryViewerConfig: SmartCityMapillaryConfig = {
+              imageId: null,
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
-              map:this.currentMap
-            }
-            this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
+              map: this.smartCityMap
+            };
+            this.mapMapillaryService.showFeatureOnImage(mapillaryViewerConfig, feature);
             break;
           }
           default: {

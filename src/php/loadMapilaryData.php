@@ -8,6 +8,7 @@ $layer = $_REQUEST['layer'];
 
 $sequence_attrs = array('id','image_id');
 $image_attrs = array('id','compass_angle', 'sequence_id');
+$point_attrs = array('feature_id', 'value');
 
 $sql = '';
 $attrs = [];
@@ -27,6 +28,14 @@ if ($layer == 'mpl_sequences'){
     ) = 1';
     $attrs = $image_attrs;
 } else if ($layer == 'mpl_points'){
+    $sql = 'select OGR_FID, ST_AsGeoJSON(GEOM) as GEOM, ' . implode(', ', $point_attrs) . ' from mapillary_points where 
+    value NOT IN  (\'object--support--pole\',\'object--support--utility-pole\',\'marking--discrete--other-marking\') and 
+    MBRContains(
+        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
+        GEOM
+    ) = 1';
+    $attrs = $point_attrs;
+} else if ($layer == 'mpl_trafic_signs'){
     //to be implemented
     
 } else {

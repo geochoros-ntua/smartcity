@@ -1,0 +1,22 @@
+  .close-icon {
+    transition: 1s ease-in-out;
+  }
+  
+  .close-icon:hover {
+    transform: rotate(180deg);
+  }
+
+  .mapillaryViewer {
+    width: 40vw; 
+    height: 50vh;
+  }
+  
+  ::ng-deep .mpl_viewer_custom_popup .mat-dialog-container {
+    background-color: transparent !important;
+    padding: 5px 5px 10px 10px !important;
+    overflow: hidden !important;
+  }
+
+  ::ng-deep .mpl_viewer_custom_popup .mat-button-focus-overlay {
+    background-color: transparent!important;
+  }
