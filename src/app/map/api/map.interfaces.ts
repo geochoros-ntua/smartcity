@@ -33,6 +33,14 @@ export interface DetectionFeature {
     extentArea?: number;
 }
 
+export interface DetectionFeatureDB {
+    geometry: string;
+    image_id: string;
+    feature_id: string;
+    value: string;
+    extentArea?: number;
+}
+
 export interface DetectionGeometry {
     type: string;
     coordinates: number[][];

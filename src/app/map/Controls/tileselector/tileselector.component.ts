@@ -8,14 +8,11 @@ import { MapLayersService } from '../../Services/map.layers.service';
   templateUrl: './tileselector.component.html',
   styleUrls: ['./tileselector.component.scss']
 })
-export class TileselectorComponent implements OnInit {
+export class TileselectorComponent {
 
   constructor(private mapLayersService: MapLayersService) { }
 
-  ngOnInit(): void {
-  }
-
-  setTileLayer(val: TileLayerNames) {
+  setTileLayer(val: TileLayerNames): void  {
     switch (val) {
       case TileLayerNames.OsmLayer: {
         this.mapLayersService.cartoDarkLayer.setVisible(false);

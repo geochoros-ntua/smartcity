@@ -18,7 +18,7 @@ import { MapMapillaryService } from './Services/map.mapillary.service';
 
 export class MapComponent implements OnInit {
 
-  private mapConfig: SmartCityMapConfig;
+  private mapConfig!: SmartCityMapConfig;
 
   constructor(
     private mapService: MapService,
@@ -50,13 +50,12 @@ export class MapComponent implements OnInit {
   private registerMapEvents(): void {
     const thisP = this;
     // once first map render
-    this.mapService.smartCityMap.once('rendercomplete', (evt) => {
+    this.mapService.smartCityMap.once('rendercomplete', (_) => {
       thisP.mapService.smartCityMap.updateSize();
     });
 
     // click on map event
     this.mapService.smartCityMap.on('click', (event: MapBrowserEvent<any>) => {
-      this.mapService.showNotificationMessage('oopss this is a map click');
       this.mapService.onMapClicked(event);
     });
 
