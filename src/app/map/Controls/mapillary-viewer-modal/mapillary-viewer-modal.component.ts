@@ -7,10 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./mapillary-viewer-modal.component.scss']
 })
 
-export class MapillaryViewerModalComponent implements OnInit {
+export class MapillaryViewerModalComponent {
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

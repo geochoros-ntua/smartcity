@@ -15,6 +15,8 @@ import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
 import { LoadingMethodObject } from '../api/map.interfaces';
 import { MapillaryLayerNames } from '../api/map.enums';
+import { Feature } from 'ol';
+import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
 
 
 
@@ -25,22 +27,22 @@ export class MapLayersService {
 
   private MPL_PRIVATE_URL = 'https://smartcity.fearofcrime.com/php/loadMapilaryData.php';
 
-  private OSMLayer: TileLayer<OSM>;
-  private GOSMLayer: TileLayer<OSM>;
-  private cartoDBDark: TileLayer<XYZ>;
+  private OSMLayer!: TileLayer<OSM>;
+  private GOSMLayer!: TileLayer<OSM>;
+  private cartoDBDark!: TileLayer<XYZ>;
 
-  private mplSeqSource: VectorSource<LineString | MultiLineString>;
-  private MPL_SEQUENCES: VectorLayer<VectorSource<LineString | MultiLineString>>;
+  private mplSeqSource!: VectorSource<LineString | MultiLineString>;
+  private MPL_SEQUENCES!: VectorLayer<VectorSource<LineString | MultiLineString>>;
 
-  private mplImgource: VectorSource<Point>;
-  private MPL_IMAGES: VectorLayer<VectorSource<Point>>;
+  private mplImgource!: VectorSource<Point>;
+  private MPL_IMAGES!: VectorLayer<VectorSource<Point>>;
 
-  private mplPntSource: VectorSource<Point>;
-  private MPL_POINTS: VectorLayer<VectorSource<Point>>;
+  private mplPntSource!: VectorSource<Point>;
+  private MPL_POINTS!: VectorLayer<VectorSource<Point>>;
 
   private mplFormat: GeoJSON;
 
-  private selectionLayer: VectorLayer<VectorSource<Geometry>>;
+  private selectionLayer!: VectorLayer<VectorSource<Geometry>>;
 
   constructor(private http: HttpClient, private mapStyleService: MapStyleService) {
     this.mplFormat = new GeoJSON({

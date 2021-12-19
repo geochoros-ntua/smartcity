@@ -4,7 +4,7 @@ import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig } from '../api/map.interfaces';
-import Notification from 'ol-ext/control/Notification';
+
 import { MapMapillaryService } from './map.mapillary.service';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
@@ -16,9 +16,9 @@ import { MapillaryLayerNames } from '../api/map.enums';
   providedIn: 'root'
 })
 export class MapService {
-  private map: Map;
-  private notification: Notification;
-  private smartCityMapConfig: SmartCityMapConfig;
+  private map!: Map;
+
+  private smartCityMapConfig!: SmartCityMapConfig;
 
   constructor(private mapMapillaryService: MapMapillaryService) { }
 
@@ -34,8 +34,7 @@ export class MapService {
         zoom: smartCityMapConfig.zoomLevel
       })
     });
-    // add any custom map controls
-    this.addNotificationControl();
+
   }
 
   public get smartCityMap(): Map {
@@ -43,18 +42,10 @@ export class MapService {
   }
 
 
-  public showNotificationMessage(msg: string): void{
-    this.notification.show(msg);
-  }
-
-  private addNotificationControl(): void{
-    this.notification = new Notification();
-    this.map.addControl(this.notification);
-  }
 
 
   public onMapClicked(event: MapBrowserEvent<any>): void {
-    this.map.forEachFeatureAtPixel(event.pixel, (feature: Feature<Geometry>) => {
+    this.map.forEachFeatureAtPixel(event.pixel, feature => {
       if (feature.get('layer')) {
         switch (feature.get('layer')) {
           case MapillaryLayerNames.seq: {
@@ -77,7 +68,7 @@ export class MapService {
           }
           case MapillaryLayerNames.point: {
             const mapillaryViewerConfig: SmartCityMapillaryConfig = {
-              imageId: null,
+              imageId: '',
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
               map: this.smartCityMap
             };

@@ -5,13 +5,14 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { MapLayersService } from './map.layers.service';
-import { DetectionFeature, DetectionGeometry, SmartCityMapillaryConfig } from '../api/map.interfaces';
+import { DetectionFeature, DetectionFeatureDB, DetectionGeometry, SmartCityMapillaryConfig } from '../api/map.interfaces';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
 import { boundingExtent, Extent, getArea, containsXY } from 'ol/extent';
 import { Observable } from 'rxjs';
 import Geometry from 'ol/geom/Geometry';
+import RenderFeature from 'ol/render/Feature';
 
 @Injectable({
     providedIn: 'root'
@@ -20,10 +21,10 @@ export class MapMapillaryService {
 
     private MPL_KEY = 'MLY|4195156090570097|6a0d147f286068b5fc9a83bb734dc467';
     private MPL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadMplDetections.php';
-    private viewer: mapillary.Viewer;
-    private mapillaryDialogRefP: MatDialogRef<MapillaryViewerModalComponent> = null;
-    private tagComponent: mapillary.TagComponent;
-    private removeDetection: boolean;
+    private viewer!: mapillary.Viewer;
+    private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
+    private tagComponent!: mapillary.TagComponent;
+    private removeDetection!: boolean;
 
     constructor(private http: HttpClient, public dialog: MatDialog, private mapLayersService: MapLayersService) { }
 
@@ -54,7 +55,7 @@ export class MapMapillaryService {
         this.tagComponent = this.viewer.getComponent('tag');
         this.tagComponent.removeAll();
         if (smartCityMapillaryConfig.detection){
-            const detections = [];
+            const detections:mapillary.OutlineTag[] = [];
             smartCityMapillaryConfig.detection.geometry.forEach( (geom, i) => {
                 const coordinates = geom.coordinates;
                 coordinates.push(coordinates[0]);
@@ -65,7 +66,7 @@ export class MapMapillaryService {
                     fillOpacity: 0.4,
                     lineColor: 0xff0000,
                     lineWidth: 3,
-                    text: smartCityMapillaryConfig.detection.value,
+                    text: smartCityMapillaryConfig.detection?.value,
                     textColor: 0xffffff,
                 };
                 const detection = new mapillary.OutlineTag('clicked-tag-' + i, tagGeometry, objOptions);
@@ -129,14 +130,14 @@ export class MapMapillaryService {
         });
     }
 
-    public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry>){
+    public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry> | RenderFeature){
         const featid = feature.get('feature_id');
         this.http.get(this.MPL_DETECTIONS_URL + '?feature_id=' + featid)
-        .subscribe((result: any[]) => {
+        .subscribe((result) => {
             // This is trivial
             // There are varius images related to the feature. More than 3 for sure.
             // We do select the one holding the geometry with the largest @boundingExtent
-            const detectfeature: DetectionFeature = result
+            const detectfeature: DetectionFeature = (result as DetectionFeatureDB[])
             .map(df => {
                 const geometry: DetectionGeometry[] = JSON.parse(df.geometry.replace(/'/g, '"'));
                 return {...df, geometry, extentArea: geometry
@@ -144,7 +145,7 @@ export class MapMapillaryService {
                     .map( (ext: number[]) => getArea(ext))
                     .reduce((a: number, b: number) => a + b)};
             })
-            .sort((a: DetectionFeature, b: DetectionFeature) => (a.extentArea < b.extentArea) ? 1 : -1)[0];
+            .sort((a: DetectionFeature, b: DetectionFeature) => (a.extentArea! < b.extentArea!) ? 1 : -1)[0];
             const newConfig = {...mapillaryViewerConfig, imageId: detectfeature.image_id, detection: detectfeature};
             this.removeDetection = false;
             this.showMapillaryViewer(newConfig);
