@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TileLayerNames } from '../../api/map.enums';
 import { MapLayersService } from '../../Services/map.layers.service';
 

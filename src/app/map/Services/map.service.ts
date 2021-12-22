@@ -4,10 +4,7 @@ import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig } from '../api/map.interfaces';
-
 import { MapMapillaryService } from './map.mapillary.service';
-import Feature from 'ol/Feature';
-import Geometry from 'ol/geom/Geometry';
 import { MapBrowserEvent } from 'ol';
 import { MapillaryLayerNames } from '../api/map.enums';
 
@@ -37,11 +34,10 @@ export class MapService {
 
   }
 
+  
   public get smartCityMap(): Map {
     return this.map;
   }
-
-
 
 
   public onMapClicked(event: MapBrowserEvent<any>): void {

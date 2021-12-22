@@ -15,8 +15,6 @@ import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
 import { LoadingMethodObject } from '../api/map.interfaces';
 import { MapillaryLayerNames } from '../api/map.enums';
-import { Feature } from 'ol';
-import { Circle, Fill, Stroke, Style, Text } from 'ol/style';
 
 
 

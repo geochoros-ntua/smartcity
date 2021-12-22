@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
-import Point from 'ol/geom/Point';
 import RenderFeature from 'ol/render/Feature';
 import { Fill, Icon, Stroke, Style, Circle, Text } from 'ol/style';
 

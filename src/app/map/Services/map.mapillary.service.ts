@@ -10,7 +10,6 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
 import { boundingExtent, Extent, getArea, containsXY } from 'ol/extent';
-import { Observable } from 'rxjs';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
 
@@ -88,17 +87,17 @@ export class MapMapillaryService {
             }
           });
 
-        this.mapillaryDialogRefP.afterClosed().subscribe( _ => {
+        this.mapillaryDialogRefP.afterClosed().subscribe( () => {
             this.removeMapillaryViewer();
         });
 
-        this.mapillaryDialogRefP.afterOpened().subscribe( _ => {
+        this.mapillaryDialogRefP.afterOpened().subscribe( () => {
             this.initMapillaryViewer(smartCityMapillaryConfig);
             this.registerMplViewerEvents(smartCityMapillaryConfig.map);
         });
     }
 
-    public removeMapillaryViewer() {
+    public removeMapillaryViewer(): void {
         this.mapillaryViewer?.remove();
         this.mapLayersService.SelectionLayer.getSource().clear();
     }
@@ -130,7 +129,7 @@ export class MapMapillaryService {
         });
     }
 
-    public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry> | RenderFeature){
+    public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry> | RenderFeature): void{
         const featid = feature.get('feature_id');
         this.http.get(this.MPL_DETECTIONS_URL + '?feature_id=' + featid)
         .subscribe((result) => {
@@ -145,7 +144,7 @@ export class MapMapillaryService {
                     .map( (ext: number[]) => getArea(ext))
                     .reduce((a: number, b: number) => a + b)};
             })
-            .sort((a: DetectionFeature, b: DetectionFeature) => (a.extentArea! < b.extentArea!) ? 1 : -1)[0];
+            .sort((a: DetectionFeature, b: DetectionFeature) => (a.extentArea < b.extentArea) ? 1 : -1)[0];
             const newConfig = {...mapillaryViewerConfig, imageId: detectfeature.image_id, detection: detectfeature};
             this.removeDetection = false;
             this.showMapillaryViewer(newConfig);

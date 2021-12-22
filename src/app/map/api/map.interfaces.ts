@@ -30,7 +30,7 @@ export interface DetectionFeature {
     image_id: string;
     feature_id: string;
     value: string;
-    extentArea?: number;
+    extentArea: number;
 }
 
 export interface DetectionFeatureDB {
@@ -38,7 +38,7 @@ export interface DetectionFeatureDB {
     image_id: string;
     feature_id: string;
     value: string;
-    extentArea?: number;
+    extentArea: number;
 }
 
 export interface DetectionGeometry {

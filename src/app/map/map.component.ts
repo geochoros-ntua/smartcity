@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import Map from 'ol/Map';
 import { MapLayersService } from './Services/map.layers.service';
 import { MapService } from './Services/map.service';
 import { SmartCityMapConfig } from './api/map.interfaces';
 import { MapBrowserEvent } from 'ol';
 
-import { MapMapillaryService } from './Services/map.mapillary.service';
+
 
 
 @Component({
