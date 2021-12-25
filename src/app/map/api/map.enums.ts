@@ -1,6 +1,6 @@
 
 export enum TileLayerNames {
-    OsmLayer = 'OSM',
+     OsmLayer = 'OSM',
     GosmLayer = 'GOSM',
     cartoDarkLayer = 'CARTODARK',
     none = 'NONE'

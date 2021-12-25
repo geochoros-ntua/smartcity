@@ -55,7 +55,7 @@ export class MapMapillaryService {
         this.tagComponent.removeAll();
         if (smartCityMapillaryConfig.detection){
             const detections:mapillary.OutlineTag[] = [];
-            smartCityMapillaryConfig.detection.geometry.forEach( (geom, i) => {
+            smartCityMapillaryConfig.detection.geometries.forEach( (geom, i) => {
                 const coordinates = geom.coordinates;
                 coordinates.push(coordinates[0]);
                 const tagGeometry: mapillary.PolygonGeometry = new mapillary.PolygonGeometry(coordinates);
@@ -138,8 +138,8 @@ export class MapMapillaryService {
             // We do select the one holding the geometry with the largest @boundingExtent
             const detectfeature: DetectionFeature = (result as DetectionFeatureDB[])
             .map(df => {
-                const geometry: DetectionGeometry[] = JSON.parse(df.geometry.replace(/'/g, '"'));
-                return {...df, geometry, extentArea: geometry
+                const geometries: DetectionGeometry[] = JSON.parse(df.geometry.replace(/'/g, '"'));
+                return {...df, geometries, extentArea: geometries
                     .map( (gg: { coordinates: number[][] }) => boundingExtent(gg.coordinates))
                     .map( (ext: number[]) => getArea(ext))
                     .reduce((a: number, b: number) => a + b)};

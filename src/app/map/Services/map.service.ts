@@ -40,7 +40,7 @@ export class MapService {
   }
 
 
-  public onMapClicked(event: MapBrowserEvent<any>): void {
+  public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
     this.map.forEachFeatureAtPixel(event.pixel, feature => {
       if (feature.get('layer')) {
         switch (feature.get('layer')) {

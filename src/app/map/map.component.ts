@@ -43,23 +43,23 @@ export class MapComponent implements OnInit {
       ]
     };
     this.mapService.initMap(this.mapConfig);
-    this.registerMapEvents();
+    this.registerMapEvents(this);
   }
 
-  private registerMapEvents(): void {
-    const thisP = this;
+  private registerMapEvents(thisP: MapComponent): void {
+    
     // once first map render
-    this.mapService.smartCityMap.once('rendercomplete', (_) => {
+    this.mapService.smartCityMap.once('rendercomplete', () => {
       thisP.mapService.smartCityMap.updateSize();
     });
 
     // click on map event
-    this.mapService.smartCityMap.on('click', (event: MapBrowserEvent<any>) => {
+    this.mapService.smartCityMap.on('click', (event: MapBrowserEvent<UIEvent>) => {
       this.mapService.onMapClicked(event);
     });
 
     // pointer on feature hover
-    this.mapService.smartCityMap.on('pointermove', (event: MapBrowserEvent<any>) => {
+    this.mapService.smartCityMap.on('pointermove', (event: MapBrowserEvent<UIEvent>) => {
       const pixel = thisP.mapService.smartCityMap.getEventPixel(event.originalEvent);
       const hit = thisP.mapService.smartCityMap.hasFeatureAtPixel(pixel);
       thisP.mapService.smartCityMap.getViewport().style.cursor = hit ? 'pointer' : '';

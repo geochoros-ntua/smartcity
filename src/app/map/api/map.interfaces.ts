@@ -1,12 +1,16 @@
 import { Coordinate } from 'ol/coordinate';
 import { Extent } from 'ol/extent';
+import Geometry from 'ol/geom/Geometry';
 import LineString from 'ol/geom/LineString';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Point from 'ol/geom/Point';
-import Layer from 'ol/layer/Layer';
+import TileLayer from 'ol/layer/Tile';
+import VectorLayer from 'ol/layer/Vector';
 import Map from 'ol/Map';
 import * as olProj from 'ol/proj';
+import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
+import XYZ from 'ol/source/XYZ';
 import { MapillaryLayerNames } from './map.enums';
 
 
@@ -15,7 +19,7 @@ export interface SmartCityMapConfig {
     mapillaryDivId: string;
     zoomLevel: number;
     center: Coordinate;
-    layers: Layer<any>[];
+    layers: (VectorLayer<VectorSource<Geometry>> | TileLayer<OSM> | TileLayer<XYZ>) [];
 }
 
 export interface SmartCityMapillaryConfig {
@@ -26,7 +30,7 @@ export interface SmartCityMapillaryConfig {
 }
 
 export interface DetectionFeature {
-    geometry: DetectionGeometry[];
+    geometries: DetectionGeometry[];
     image_id: string;
     feature_id: string;
     value: string;

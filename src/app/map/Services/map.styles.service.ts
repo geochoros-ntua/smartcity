@@ -38,16 +38,16 @@ export class MapStyleService {
 
   public mplPointStyle = (feature: Feature<Geometry> | RenderFeature): Style => {
     const value = feature.get('value');
-    const cStyle = this.mplPointStyleCache.get(value);
+    let cStyle = this.mplPointStyleCache.get(value);
     if (!cStyle) {
-      const style = new Style({
+      cStyle = new Style({
         image: new Icon({
           src: 'assets/package_objects/' + feature.get('value') + '.svg'
         })
       });
-      this.mplPointStyleCache.set(value,style);
+      this.mplPointStyleCache.set(value,cStyle);
     }
-    return cStyle!;
+    return cStyle;
   }
 
   /**
