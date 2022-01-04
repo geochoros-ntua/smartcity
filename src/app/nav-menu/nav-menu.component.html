@@ -1,0 +1,21 @@
+
+
+<!-- doesnt have to be a button all the time (mobile/desktop version using window.innerWidth in the component) -->
+
+<button mat-icon-button [matMenuTriggerFor]="menuParent" >
+    <mat-icon>menu</mat-icon>
+    <mat-menu #menuParent="matMenu">
+      <button class="menu-button" mat-menu-item routerLink="/" [routerLinkActive]="['is-active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        Home
+      </button>
+      <button class="menu-button" mat-menu-item routerLink="/about" [routerLinkActive]="['is-active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        About
+      </button>
+      <button class="menu-button" mat-menu-item routerLink="/map" [routerLinkActive]="['is-active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        Map
+      </button>
+    </mat-menu>
+  </button>

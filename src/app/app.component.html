@@ -1,9 +1,9 @@
-<div>
+<div class="main-parent mat-typography mat-app-background" [class.asc-dark-theme]="isDarkTheme">
   <mat-toolbar color="primary">
     <div fxShow="true" fxHide.gt-sm="true">
-      <button mat-icon-button (click)="sidenav.toggle()">
+      <!-- <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
-      </button>
+      </button> -->
     </div>
 
     <a mat-button class="companyName" routerLink="/">
@@ -16,22 +16,35 @@
         [routerLinkActiveOptions]="{exact: false}">
         <mat-icon>home</mat-icon>
       </button> -->
-      <button mat-icon-button routerLink="/map" [routerLinkActive]="['is-active']"
+      <!-- <button mat-icon-button routerLink="/map" [routerLinkActive]="['is-active']"
         [routerLinkActiveOptions]="{exact: false}">
         <mat-icon>public</mat-icon>
+      </button> -->
+
+      <app-nav-menu></app-nav-menu>
+
+      <button *ngIf="isDarkTheme" mat-icon-button (click)="changeTheme()">
+        <mat-icon>brightness_5</mat-icon>
+      </button>
+      <button *ngIf="!isDarkTheme" mat-icon-button (click)="changeTheme()">
+        <mat-icon>brightness_2</mat-icon>
+      </button>
+
+      <button mat-icon-button *ngIf="isMap && currentView === 1 || currentView === 2" [color]="'accent'" (click)="toggleStreetView()">
+        <mat-icon>streetview</mat-icon>
+      </button>
+    
+      <button mat-icon-button *ngIf="isMap && currentView === 0 || currentView === 2" [color]="'accent'" (click)="toggleMap()">
+        <mat-icon>map</mat-icon>
       </button>
      
     </div>
 
   </mat-toolbar>
-  <mat-sidenav-container fxFlexFill class="example-container" [hasBackdrop]="false">
+  <!-- <mat-sidenav-container fxFlexFill class="example-container" [hasBackdrop]="false">
 
     <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over" opened="false" fxHide.gt-sm="true">
       <div style="padding: 8px;" fxLayout="column">
-        <!-- <button mat-icon-button routerLink="/home" [routerLinkActive]="['is-active']"
-          [routerLinkActiveOptions]="{exact: false}">
-          <mat-icon>home</mat-icon>
-        </button> -->
         <button mat-icon-button routerLink="/app-map" [routerLinkActive]="['is-active']"
           [routerLinkActiveOptions]="{exact: false}">
           <mat-icon>public</mat-icon>
@@ -42,5 +55,7 @@
     <mat-sidenav-content fxFlexFill>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
-  </mat-sidenav-container>
+  </mat-sidenav-container> -->
+
+  <router-outlet></router-outlet>
 </div>

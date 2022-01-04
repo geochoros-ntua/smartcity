@@ -13,7 +13,7 @@ import { MapillaryLayerNames } from '../api/map.enums';
   providedIn: 'root'
 })
 export class MapService {
-  private map!: Map;
+   map!: Map;
 
   private smartCityMapConfig!: SmartCityMapConfig;
 

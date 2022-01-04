@@ -2,15 +2,30 @@
 <button mat-icon-button class="close-button" [mat-dialog-close]="true">
     <mat-icon class="close-icon" color="warn">close</mat-icon>
   </button> -->
-<div mat-dialog-title >
-<!-- <h1>Viewwer</h1> -->
+
+<!-- <div mat-dialog-title >
+
     <button mat-button class="close-icon" [mat-dialog-close]="true">
         <mat-icon color="accent">close</mat-icon>
     </button>
-</div>
+</div> -->
   
-<div mat-dialog-content>
-    
+<!-- <div mat-dialog-content> -->
+    <mat-toolbar #streetViewToolbar class="street-view-toolbar">
+        <p>StreetView toolbar</p>
+        <span class="spacer"></span>
+        <button mat-icon-button *ngIf=" currentView === 0" [color]="'accent'" (click)="toggleStreetViewFullScreen(true)">
+            <mat-icon>open_in_full</mat-icon>
+          </button>
+        
+          <button mat-icon-button *ngIf="currentView === 2" [color]="'accent'" (click)="toggleStreetViewFullScreen(false)">
+            <mat-icon>close_fullscreen</mat-icon>
+          </button>
+      </mat-toolbar>
     <div class="mapillaryViewer" id="mapillaryDiv"></div>
-</div>
+
+
+<!-- </div> -->
+
+
 

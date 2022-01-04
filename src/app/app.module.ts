@@ -30,6 +30,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TileselectorComponent } from './map/Controls/tileselector/tileselector.component';
 import { MapillaryViewerModalComponent } from './map/Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { MapillaryViewerModalComponent } from './map/Controls/mapillary-viewer-m
     MapComponent,
     TileselectorComponent,
     MapillaryViewerModalComponent,
+    NavMenuComponent,
+    HomeComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

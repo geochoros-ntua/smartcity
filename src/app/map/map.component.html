@@ -1,11 +1,28 @@
-<link
-  href="https://unpkg.com/mapillary-js@4.0.0/dist/mapillary.css"
-  rel="stylesheet"
-/>
+<link href="https://unpkg.com/mapillary-js@4.0.0/dist/mapillary.css" rel="stylesheet" />
 
+<mat-drawer-container class="drawer-container" hasBackdrop="false">
 
-<div id="map_div">
-  <!-- <mapilary-popup-control></mapilary-popup-control> -->
-  <!-- <app-mapillary-popup-new></app-mapillary-popup-new> -->
-  <app-tileselector></app-tileselector>
-</div>
+  <mat-drawer [ngClass]="(currentView === 0 || currentView === 1) ?  'drawer' : 'drawer-full'" #drawer mode="side"
+    position="end" [opened]="(currentView === 0 || currentView === 2) ? 'true' : 'false'">
+
+      <app-mapillary-viewer-modal></app-mapillary-viewer-modal>
+  </mat-drawer>
+
+  <mat-drawer-content #drawerB>
+    <div id="map_div">
+      <!-- <mapilary-popup-control></mapilary-popup-control> -->
+      <!-- <app-mapillary-popup-new></app-mapillary-popup-new> -->
+      <!-- <app-tileselector></app-tileselector> -->
+    </div>
+
+    <mat-toolbar #mapToolbar class="map-toolbar">
+      <p>Map toolbar, can be sideways</p>
+      <span class="spacer"></span>
+      <app-tileselector></app-tileselector>
+    </mat-toolbar>
+
+    <button class="resize-button" mat-flat-button color="accent" *ngIf="currentView === 0"
+      (mousedown)="setStatus($event, 1)" (window:mouseup)="setStatus($event, 0)"></button>
+
+  </mat-drawer-content>
+</mat-drawer-container>

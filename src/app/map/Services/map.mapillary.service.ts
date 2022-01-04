@@ -8,7 +8,7 @@ import { MapLayersService } from './map.layers.service';
 import { DetectionFeature, DetectionFeatureDB, DetectionGeometry, SmartCityMapillaryConfig } from '../api/map.interfaces';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
+// import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
 import { boundingExtent, Extent, getArea, containsXY } from 'ol/extent';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
@@ -21,7 +21,7 @@ export class MapMapillaryService {
     private MPL_KEY = 'MLY|4195156090570097|6a0d147f286068b5fc9a83bb734dc467';
     private MPL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadMplDetections.php';
     private viewer!: mapillary.Viewer;
-    private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
+    // private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
     private tagComponent!: mapillary.TagComponent;
     private removeDetection!: boolean;
 
@@ -31,9 +31,9 @@ export class MapMapillaryService {
         return this.viewer;
     }
 
-    public get mapillaryDialogRef(): MatDialogRef<MapillaryViewerModalComponent>{
-        return this.mapillaryDialogRefP;
-    }
+    // public get mapillaryDialogRef(): MatDialogRef<MapillaryViewerModalComponent>{
+    //     return this.mapillaryDialogRefP;
+    // }
 
     public initMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
         const options: mapillary.ViewerOptions = {
@@ -76,25 +76,28 @@ export class MapMapillaryService {
     }
 
     public showMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
-        this.mapillaryDialogRefP?.close();
+        // this.mapillaryDialogRefP?.close();
         this.removeMapillaryViewer();
-        this.mapillaryDialogRefP = this.dialog.open( MapillaryViewerModalComponent, {
-            panelClass: 'mpl_viewer_custom_popup',
-            hasBackdrop: false,
-            position: {
-              bottom: '0.0em',
-              left: '0.0em',
-            }
-          });
+        // this.mapillaryDialogRefP = this.dialog.open( MapillaryViewerModalComponent, {
+        //     panelClass: 'mpl_viewer_custom_popup',
+        //     hasBackdrop: false,
+        //     position: {
+        //       bottom: '0.0em',
+        //       left: '0.0em',
+        //     }
+        //   });
 
-        this.mapillaryDialogRefP.afterClosed().subscribe( () => {
-            this.removeMapillaryViewer();
-        });
+        // this.mapillaryDialogRefP.afterClosed().subscribe( () => {
+        //     this.removeMapillaryViewer();
+        // });
 
-        this.mapillaryDialogRefP.afterOpened().subscribe( () => {
-            this.initMapillaryViewer(smartCityMapillaryConfig);
-            this.registerMplViewerEvents(smartCityMapillaryConfig.map);
-        });
+        // this.mapillaryDialogRefP.afterOpened().subscribe( () => {
+        //     this.initMapillaryViewer(smartCityMapillaryConfig);
+        //     this.registerMplViewerEvents(smartCityMapillaryConfig.map);
+        // });
+
+        this.initMapillaryViewer(smartCityMapillaryConfig);
+        this.registerMplViewerEvents(smartCityMapillaryConfig.map);
     }
 
     public removeMapillaryViewer(): void {
