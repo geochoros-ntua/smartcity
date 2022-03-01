@@ -14,7 +14,11 @@ import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
 import { LoadingMethodObject } from '../api/map.interfaces';
-import { MapillaryLayerNames } from '../api/map.enums';
+import { VectorLayerNames } from '../api/map.enums';
+import { FEATURE_GROUPS } from '../api/map.datamaps';
+import Polygon from 'ol/geom/Polygon';
+import MultiPolygon from 'ol/geom/MultiPolygon';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -38,24 +42,73 @@ export class MapLayersService {
   private mplPntSource!: VectorSource<Point>;
   private MPL_POINTS!: VectorLayer<VectorSource<Point>>;
 
+  private factorsDKSource!: VectorSource<Polygon | MultiPolygon>;
+  private FACTORS_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
+  private questDKSource!: VectorSource<Polygon | MultiPolygon>;
+  private QUEST_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
+  private factorsGeitSource!: VectorSource<Polygon | MultiPolygon>;
+  private FACTORS_GEIT!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
   private mplFormat: GeoJSON;
+
+  private statsLayersFormat: GeoJSON;
 
   private selectionLayer!: VectorLayer<VectorSource<Geometry>>;
 
+  public selectedFeatureGroups!: string[];
+
+  public $selectedFeatureGroups: BehaviorSubject<string[]> = new BehaviorSubject(Array.from( [...FEATURE_GROUPS.keys(), '0']));
+
+  public checkedSeq = true;
+  public checkedImg = true;
+  
+
   constructor(private http: HttpClient, private mapStyleService: MapStyleService) {
+    // format to read the mpl 4326 layers response
     this.mplFormat = new GeoJSON({
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     });
+    // format to read the stats 3857 layers response
+    this.statsLayersFormat = new GeoJSON({
+      dataProjection: 'EPSG:3857',
+      featureProjection: 'EPSG:3857'
+    });
+    // if less than six groups selected 
+    // give to the user some more point to view
+    this.$selectedFeatureGroups.subscribe( (groups: string[]) => {
+          this.selectedFeatureGroups = groups;
+          if (groups.length > 6){
+            this.MPL_POINTS?.setMinZoom(18);
+          } else {
+            this.MPL_POINTS?.setMinZoom(15);
+          }
+    })
   }
 
+
+  /**
+   * intitilaise all the layers
+   * consisting our map. 
+   * Starts we street view mode
+   * named Athens eye
+   */
   public initLayers(): void {
+    // tile layers
     this.initCartoDarkLayer(true);
     this.initOSMLayer(false);
     this.initGOSMLayer(false);
+    // mplr vector layers
     this.initMapillarySequences(true);
     this.initMapillaryImages(true);
     this.initMapillaryPoints(true);
+    // questoniarry layer
+    this.initQuestDKLayer(false);
+    // factors layers
+    this.initFactorsDKLayer(false);
+    // scrap layer
     this.initSelectionLayer(true);
   }
 
@@ -83,9 +136,35 @@ export class MapLayersService {
     return this.MPL_POINTS;
   }
 
+  public get FactorsDKLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
+    return this.FACTORS_DK;
+  }
+
+  public get QuestDKLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
+    return this.QUEST_DK;
+  }
+
+  public get FactorsGeitLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
+    return this.FACTORS_GEIT;
+  }
+
   public get SelectionLayer(): VectorLayer<VectorSource<Geometry>> {
     return this.selectionLayer;
   }
+
+  /**
+   * set for all vectors the opacity
+   * This is common for every layer, so keep it simple
+   * @param value opacity number
+   */
+  public setVectorLayersOpacity(value: number): void{
+      this.MPL_IMAGES.setOpacity(value);
+      this.MPL_SEQUENCES.setOpacity(value);
+      this.MPL_POINTS.setOpacity(value);
+      this.FACTORS_DK.setOpacity(value);
+      this.QUEST_DK.setOpacity(value);
+  }
+
 
   /**
    * PRIVATES
@@ -137,14 +216,16 @@ export class MapLayersService {
           extent,
           resolution,
           projection,
-          layerName: MapillaryLayerNames.seq,
+          format: this.mplFormat,
+          dbprojection: olProj.get('EPSG:4326'),
+          layerName: VectorLayerNames.seq,
           source: this.mplSeqSource
         });
       }
     });
     this.MPL_SEQUENCES = new VectorLayer({
       visible,
-      opacity: 1.0,
+      opacity: 0.7,
       minZoom: 10,
       maxZoom: 17,
       style: this.mapStyleService.mplSquencesStyle,
@@ -164,7 +245,9 @@ export class MapLayersService {
           extent,
           resolution,
           projection,
-          layerName: MapillaryLayerNames.img,
+          format: this.mplFormat,
+          dbprojection: olProj.get('EPSG:4326'),
+          layerName: VectorLayerNames.img,
           source: this.mplImgource
         });
       }
@@ -174,7 +257,6 @@ export class MapLayersService {
       visible,
       opacity: 0.7,
       minZoom: 17,
-      // renderBuffer: 100,
       style: this.mapStyleService.mplImgPointStyle,
       source: this.mplImgource
     });
@@ -192,7 +274,9 @@ export class MapLayersService {
           extent,
           resolution,
           projection,
-          layerName: MapillaryLayerNames.point,
+          format: this.mplFormat,
+          dbprojection: olProj.get('EPSG:4326'),
+          layerName: VectorLayerNames.point,
           source: this.mplPntSource
         });
       }
@@ -207,9 +291,80 @@ export class MapLayersService {
     });
   }
 
+  private initFactorsDKLayer = (visible: boolean): void => {
+    this.factorsDKSource = new VectorSource({
+      format: this.statsLayersFormat,
+      strategy: bboxStrategy,
+      loader: (extent, resolution, projection) => {
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          format: this.statsLayersFormat,
+          dbprojection: olProj.get('EPSG:3857'),
+          layerName: VectorLayerNames.factors_dk,
+          source: this.factorsDKSource
+        });
+      }
+    });
+
+    this.FACTORS_DK = new VectorLayer({
+      visible,
+      opacity: 0.7,
+      minZoom: 10,
+      // maxZoom: 17,
+      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
+      source: this.factorsDKSource
+    });
+  }
+
+  private initQuestDKLayer = (visible: boolean): void => {
+    this.questDKSource = new VectorSource({
+      format: this.statsLayersFormat,
+      strategy: bboxStrategy,
+      loader: (extent, resolution, projection) => {
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          format: this.statsLayersFormat,
+          dbprojection: olProj.get('EPSG:3857'),
+          layerName: VectorLayerNames.quest_dk,
+          source: this.questDKSource
+        });
+      }
+    });
+
+    this.QUEST_DK = new VectorLayer({
+      visible,
+      opacity: 0.7,
+      minZoom: 10,
+      // maxZoom: 17,
+      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
+      source: this.questDKSource
+    });
+  }
+
+
+
+  /**
+   * This is a common loading method for all layers maintained within the DB
+   * Takes care of all the necessary tranformations to respect EPSG (4326 or 3857)
+   * send the MBR request on the back end
+   * receives back geojson features and 
+   * updates the layer source with the features
+   * @param loadingMethodObject 
+   */
   private loadingFn(loadingMethodObject: LoadingMethodObject): void {
-    const minCoords = olProj.transform([loadingMethodObject.extent[0], loadingMethodObject.extent[1]], 'EPSG:3857', 'EPSG:4326');
-    const maxCoords = olProj.transform([loadingMethodObject.extent[2], loadingMethodObject.extent[3]], 'EPSG:3857', 'EPSG:4326');
+    
+    const minCoords = olProj.transform(
+      [loadingMethodObject.extent[0], loadingMethodObject.extent[1]], loadingMethodObject.projection, loadingMethodObject.dbprojection
+      );
+
+    const maxCoords = olProj.transform(
+      [loadingMethodObject.extent[2], loadingMethodObject.extent[3]], loadingMethodObject.projection, loadingMethodObject.dbprojection
+      );
+
     const filterPolCoords =
       `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
       `${maxCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
@@ -217,12 +372,18 @@ export class MapLayersService {
       `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
       `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
 
+
     this.http.get(this.MPL_PRIVATE_URL +
       '?layer=' + loadingMethodObject.layerName +
-      '&bbox=' + filterPolCoords)
+      '&bbox=' + filterPolCoords + 
+      (loadingMethodObject.layerName === VectorLayerNames.point ? 
+      '&filter=' + this.selectedFeatureGroups.map(grp => "'" + grp +"'") :
+      ''))
       .subscribe(data => {
-        console.log('data', data);
-        loadingMethodObject.source.addFeatures(this.mplFormat.readFeatures(data));
+        //console.log('data', data);
+        loadingMethodObject.source.addFeatures(loadingMethodObject.format.readFeatures(data));
       });
   }
+
+  
 }

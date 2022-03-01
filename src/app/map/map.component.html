@@ -5,7 +5,10 @@
 
 
 <div id="map_div">
-  <!-- <mapilary-popup-control></mapilary-popup-control> -->
-  <!-- <app-mapillary-popup-new></app-mapillary-popup-new> -->
+
   <app-tileselector></app-tileselector>
+  <app-mapillary-data *ngIf="isStreetMode()"></app-mapillary-data>
+  <app-map-mode></app-map-mode>
+  <app-opacity-slider></app-opacity-slider>
+  <app-map-stats-mode  *ngIf="isStatsMode()"></app-map-stats-mode>
 </div>

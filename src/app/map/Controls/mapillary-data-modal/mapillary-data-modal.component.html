@@ -1,0 +1,33 @@
+<form fxFlex autocomplete="off" style="margin: 10px">
+    <h3>Street Data</h3>
+    
+    <div class="row filterSelectCntrl">
+        
+        <mat-form-field fillColor="accent" appearance="fill" >
+            <mat-label>Feature Detections</mat-label>
+                <mat-select multiple 
+                [(value)]="mapLayersService.selectedFeatureGroups" 
+                (selectionChange)="setActiveGroups($event.value)" 
+                (closed)="refreshDetectionLayer()">
+                <mat-option #allSelected 
+                    (click)="toggleFeatureGroups()" 
+                    [value]="'0'">All
+                </mat-option>
+                <mat-option *ngFor="let group of getFeatureGroups()" [value]="group">
+                    <mat-icon>
+                        <img src='{{ "../../../../assets/package_objects/" + group + ".svg" }}'/>
+                    </mat-icon>{{group}}
+                </mat-option>
+                </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="row">
+        <mat-checkbox [checked]="mapLayersService.checkedSeq" (change)="toggleLayerVisibility('mpl_sequences')" >Show/Hide Paths</mat-checkbox>
+    </div>
+    <div class="row">
+        <mat-checkbox [checked]="mapLayersService.checkedImg" (change)="toggleLayerVisibility('mpl_images')">Show/Hide Image Points</mat-checkbox>
+    </div>
+    
+    <!-- <h4>Feature Detections</h4> -->
+</form>

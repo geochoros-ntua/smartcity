@@ -6,7 +6,9 @@ import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig } from '../api/map.interfaces';
 import { MapMapillaryService } from './map.mapillary.service';
 import { MapBrowserEvent } from 'ol';
-import { MapillaryLayerNames } from '../api/map.enums';
+import { VectorLayerNames, MapMode } from '../api/map.enums';
+import { Subject } from 'rxjs';
+import { MapLayersService } from './map.layers.service';
 
 
 @Injectable({
@@ -15,23 +17,58 @@ import { MapillaryLayerNames } from '../api/map.enums';
 export class MapService {
   private map!: Map;
 
-  private smartCityMapConfig!: SmartCityMapConfig;
+  public $mapMode: Subject<MapMode> = new Subject<MapMode>();
+  public mapMode: MapMode = MapMode.street;
+  public subFactorsMode: MapMode = MapMode.stats_q;
 
-  constructor(private mapMapillaryService: MapMapillaryService) { }
+  private smartCityMapConfig: SmartCityMapConfig = {
+    mapDivId: 'map_div',
+    mapillaryDivId: 'mapillaryDiv',
+    zoomLevel: 13,
+    center: [23.7314, 37.9827]
+  };
+  
+  constructor(private mapMapillaryService: MapMapillaryService, private mapLayersService: MapLayersService) {
+    // Subscribe
+    // keep the map mode switching central
+    // There should be more things to add here, 
+    // so it is a good idea to keep it sharable
+    this.$mapMode.subscribe((mode: MapMode) => {
+      this.mapMode = mode;
+      if (this.mapMode == MapMode.stats_i || this.mapMode == MapMode.stats_q ){
+        this.subFactorsMode = this.mapMode
+      }
+      this.onModeChangeLayerVisibility(mode);
+    })
+  }
 
-  public initMap(smartCityMapConfig: SmartCityMapConfig): void {
-    this.smartCityMapConfig = smartCityMapConfig;
+  public initMap(): void {
+    this.mapLayersService.initLayers();
     this.map = new Map({
-      target: smartCityMapConfig.mapDivId,
-      layers: smartCityMapConfig.layers,
+      target: this.smartCityMapConfig.mapDivId,
+      layers: [
+        this.mapLayersService.cartoDarkLayer,
+        this.mapLayersService.GosmLayer,
+        this.mapLayersService.OsmLayer,
+        this.mapLayersService.MlSequencesLayer,
+        this.mapLayersService.MlImagesLayer,
+        this.mapLayersService.MlPointsLayer,
+        this.mapLayersService.QuestDKLayer,
+        this.mapLayersService.FactorsDKLayer,
+        this.mapLayersService.SelectionLayer
+      ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
       view: new View({
-        center: olProj.transform(smartCityMapConfig.center, 'EPSG:4326', 'EPSG:3857'),
+        center: olProj.transform(this.smartCityMapConfig.center, 'EPSG:4326', 'EPSG:3857'),
         projection: 'EPSG:3857',
-        zoom: smartCityMapConfig.zoomLevel
+        zoom: this.smartCityMapConfig.zoomLevel
       })
     });
 
+  }
+
+  public get smartCityConfig():SmartCityMapConfig{
+    return this.smartCityMapConfig;
   }
 
   
@@ -39,12 +76,11 @@ export class MapService {
     return this.map;
   }
 
-
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
     this.map.forEachFeatureAtPixel(event.pixel, feature => {
       if (feature.get('layer')) {
         switch (feature.get('layer')) {
-          case MapillaryLayerNames.seq: {
+          case VectorLayerNames.seq: {
             const mapillaryViewerConfig: SmartCityMapillaryConfig = {
               imageId: feature.get('image_id'),
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
@@ -53,7 +89,7 @@ export class MapService {
             this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
             break;
           }
-          case MapillaryLayerNames.img: {
+          case VectorLayerNames.img: {
             const mapillaryViewerConfig: SmartCityMapillaryConfig = {
               imageId: feature.get('id'),
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
@@ -62,7 +98,7 @@ export class MapService {
             this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
             break;
           }
-          case MapillaryLayerNames.point: {
+          case VectorLayerNames.point: {
             const mapillaryViewerConfig: SmartCityMapillaryConfig = {
               imageId: '',
               mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
@@ -85,5 +121,46 @@ export class MapService {
   }
 
 
+  private onModeChangeLayerVisibility(mode: MapMode): void{
+    console.log('mode', mode)
+    switch(mode) { 
+      case MapMode.street: { 
+         this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
+         this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg);
+         this.mapLayersService.MlPointsLayer.setVisible(true);
+         this.mapLayersService.FactorsDKLayer.setVisible(false);
+         this.mapLayersService.QuestDKLayer.setVisible(false);
+         break; 
+      } 
+      case MapMode.stats_i: { 
+         this.mapLayersService.MlSequencesLayer.setVisible(false);
+         this.mapLayersService.MlImagesLayer.setVisible(false);
+         this.mapLayersService.MlPointsLayer.setVisible(false);
+         this.mapLayersService.FactorsDKLayer.setVisible(true);
+         this.mapLayersService.QuestDKLayer.setVisible(false);
+         break; 
+      } 
+      case MapMode.stats_q: { 
+        this.mapLayersService.MlSequencesLayer.setVisible(false);
+        this.mapLayersService.MlImagesLayer.setVisible(false);
+        this.mapLayersService.MlPointsLayer.setVisible(false);
+        this.mapLayersService.FactorsDKLayer.setVisible(false);
+        this.mapLayersService.QuestDKLayer.setVisible(true);
+        break; 
+     } 
+      case MapMode.sens: { 
+         this.mapLayersService.MlSequencesLayer.setVisible(false);
+         this.mapLayersService.MlImagesLayer.setVisible(false);
+         this.mapLayersService.MlPointsLayer.setVisible(false);
+         this.mapLayersService.FactorsDKLayer.setVisible(false);
+         this.mapLayersService.QuestDKLayer.setVisible(false);
+        break; 
+      } 
+      default: { 
+        console.error(`No such mode error: ${ mode }.`)
+         break; 
+      } 
+   } 
+  }
 
 }

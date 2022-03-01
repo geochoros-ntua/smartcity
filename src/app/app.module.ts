@@ -27,9 +27,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TileselectorComponent } from './map/Controls/tileselector/tileselector.component';
 import { MapillaryViewerModalComponent } from './map/Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';
+import { MapillaryDataComponent } from './map/Controls/mapillary-data/mapillary-data.component';
+import { MapillaryDataModalComponent } from './map/Controls/mapillary-data-modal/mapillary-data-modal.component';
+import { MapModeComponent } from './map/Controls/map-mode/map-mode.component';
+import { OpacitySliderComponent } from './map/Controls/opacity-slider/opacity-slider.component';
+import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-mode.component';
 
 @NgModule({
   declarations: [
@@ -37,10 +43,15 @@ import { MapillaryViewerModalComponent } from './map/Controls/mapillary-viewer-m
     MapComponent,
     TileselectorComponent,
     MapillaryViewerModalComponent,
+    MapillaryDataComponent,
+    MapillaryDataModalComponent,
+    MapModeComponent,
+    OpacitySliderComponent,
+    MapStatsModeComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
-    MatIconModule, MatButtonModule, MatButtonToggleModule, MatSidenavModule, MatToolbarModule,
+    MatIconModule, MatButtonModule, MatButtonToggleModule, MatSliderModule, MatSidenavModule, MatToolbarModule,
     MatSelectModule, MatMenuModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,

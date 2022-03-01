@@ -1,0 +1,12 @@
+<div class='opacitySlider'>
+    <mat-slider  
+    (input)="setLyrOpacity($event.value!)"
+    [(value)] = "vectorOpacity"
+    matTooltip="Διαφάνεια στοιχείων χάρτη"
+    thumbLabel
+    tickInterval="10"
+    vertical=true
+    color="accent"
+    min="1"
+    max="100"></mat-slider>
+    </div>

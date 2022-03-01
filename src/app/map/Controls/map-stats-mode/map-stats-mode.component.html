@@ -1,0 +1,10 @@
+
+<div class='statsModeSlider'>
+<mat-slide-toggle 
+    [checked]="isFactor" 
+    (change)="setSubMode($event.checked)" 
+    #subModeTooltip="matTooltip"
+    [matTooltip]="getToolTip()">
+</mat-slide-toggle>
+</div>
+

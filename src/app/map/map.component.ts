@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MapLayersService } from './Services/map.layers.service';
 import { MapService } from './Services/map.service';
 import { SmartCityMapConfig } from './api/map.interfaces';
 import { MapBrowserEvent } from 'ol';
-
-
+import { MapMode } from './api/map.enums';
 
 
 @Component({
@@ -14,37 +12,27 @@ import { MapBrowserEvent } from 'ol';
 })
 
 
-
 export class MapComponent implements OnInit {
 
-  private mapConfig!: SmartCityMapConfig;
+  public mapConfig!: SmartCityMapConfig;
 
-  constructor(
-    private mapService: MapService,
-    private mapLayersService: MapLayersService) {
+  constructor(private mapService: MapService) {
 
   }
 
   ngOnInit(): void {
-    this.mapLayersService.initLayers();
-    this.mapConfig = {
-      mapDivId: 'map_div',
-      mapillaryDivId: 'mapillaryDiv',
-      zoomLevel: 15,
-      center: [23.7114, 37.9827],
-      layers: [
-        this.mapLayersService.cartoDarkLayer,
-        this.mapLayersService.GosmLayer,
-        this.mapLayersService.OsmLayer,
-        this.mapLayersService.MlSequencesLayer,
-        this.mapLayersService.MlImagesLayer,
-        this.mapLayersService.MlPointsLayer,
-        this.mapLayersService.SelectionLayer
-      ]
-    };
-    this.mapService.initMap(this.mapConfig);
+    this.mapService.initMap();
     this.registerMapEvents(this);
   }
+
+  public isStreetMode(): boolean{
+    return this.mapService.mapMode === MapMode.street;
+  }
+
+  public isStatsMode(): boolean{
+    return this.mapService.mapMode === MapMode.stats_i || this.mapService.mapMode === MapMode.stats_q;
+  }
+
 
   private registerMapEvents(thisP: MapComponent): void {
     

@@ -7,10 +7,10 @@ $feature_id = $_REQUEST['feature_id'];
 
 
 $sql = "select aa.geometry, aa.image_id, aa.feature_id, bb.value
-FROM mapillary_features_detail aa
+FROM mappillary_features_detail_da aa
 INNER JOIN mapillary_points bb ON aa.feature_id=bb.feature_id
 where aa.feature_id = '$feature_id'";
-
+// 496834095095254
 # Try query or error
 $rs = mysqli_query($con, $sql);  
 if (!$rs) {

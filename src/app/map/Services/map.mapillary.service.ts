@@ -12,6 +12,7 @@ import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-moda
 import { boundingExtent, Extent, getArea, containsXY } from 'ol/extent';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +25,9 @@ export class MapMapillaryService {
     private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
     private tagComponent!: mapillary.TagComponent;
     private removeDetection!: boolean;
+    private selFeature!: Feature<Point>;
+    private viewerBearing!: number;
+
 
     constructor(private http: HttpClient, public dialog: MatDialog, private mapLayersService: MapLayersService) { }
 
@@ -35,6 +39,12 @@ export class MapMapillaryService {
         return this.mapillaryDialogRefP;
     }
 
+    /**
+     * Initialise the mapillary viewer
+     * This is fired when clicking in any mpl object on map
+     * either lines | points | features
+     * @param smartCityMapillaryConfig 
+     */
     public initMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
         const options: mapillary.ViewerOptions = {
             accessToken: this.MPL_KEY,
@@ -44,15 +54,13 @@ export class MapMapillaryService {
             },
             container: smartCityMapillaryConfig.mapillaryDivId,
             cameraControls: mapillary.CameraControls.Street,
-            imageId: smartCityMapillaryConfig.imageId + ''
+            imageId: smartCityMapillaryConfig.imageId + '',
         };
         this.viewer = new mapillary.Viewer(options);
-        // add any filters. It seems they dont work
-        // this.viewer.setFilter(['==', 'creatorId', '1805883732926354']);
-        // this.viewer.setFilter(['==', 'sequenceId', 'oOKk2ZLL-uTMKcUKlDzj9g']);
-        // this.viewer.setFilter(["in", "creatorId", "1805883732926354"]);
         this.tagComponent = this.viewer.getComponent('tag');
         this.tagComponent.removeAll();
+        // when clicking on feature
+        // draw it also to the image
         if (smartCityMapillaryConfig.detection){
             const detections:mapillary.OutlineTag[] = [];
             smartCityMapillaryConfig.detection.geometries.forEach( (geom, i) => {
@@ -60,21 +68,33 @@ export class MapMapillaryService {
                 coordinates.push(coordinates[0]);
                 const tagGeometry: mapillary.PolygonGeometry = new mapillary.PolygonGeometry(coordinates);
                 const objOptions: mapillary.OutlineTagOptions = {
-                    domain: mapillary.TagDomain.ThreeDimensional,
+                    domain: mapillary.TagDomain.TwoDimensional,
                     fillColor: 0x0000ff,
-                    fillOpacity: 0.4,
+                    fillOpacity: 0.5,
                     lineColor: 0xff0000,
-                    lineWidth: 3,
+                    lineWidth: 5,
                     text: smartCityMapillaryConfig.detection?.value,
                     textColor: 0xffffff,
                 };
                 const detection = new mapillary.OutlineTag('clicked-tag-' + i, tagGeometry, objOptions);
                 detections.push(detection);
             });
+            
             this.tagComponent.add(detections);
+            // zoom to the average center of detection features
+            this.viewer.setCenter(
+                detections
+                .map( det => det.geometry.getCentroid2d())
+                .reduce((a: number[], b: number[]) => [(a[0] + a[1])/2, (b[0] + b[1])/2])
+            );
         }
     }
 
+
+    /**
+     * custom modal holding the mpl viewer
+     * @param smartCityMapillaryConfig 
+     */
     public showMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
         this.mapillaryDialogRefP?.close();
         this.removeMapillaryViewer();
@@ -102,10 +122,22 @@ export class MapMapillaryService {
         this.mapLayersService.SelectionLayer.getSource().clear();
     }
 
+    /**
+     * Register mplr viewer events. image | bearing
+     * This is happening when moving around.
+     * @param map 
+     */
     private registerMplViewerEvents(map: Map): void {
+        // event when bearing on viewer set feature azimuth
+        this.mapillaryViewer.on('bearing', (event: mapillary.ViewerBearingEvent) => {
+            console.log('bearing event', event)
+            this.viewerBearing = event.bearing;
+            this.selFeature.set('compass_angle', event.bearing)
+        });
 
+        // event when image changes. Draw point on map....
         this.mapillaryViewer.on('image', async (event: mapillary.ViewerImageEvent) => {
-            const coord = olProj.transform([event.image.originalLngLat.lng, event.image.originalLngLat.lat], 'EPSG:4326', 'EPSG:3857');
+            const coord: Coordinate = olProj.transform([event.image.originalLngLat.lng, event.image.originalLngLat.lat], 'EPSG:4326', 'EPSG:3857');
             const extent: Extent = map.getView().calculateExtent(map.getSize());
             if (!containsXY(extent, coord[0], coord[1])) {
                 map.getView().animate({
@@ -113,23 +145,23 @@ export class MapMapillaryService {
                     duration: 1000
                   });
             }
-            const selFeature = new Feature({
+
+            this.selFeature = new Feature({
                 name: 'selected',
                 id: event.image.id,
-                compass_angle: event.image.compassAngle,
+                compass_angle: this.viewerBearing ? this.viewerBearing : event.image.compassAngle,
                 geometry: new Point(coord)
             });
             this.mapLayersService.SelectionLayer.getSource().clear();
-            this.mapLayersService.SelectionLayer.getSource().addFeature(selFeature);
+            this.mapLayersService.SelectionLayer.getSource().addFeature(this.selFeature);
             if (this.removeDetection){
                 this.tagComponent.removeAll();
             }
             this.removeDetection = true;
-
         });
     }
 
-    public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry> | RenderFeature): void{
+    public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry> | RenderFeature): void {
         const featid = feature.get('feature_id');
         this.http.get(this.MPL_DETECTIONS_URL + '?feature_id=' + featid)
         .subscribe((result) => {

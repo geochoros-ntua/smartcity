@@ -45,7 +45,7 @@ export class MapStyleService {
           src: 'assets/package_objects/' + feature.get('value') + '.svg'
         })
       });
-      this.mplPointStyleCache.set(value,cStyle);
+      this.mplPointStyleCache.set(value, cStyle);
     }
     return cStyle;
   }
@@ -80,5 +80,25 @@ export class MapStyleService {
     return [bearingStyle, faCircleSolidStyle];
   }
 
+
+  public dummyStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
+    // console.log('feature', feature)
+    const polyStyleConfig: Style = new Style({
+      stroke: new Stroke({
+        color: [255, 0, 0, 1],
+        width: 2
+      }),
+      fill: new Fill({
+        color: [100, 255, 100, 1]
+      }),
+      text: new Text({
+        text: feature.get('name'),
+        fill: new Fill({ color: 'white' }),
+        font: '20px Calibri,sans-serif',
+        stroke: new Stroke({ color: 'black', width: 4 })
+      })
+    });
+    return [polyStyleConfig];
+  }
   
 }

@@ -1,0 +1,6 @@
+<mat-button-toggle-group (change)="setMapMode($event.value)" value="street" class="mapModeControl" name="mapModeControl" aria-label="Font Style">
+    <mat-button-toggle matTooltip="Athens eye" value="street"><mat-icon>streetview</mat-icon></mat-button-toggle>
+    <mat-button-toggle matTooltip="Δείκτες" [value]="mapService.subFactorsMode"><mat-icon>question_answer</mat-icon></mat-button-toggle>
+    <mat-button-toggle matTooltip="Αισθητήρες" value = "sens"><mat-icon>wifi_tethering</mat-icon></mat-button-toggle>
+  </mat-button-toggle-group>
+  
