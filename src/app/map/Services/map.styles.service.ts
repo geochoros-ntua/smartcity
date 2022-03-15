@@ -48,7 +48,7 @@ export class MapStyleService {
       this.mplPointStyleCache.set(value, cStyle);
     }
     return cStyle;
-  }
+  };
 
   /**
    * This is the bearing style. Indicating the azimuthal of the point of view

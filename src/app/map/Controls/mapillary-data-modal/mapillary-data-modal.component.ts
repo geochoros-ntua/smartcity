@@ -37,10 +37,10 @@ export class MapillaryDataModalComponent {
   public toggleLayerVisibility(layer: VectorLayerNames): void {
     if (layer === VectorLayerNames.img){
       this.mapLayersService.checkedImg = !this.mapLayersService.checkedImg;
-      this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg)
+      this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg);
     } else if ( layer === VectorLayerNames.seq) {
       this.mapLayersService.checkedSeq = !this.mapLayersService.checkedSeq;
-      this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq)
+      this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
     }
   }
 
@@ -51,7 +51,7 @@ export class MapillaryDataModalComponent {
   }
 
   public refreshDetectionLayer(): void{
-    this.mapLayersService.MlPointsLayer.getSource().refresh()
+    this.mapLayersService.MlPointsLayer.getSource().refresh();
   }
 
   public showButton(): boolean{

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MapMode } from '../../api/map.enums';
 import { MapService } from '../../Services/map.service';
-import MapUtils from './../../map.helper'
+import MapUtils from './../../map.helper';
 
 @Component({
   selector: 'app-map-mode',
@@ -13,8 +13,7 @@ export class MapModeComponent {
   constructor(public mapService: MapService) { }
 
   public setMapMode(mode: string): void{
-    const modea = MapUtils.getEnumByEnumValue(MapMode, mode)
-    this.mapService.$mapMode.next(modea);
+    this.mapService.$mapMode.next(MapUtils.getEnumByEnumValue(MapMode, mode));
   }
 
 

@@ -50,7 +50,6 @@ export class MapMapillaryService {
      * @param smartCityMapillaryConfig 
      */
     public initMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
-        console.log('initMapillaryViewer=====', smartCityMapillaryConfig)
         const options: mapillary.ViewerOptions = {
             accessToken: this.MPL_KEY,
             trackResize: true,
@@ -94,9 +93,9 @@ export class MapMapillaryService {
                 .reduce((a: number[], b: number[]) => [(a[0] + a[1])/2, (b[0] + b[1])/2])
             );
         }
-
-        if (smartCityMapillaryConfig.center){
-            this.viewer.setCenter(smartCityMapillaryConfig.center);
+        // used when toggling full screen
+        if (smartCityMapillaryConfig.imageCenter){
+            this.viewer.setCenter(smartCityMapillaryConfig.imageCenter);
         }
     }
 
@@ -142,7 +141,7 @@ export class MapMapillaryService {
         // event when bearing on viewer set feature azimuth
         this.mapillaryViewer.on('bearing', (event: mapillary.ViewerBearingEvent) => {
             this.viewerBearing = event.bearing;
-            this.selFeature.set('compass_angle', event.bearing)
+            this.selFeature.set('compass_angle', event.bearing);
         });
 
         // event when image changes. Draw point on map....

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,8 @@ export class MapMessagesService {
   constructor(private matSnackBar: MatSnackBar) { }
 
   showMapMessage(message: string, action: string,
-    hPosition?: any, vPosition? : any,
-    className?: any ) {
+    hPosition?: MatSnackBarHorizontalPosition , vPosition? : MatSnackBarVerticalPosition,
+    className?: string ): void {
     this.matSnackBar.open(message, action, {
       duration: 5000,
       horizontalPosition: hPosition ? hPosition : 'center',

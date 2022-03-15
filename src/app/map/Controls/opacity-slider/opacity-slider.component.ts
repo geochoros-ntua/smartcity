@@ -19,6 +19,6 @@ export class OpacitySliderComponent {
     this.vectorOpacity = value;
     this.mapLayersService.setVectorLayersOpacity(value? value/100: 1);
     
-  }
+  };
 
 }

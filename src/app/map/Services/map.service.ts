@@ -36,10 +36,10 @@ export class MapService {
     this.$mapMode.subscribe((mode: MapMode) => {
       this.mapMode = mode;
       if (this.mapMode == MapMode.stats_i || this.mapMode == MapMode.stats_q ){
-        this.subFactorsMode = this.mapMode
+        this.subFactorsMode = this.mapMode;
       }
       this.onModeChangeLayerVisibility(mode);
-    })
+    });
   }
 
   public initMap(): void {
@@ -123,7 +123,6 @@ export class MapService {
 
 
   private onModeChangeLayerVisibility(mode: MapMode): void{
-    console.log('mode', mode)
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -162,7 +161,7 @@ export class MapService {
         break; 
       } 
       default: { 
-        console.error(`No such mode error: ${ mode }.`)
+        console.error(`No such mode error: ${ mode }.`);
          break; 
       } 
    } 

@@ -86,7 +86,7 @@ export class MapLayersService {
           } else {
             this.MPL_POINTS?.setMinZoom(15);
           }
-    })
+    });
   }
 
 
@@ -178,7 +178,7 @@ export class MapLayersService {
       visible,
       style: this.mapStyleService.mplImagePointsStyle
     });
-  }
+  };
 
 
   private initOSMLayer = (visible: boolean): void => {
@@ -186,7 +186,7 @@ export class MapLayersService {
       visible,
       source: new OSM()
     });
-  }
+  };
 
 
   private initGOSMLayer = (visible: boolean): void => {
@@ -196,7 +196,7 @@ export class MapLayersService {
         url: 'http://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
       })
     });
-  }
+  };
 
 
   private initCartoDarkLayer = (visible: boolean): void => {
@@ -206,7 +206,7 @@ export class MapLayersService {
         url: 'https://cartodb-basemaps-b.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
       })
     });
-  }
+  };
 
 
   private initMapillarySequences = (visible: boolean): void => {
@@ -233,7 +233,7 @@ export class MapLayersService {
       style: this.mapStyleService.mplSquencesStyle,
       source: this.mplSeqSource
     });
-  }
+  };
 
 
 
@@ -262,7 +262,7 @@ export class MapLayersService {
       style: this.mapStyleService.mplImgPointStyle,
       source: this.mplImgource
     });
-  }
+  };
 
 
 
@@ -291,7 +291,7 @@ export class MapLayersService {
       style: (feature) => this.mapStyleService.mplPointStyle(feature),
       source: this.mplPntSource
     });
-  }
+  };
 
   private initFactorsDKLayer = (visible: boolean): void => {
     this.factorsDKSource = new VectorSource({
@@ -318,7 +318,7 @@ export class MapLayersService {
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsDKSource
     });
-  }
+  };
 
   private initFactorsGeitLayer = (visible: boolean): void => {
     this.factorsGeitSource = new VectorSource({
@@ -345,7 +345,7 @@ export class MapLayersService {
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsGeitSource
     });
-  }
+  };
 
   private initQuestDKLayer = (visible: boolean): void => {
     this.questDKSource = new VectorSource({
@@ -372,7 +372,7 @@ export class MapLayersService {
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.questDKSource
     });
-  }
+  };
 
 
 
