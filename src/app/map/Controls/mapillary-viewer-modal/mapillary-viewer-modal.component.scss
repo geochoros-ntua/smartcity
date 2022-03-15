@@ -6,9 +6,23 @@
     transform: rotate(180deg);
   }
 
+  .max-icon {
+    float:right;
+    transition: 1s ease-in-out;
+  }
+
+  .max-icon:hover {
+    transform: rotate(180deg);
+  }
+
   .mapillaryViewer {
     width: 40vw; 
     height: 50vh;
+  }
+
+  .mapillaryViewer-full {
+    width: 75vw;
+    height: 85vh;
   }
   
   ::ng-deep .mpl_viewer_custom_popup .mat-dialog-container {

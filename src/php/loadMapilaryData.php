@@ -9,8 +9,9 @@ $layer = $_REQUEST['layer'];
 $sequence_attrs = array('id','image_id');
 $image_attrs = array('id','compass_angle', 'sequence_id');
 $point_attrs = array('feature_id', 'value');
-$quest_dim_koin_attrs = array('label', 'name', 'area', 'S1', 'S2');
+$quest_dim_koin_attrs = array('label', 'name', 'area', 'q1', 'q2');
 $da_dim_koin_attrs = array('label', 'name', 'no', 'area');
+$da_geitonies_attrs = array('synoikia', 'name', 'geitonia', 'dk_id');
 
 
 $epsg =  'EPSG:4326';
@@ -18,79 +19,59 @@ $epsg =  'EPSG:4326';
 $sql = '';
 $attrs = [];
 
-if ($layer == 'mpl_sequences'){
+
+if ($layer == 'mapillary_sequences'){
     $sql = 'select OGR_FID, ST_AsGeoJSON(GEOM) as GEOM, ' . implode(', ', $sequence_attrs) . ' from mapillary_sequences where 
     MBRIntersects(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         GEOM
     ) = 1';
     $attrs = $sequence_attrs;
-} else if ($layer == 'mpl_images'){
+    $epsg =  'EPSG:4326';
+} else if ($layer == 'mapillary_images'){
     $sql = 'select OGR_FID, ST_AsGeoJSON(GEOM) as GEOM, ' . implode(', ', $image_attrs) . ' from mapillary_images where 
-    MBRContains(
+    MBRIntersects(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         GEOM
     ) = 1';
     $attrs = $image_attrs;
-} else if ($layer == 'mpl_points'){
+    $epsg =  'EPSG:4326';
+} else if ($layer == 'mapillary_points'){
     $filter = $_REQUEST['filter'];
     $filterSql = $filter != '' ? " value in ( " . $filter . " ) and " : " value in ( '' ) and ";
     $sql = 'select OGR_FID, ST_AsGeoJSON(GEOM) as GEOM, ' . implode(', ', $point_attrs) . ' from mapillary_points where ' . 
     $filterSql . 
     ' value NOT IN  (\'object--support--pole\',\'object--support--utility-pole\',\'marking--discrete--other-marking\') and 
-    MBRContains(
+    MBRIntersects(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         GEOM
     ) = 1';
     $attrs = $point_attrs;
+    $epsg =  'EPSG:4326';
 } else if ($layer == 'da_dim_koin'){
     $sql = 'select OGR_FID, ST_AsGeoJSON(SHAPE) as GEOM, ' . implode(', ', $da_dim_koin_attrs) . ' from da_dim_koin where 
-    MBRContains(
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
-        SHAPE
-    ) = 1 or 
-    MBROverlaps(
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
-        SHAPE
-    ) = 1 or 
-    MBRWithin(
-        SHAPE,
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\')
-    ) = 1 or 
     MBRIntersects(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         SHAPE
     ) = 1';
-
     $attrs = $da_dim_koin_attrs;
     $epsg = 'EPSG:3857';
-    // echo $sql;
-} else if ($layer == 'quest_dim_koin'){
-    $sql = 'select OGR_FID, ST_AsGeoJSON(SHAPE) as GEOM, ' . implode(', ', $quest_dim_koin_attrs) . ' from quest_dim_koin where 
-    MBRContains(
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
-        SHAPE
-    ) = 1 or 
-    MBROverlaps(
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
-        SHAPE
-    ) = 1 or 
-    MBRWithin(
-        SHAPE,
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\')
-    ) = 1 or 
-    MBRWithin(
-        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
-        SHAPE
-    ) = 1 or 
+} else if ($layer == 'da_geitonies'){
+    $sql = 'select OGR_FID, ST_AsGeoJSON(SHAPE) as GEOM, ' . implode(', ', $da_geitonies_attrs) . ' from da_geitonies where 
     MBRIntersects(
         ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
         SHAPE
     ) = 1';
-
+    $attrs = $da_geitonies_attrs;
+    $epsg = 'EPSG:3857';
+} else if ($layer == 'quest_dim_koin'){
+    $sql = 'select OGR_FID, ST_AsGeoJSON(SHAPE) as GEOM, ' . implode(', ', $quest_dim_koin_attrs) . ' from quest_dim_koin where 
+    MBRIntersects(
+        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
+        SHAPE
+    ) = 1';
     $attrs = $quest_dim_koin_attrs;
     $epsg = 'EPSG:3857';
-    // echo $sql;
 } else if ($layer == 'mpl_trafic_signs'){
     //to be implemented
 } else {
@@ -141,7 +122,8 @@ while($row = mysqli_fetch_assoc($rs)) {
 echo json_encode($geojson, JSON_NUMERIC_CHECK);
 $conn = NULL;
 
-# this is the ogr command to import spatial data to mysql. We do not use it any more. Just keep it here for educational reasons.... 
+# this is the ogr command to import spatial data to mysql. We do not use it any more. 
+# Just keep it here for importing new data from shp etc.
 # ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=walkability_pass,port=3306" C:\\PHD\\UGLab_v1\\image_points.shp -nln test_points -update -overwrite 
 
 
@@ -156,5 +138,12 @@ $conn = NULL;
 // ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=#walkability@2022,port=3306" C:\\workdir\\smart_city_docs\\data\\sensor_points.shp -nln sensor_points -update -overwrite 
 // ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=#walkability@2022,port=3306" C:\\workdir\\smart_city_docs\\data\\quest_dim_koin_3857.shp -nln quest_dim_koin -update -overwrite 
 
+// sql scripts
+// create table mapillary_features_detail_20220314 as  SELECT * FROM `mapillary_features_detail` WHERE image_id in
+// (select id from mapillary_images)
+
+// create table mapillary_points_20220314 as 
+// SELECT * FROM `mapillary_points` WHERE feature_id in 
+// (select feature_id from mapillary_features_detail_20220314);
 ?>
 

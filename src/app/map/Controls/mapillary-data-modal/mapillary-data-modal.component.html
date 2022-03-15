@@ -1,5 +1,5 @@
 <form fxFlex autocomplete="off" style="margin: 10px">
-    <h3>Street Data</h3>
+    <h3>Δεδομένα AthensEye</h3>
     
     <div class="row filterSelectCntrl">
         
@@ -23,10 +23,10 @@
     </div>
 
     <div class="row">
-        <mat-checkbox [checked]="mapLayersService.checkedSeq" (change)="toggleLayerVisibility('mpl_sequences')" >Show/Hide Paths</mat-checkbox>
+        <mat-checkbox [checked]="mapLayersService.checkedSeq" (change)="toggleLayerVisibility(vectorLayerNames.seq)" >Show/Hide Paths</mat-checkbox>
     </div>
     <div class="row">
-        <mat-checkbox [checked]="mapLayersService.checkedImg" (change)="toggleLayerVisibility('mpl_images')">Show/Hide Image Points</mat-checkbox>
+        <mat-checkbox [checked]="mapLayersService.checkedImg" (change)="toggleLayerVisibility(vectorLayerNames.img)">Show/Hide Image Points</mat-checkbox>
     </div>
     
     <!-- <h4>Feature Detections</h4> -->

@@ -22,19 +22,19 @@ export class MapillaryDataModalComponent {
   constructor( private mapService: MapService, public mapLayersService: MapLayersService) { }
 
 
-  public getFeatureGroups(): string[] {
-    return Array.from( FEATURE_GROUPS.keys() );
+  public get vectorLayerNames(): typeof VectorLayerNames {
+    return VectorLayerNames; 
   }
 
-  public getFeatureImgSrc(key: string): string {
-    return key;
+  public getFeatureGroups(): string[] {
+    return Array.from( FEATURE_GROUPS.keys() );
   }
 
   public setActiveGroups(activeGroups: string[]): void {
     this.mapLayersService.$selectedFeatureGroups.next(activeGroups);
   }
 
-  public toggleLayerVisibility(layer: string): void {
+  public toggleLayerVisibility(layer: VectorLayerNames): void {
     if (layer === VectorLayerNames.img){
       this.mapLayersService.checkedImg = !this.mapLayersService.checkedImg;
       this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg)

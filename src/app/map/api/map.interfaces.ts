@@ -20,6 +20,7 @@ export interface SmartCityMapillaryConfig {
     mapillaryDivId: string;
     map: Olmap;
     detection?: DetectionFeature;
+    center?: number[];
 }
 
 export interface DetectionFeatureDB {

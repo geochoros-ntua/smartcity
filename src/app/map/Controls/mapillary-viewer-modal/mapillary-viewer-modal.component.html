@@ -7,10 +7,12 @@
     <button mat-button class="close-icon" [mat-dialog-close]="true">
         <mat-icon color="accent">close</mat-icon>
     </button>
+    <button (click)="toggleFullScreen()" mat-button class="max-icon" >
+        <mat-icon color="accent">{{this.mapMapillaryService.mplPopupClass === 'mapillaryViewer' ? 'fullscreen' : 'fullscreen_exit'}}</mat-icon>
+    </button>
 </div>
   
-<div mat-dialog-content>
-    
-    <div class="mapillaryViewer" id="mapillaryDiv"></div>
+<div>
+    <div [className]="mapMapillaryService.mplPopupClass"  id="mapillaryDiv"></div>
 </div>
 

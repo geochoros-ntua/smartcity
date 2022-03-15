@@ -77,6 +77,7 @@ export class MapLayersService {
       featureProjection: 'EPSG:3857'
     });
     // if less than six groups selected 
+    // then set a lower zoom level
     // give to the user some more point to view
     this.$selectedFeatureGroups.subscribe( (groups: string[]) => {
           this.selectedFeatureGroups = groups;
@@ -108,6 +109,7 @@ export class MapLayersService {
     this.initQuestDKLayer(false);
     // factors layers
     this.initFactorsDKLayer(false);
+    this.initFactorsGeitLayer(false);
     // scrap layer
     this.initSelectionLayer(true);
   }
@@ -312,9 +314,36 @@ export class MapLayersService {
       visible,
       opacity: 0.7,
       minZoom: 10,
-      // maxZoom: 17,
+      maxZoom: 14,
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsDKSource
+    });
+  }
+
+  private initFactorsGeitLayer = (visible: boolean): void => {
+    this.factorsGeitSource = new VectorSource({
+      format: this.statsLayersFormat,
+      strategy: bboxStrategy,
+      loader: (extent, resolution, projection) => {
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          format: this.statsLayersFormat,
+          dbprojection: olProj.get('EPSG:3857'),
+          layerName: VectorLayerNames.factors_geit,
+          source: this.factorsGeitSource
+        });
+      }
+    });
+
+    this.FACTORS_GEIT = new VectorLayer({
+      visible,
+      opacity: 0.7,
+      minZoom: 14,
+      // maxZoom: 17,
+      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
+      source: this.factorsGeitSource
     });
   }
 

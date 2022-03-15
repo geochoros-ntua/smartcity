@@ -14,7 +14,11 @@ export class MapillaryDataComponent {
   }
 
   public openDialog(): void {
-    this.dialog.open(MapillaryDataModalComponent);
+    this.dialog.open(MapillaryDataModalComponent,{
+      position: {
+        top: '10.0em',
+        right: '5.5em',
+      }});
   }
 
 

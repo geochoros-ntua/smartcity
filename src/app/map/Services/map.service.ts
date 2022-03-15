@@ -19,7 +19,7 @@ export class MapService {
 
   public $mapMode: Subject<MapMode> = new Subject<MapMode>();
   public mapMode: MapMode = MapMode.street;
-  public subFactorsMode: MapMode = MapMode.stats_q;
+  public subFactorsMode: MapMode = MapMode.stats_i;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -55,6 +55,7 @@ export class MapService {
         this.mapLayersService.MlPointsLayer,
         this.mapLayersService.QuestDKLayer,
         this.mapLayersService.FactorsDKLayer,
+        this.mapLayersService.FactorsGeitLayer,
         this.mapLayersService.SelectionLayer
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
@@ -129,6 +130,7 @@ export class MapService {
          this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg);
          this.mapLayersService.MlPointsLayer.setVisible(true);
          this.mapLayersService.FactorsDKLayer.setVisible(false);
+         this.mapLayersService.FactorsGeitLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          break; 
       } 
@@ -137,6 +139,7 @@ export class MapService {
          this.mapLayersService.MlImagesLayer.setVisible(false);
          this.mapLayersService.MlPointsLayer.setVisible(false);
          this.mapLayersService.FactorsDKLayer.setVisible(true);
+         this.mapLayersService.FactorsGeitLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          break; 
       } 
@@ -145,6 +148,7 @@ export class MapService {
         this.mapLayersService.MlImagesLayer.setVisible(false);
         this.mapLayersService.MlPointsLayer.setVisible(false);
         this.mapLayersService.FactorsDKLayer.setVisible(false);
+        this.mapLayersService.FactorsGeitLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
         break; 
      } 
@@ -153,6 +157,7 @@ export class MapService {
          this.mapLayersService.MlImagesLayer.setVisible(false);
          this.mapLayersService.MlPointsLayer.setVisible(false);
          this.mapLayersService.FactorsDKLayer.setVisible(false);
+         this.mapLayersService.FactorsGeitLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
         break; 
       } 

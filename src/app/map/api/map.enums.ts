@@ -15,11 +15,12 @@ export enum TileLayerNames {
 }
 
 export enum VectorLayerNames {
-    seq = 'mpl_sequences',
-    img = 'mpl_images',
-    point = 'mpl_points',
+    seq = 'mapillary_sequences',
+    img = 'mapillary_images',
+    point = 'mapillary_points',
     traffic_signs = 'mpl_traffic_signs',
     factors_dk ='da_dim_koin',
+    factors_geit ='da_geitonies',
     quest_dk ='quest_dim_koin'
 }
 

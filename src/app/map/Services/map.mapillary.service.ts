@@ -23,10 +23,14 @@ export class MapMapillaryService {
     private MPL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadMplDetections.php';
     private viewer!: mapillary.Viewer;
     private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
-    private tagComponent!: mapillary.TagComponent;
-    private removeDetection!: boolean;
-    private selFeature!: Feature<Point>;
+    public tagComponent!: mapillary.TagComponent;
     private viewerBearing!: number;
+
+    public selFeature!: Feature<Point>;
+    public removeDetection!: boolean;
+    public mplConfig!: SmartCityMapillaryConfig;
+    public mplPopupClass = 'mapillaryViewer';
+
 
 
     constructor(private http: HttpClient, public dialog: MatDialog, private mapLayersService: MapLayersService) { }
@@ -46,8 +50,10 @@ export class MapMapillaryService {
      * @param smartCityMapillaryConfig 
      */
     public initMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
+        console.log('initMapillaryViewer=====', smartCityMapillaryConfig)
         const options: mapillary.ViewerOptions = {
             accessToken: this.MPL_KEY,
+            trackResize: true,
             component: {
                 cover: false,
                 tag: smartCityMapillaryConfig.detection ? true : false
@@ -88,6 +94,10 @@ export class MapMapillaryService {
                 .reduce((a: number[], b: number[]) => [(a[0] + a[1])/2, (b[0] + b[1])/2])
             );
         }
+
+        if (smartCityMapillaryConfig.center){
+            this.viewer.setCenter(smartCityMapillaryConfig.center);
+        }
     }
 
 
@@ -96,6 +106,7 @@ export class MapMapillaryService {
      * @param smartCityMapillaryConfig 
      */
     public showMapillaryViewer(smartCityMapillaryConfig: SmartCityMapillaryConfig): void {
+        this.mplConfig = smartCityMapillaryConfig;
         this.mapillaryDialogRefP?.close();
         this.removeMapillaryViewer();
         this.mapillaryDialogRefP = this.dialog.open( MapillaryViewerModalComponent, {
@@ -130,7 +141,6 @@ export class MapMapillaryService {
     private registerMplViewerEvents(map: Map): void {
         // event when bearing on viewer set feature azimuth
         this.mapillaryViewer.on('bearing', (event: mapillary.ViewerBearingEvent) => {
-            console.log('bearing event', event)
             this.viewerBearing = event.bearing;
             this.selFeature.set('compass_angle', event.bearing)
         });
