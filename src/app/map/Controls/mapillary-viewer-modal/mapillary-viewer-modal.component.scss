@@ -15,6 +15,18 @@
     transform: rotate(180deg);
   }
 
+
+  .show-all-feats-icon {
+    float:right;
+    transition: 1s ease-in-out;
+  }
+
+  
+  .show-all-feats-icon:hover {
+    transform: rotate(180deg);
+  }
+
+  
   .mapillaryViewer {
     width: 40vw; 
     height: 50vh;
@@ -23,6 +35,10 @@
   .mapillaryViewer-full {
     width: 75vw;
     height: 85vh;
+  }
+
+  ::ng-deep .mpl_viewer_custom_popup .mapillary-attribution-container{
+    height:20px;
   }
   
   ::ng-deep .mpl_viewer_custom_popup .mat-dialog-container {

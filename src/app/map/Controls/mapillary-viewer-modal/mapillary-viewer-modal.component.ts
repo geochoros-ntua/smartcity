@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { PolygonGeometry } from 'mapillary-js';
+import { DetectionFeature } from '../../api/map.interfaces';
 import { MapMapillaryService } from '../../Services/map.mapillary.service';
 
 
@@ -25,14 +27,33 @@ export class MapillaryViewerModalComponent {
     this.ref.detectChanges();
     this.mapMapillaryService.removeDetection = false;
     this.mapMapillaryService.mapillaryViewer.getCenter().then(center => {
+      const detections: DetectionFeature[] = this.mapMapillaryService.tagComponent
+      .getAll()
+      .map(tag => {
+        return {
+          image_id: this.mapMapillaryService.selFeature.get('id'),
+          feature_id: this.mapMapillaryService.selFeature.get('feature_id'),
+          value:tag.id,
+          extentArea: 0,
+          geometries: [{
+            type: 'POLYGON',
+            coordinates: (tag.geometry as PolygonGeometry).polygon
+          }]
+        };
+    });
+
+ 
     this.mapMapillaryService.showMapillaryViewer(
         {...this.mapMapillaryService.mplConfig, 
-          detection: this.mapMapillaryService.tagComponent.getAll().length>0 ? this.mapMapillaryService.mplConfig.detection : undefined, 
+          detections: this.mapMapillaryService.tagComponent.getAll().length>0 ? detections : [], 
           imageId: this.mapMapillaryService.selFeature.get('id'),
           imageCenter: center
         }
       );
     });
   }
+
+
+  
 
 }

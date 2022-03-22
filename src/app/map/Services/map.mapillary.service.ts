@@ -13,19 +13,28 @@ import { boundingExtent, Extent, getArea, containsXY } from 'ol/extent';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
 import { Coordinate } from 'ol/coordinate';
+import { AppMessagesService } from '../../shared/messages.service';
+import { Alignment, Popup } from 'mapillary-js';
+
+
 
 @Injectable({
     providedIn: 'root'
 })
+
+
 export class MapMapillaryService {
 
     private MPL_KEY = 'MLY|4195156090570097|6a0d147f286068b5fc9a83bb734dc467';
     private MPL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadMplDetections.php';
+    private MPL_ALL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadAllMplDetections.php';
+
     private viewer!: mapillary.Viewer;
     private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
-    public tagComponent!: mapillary.TagComponent;
     private viewerBearing!: number;
 
+    public tagComponent!: mapillary.TagComponent;
+    public popupComponent!: mapillary.PopupComponent;
     public selFeature!: Feature<Point>;
     public removeDetection!: boolean;
     public mplConfig!: SmartCityMapillaryConfig;
@@ -33,7 +42,11 @@ export class MapMapillaryService {
 
 
 
-    constructor(private http: HttpClient, public dialog: MatDialog, private mapLayersService: MapLayersService) { }
+    constructor(
+        private http: HttpClient, 
+        public dialog: MatDialog, 
+        private mapMessagesService : AppMessagesService,
+        private mapLayersService: MapLayersService) { }
 
     public get mapillaryViewer(): mapillary.Viewer {
         return this.viewer;
@@ -55,36 +68,48 @@ export class MapMapillaryService {
             trackResize: true,
             component: {
                 cover: false,
-                tag: smartCityMapillaryConfig.detection ? true : false
+                popup: true,
+                tag: smartCityMapillaryConfig.detections ? true : false
             },
             container: smartCityMapillaryConfig.mapillaryDivId,
             cameraControls: mapillary.CameraControls.Street,
             imageId: smartCityMapillaryConfig.imageId + '',
         };
         this.viewer = new mapillary.Viewer(options);
+
         this.tagComponent = this.viewer.getComponent('tag');
         this.tagComponent.removeAll();
+
+        this.popupComponent = this.viewer.getComponent('popup');
+        this.popupComponent.removeAll();
+
         // when clicking on feature
         // draw it also to the image
-        if (smartCityMapillaryConfig.detection){
-            const detections:mapillary.OutlineTag[] = [];
-            smartCityMapillaryConfig.detection.geometries.forEach( (geom, i) => {
-                const coordinates = geom.coordinates;
-                coordinates.push(coordinates[0]);
-                const tagGeometry: mapillary.PolygonGeometry = new mapillary.PolygonGeometry(coordinates);
-                const objOptions: mapillary.OutlineTagOptions = {
-                    domain: mapillary.TagDomain.TwoDimensional,
-                    fillColor: 0x0000ff,
-                    fillOpacity: 0.5,
-                    lineColor: 0xff0000,
-                    lineWidth: 5,
-                    text: smartCityMapillaryConfig.detection?.value,
-                    textColor: 0xffffff,
-                };
-                const detection = new mapillary.OutlineTag('clicked-tag-' + i, tagGeometry, objOptions);
-                detections.push(detection);
+        if (smartCityMapillaryConfig.detections){
+            const detections: mapillary.OutlineTag[] = smartCityMapillaryConfig.detections
+            .flatMap( (dt, i) => {
+                const detectionsInner = dt.geometries.map((gg,j) => {
+                    const coordinates = gg.coordinates;
+                    coordinates.push(coordinates[0]);
+                    const tagGeometry: mapillary.PolygonGeometry = new mapillary.PolygonGeometry(coordinates);
+                    const objOptions: mapillary.OutlineTagOptions = {
+                        domain: mapillary.TagDomain.TwoDimensional,
+                        fillColor: 0x0000ff,
+                        fillOpacity: 0.5,
+                        lineColor: 0xff0000,
+                        lineWidth: 5,
+                        text: smartCityMapillaryConfig.detections ? dt.value : '',
+                        textColor: 0xffffff,
+                    };
+                    const detection = new mapillary.OutlineTag(
+                        'clicked-tag-' + i + j + '--' + (smartCityMapillaryConfig.detections ? dt.value : ''), 
+                        tagGeometry, 
+                        objOptions
+                        );
+                    return detection;
+                });
+                return detectionsInner;
             });
-            
             this.tagComponent.add(detections);
             // zoom to the average center of detection features
             this.viewer.setCenter(
@@ -145,7 +170,7 @@ export class MapMapillaryService {
         });
 
         // event when image changes. Draw point on map....
-        this.mapillaryViewer.on('image', async (event: mapillary.ViewerImageEvent) => {
+        this.mapillaryViewer.on('image', (event: mapillary.ViewerImageEvent) => {
             const coord: Coordinate = olProj.transform([event.image.originalLngLat.lng, event.image.originalLngLat.lat], 'EPSG:4326', 'EPSG:3857');
             const extent: Extent = map.getView().calculateExtent(map.getSize());
             if (!containsXY(extent, coord[0], coord[1])) {
@@ -168,8 +193,51 @@ export class MapMapillaryService {
             }
             this.removeDetection = true;
         });
+
+        this.mapillaryViewer.on('mousemove', (event: mapillary.ViewerMouseEvent) => {
+            this.tagComponent.getTagIdsAt(event.pixelPoint).then( tgids => {
+                const tagId = tgids.length ? tgids[0] : null;
+                this.popupComponent.removeAll();
+                if (tagId){
+                    this.popuOnHover(event.basicPoint, tagId);
+                }
+            });
+        });
     }
 
+    /**
+     * Hover mouse pointer over tag action
+     * @param pixelPoint 
+     * @param label 
+     */
+    private popuOnHover(pixelPoint: number[],label: string): void{
+        const featureSpan = document.createElement('span');
+        featureSpan.style.backgroundColor = '#505050';
+        featureSpan.style.padding = '5px 10px';
+        featureSpan.style.color = '#fff';
+        featureSpan.style.fontSize = '12px';
+        const labelPcs = label.split('--');
+
+        featureSpan.textContent = labelPcs[labelPcs.length-2] + '(' + labelPcs[labelPcs.length-1] + ')';
+        const featurePopup = new Popup({   
+            capturePointer: false,
+            clean: true,
+            float: Alignment.Right,
+            offset: 10,
+            opacity: 0.8,
+        });
+        featurePopup.setDOMContent(featureSpan);
+        featurePopup.setBasicPoint(pixelPoint);
+
+        this.popupComponent.add([featurePopup]);
+    }
+
+    /**
+     * When clicking on a point
+     * draw the feature over the image
+     * @param mapillaryViewerConfig 
+     * @param feature 
+     */
     public showFeatureOnImage(mapillaryViewerConfig: SmartCityMapillaryConfig, feature: Feature<Geometry> | RenderFeature): void {
         const featid = feature.get('feature_id');
         this.http.get(this.MPL_DETECTIONS_URL + '?feature_id=' + featid)
@@ -186,9 +254,50 @@ export class MapMapillaryService {
                     .reduce((a: number, b: number) => a + b)};
             })
             .sort((a: DetectionFeature, b: DetectionFeature) => (a.extentArea < b.extentArea) ? 1 : -1)[0];
-            const newConfig = {...mapillaryViewerConfig, imageId: detectfeature.image_id, detection: detectfeature};
+            const newConfig = {...mapillaryViewerConfig, imageId: detectfeature.image_id, detections: [detectfeature]};
             this.removeDetection = false;
             this.showMapillaryViewer(newConfig);
         });
+    }
+
+    /**
+     * Show all possible detections found for the current displayed image
+     */
+    public showAllImageDetections(): void{
+        this.tagComponent.removeAll();
+        this.http.get(this.MPL_ALL_DETECTIONS_URL + '?image_id=' +  this.selFeature.get('id'))
+        .subscribe((result) => {
+            this.mapMessagesService.showMapMessage({
+                    message: `Βρέθηκαν ${(result as DetectionFeatureDB[]).length} αντικείμενα`,
+                    action: 'ΟΚ',
+                    duration: 3000, 
+                    hPosition: 'center', 
+                    vPosition: 'bottom'
+            });
+            
+            const detections:mapillary.OutlineTag[] = (result as DetectionFeatureDB[])
+            .flatMap((df, i) => {
+                const geometries: DetectionGeometry[] = JSON.parse(df.geometry.replace(/'/g, '"'));
+                return geometries.map( (gm, j) => {
+                    const coordinates = gm.coordinates;
+                    coordinates.push(coordinates[0]);
+                    const tagGeometry: mapillary.PolygonGeometry = new mapillary.PolygonGeometry(coordinates);
+                    const objOptions: mapillary.OutlineTagOptions = {
+                        domain: mapillary.TagDomain.TwoDimensional,
+                        fillColor: 0x0000ff,
+                        fillOpacity: 0.5,
+                        lineColor: 0xff0000,
+                        lineWidth: 5,
+                        text: df.value,
+                        textColor: 0xffffff,
+                    };
+                    const detection = new mapillary.OutlineTag('clicked-tag-' + i + j + '--' + df.value, tagGeometry, objOptions);
+                    return detection;
+                });
+             }
+            );
+            this.tagComponent.activate();
+            this.tagComponent.add(detections);
+      });
     }
 }

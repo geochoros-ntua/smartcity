@@ -16,6 +16,10 @@ export class MapStatsModeComponent {
   constructor(private  mapService: MapService) { }
 
 
+  public get isFactor(): boolean{
+    return this.mapService.subFactorsMode === MapMode.stats_i;
+  }
+
   public setSubMode(showFactors: boolean): void{
     if (showFactors){
       this.mapService.$mapMode.next(MapMode.stats_i);
@@ -24,10 +28,6 @@ export class MapStatsModeComponent {
       this.mapService.$mapMode.next(MapMode.stats_q);
       this.subModeTooltip.show();
     }
-  }
-
-  public get isFactor(): boolean{
-    return this.mapService.subFactorsMode === MapMode.stats_i;
   }
 
   public getToolTip(): string {

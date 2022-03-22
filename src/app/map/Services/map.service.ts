@@ -9,6 +9,7 @@ import { MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
 import { Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
+import { AppMessagesService } from 'src/app/shared/messages.service';
 
 
 @Injectable({
@@ -28,7 +29,10 @@ export class MapService {
     center: [23.7314, 37.9827]
   };
   
-  constructor(private mapMapillaryService: MapMapillaryService, private mapLayersService: MapLayersService) {
+  constructor(
+    private mapMapillaryService: MapMapillaryService, 
+    private mapLayersService: MapLayersService, 
+    private mapMessagesService: AppMessagesService) {
     // Subscribe
     // keep the map mode switching central
     // There should be more things to add here, 
@@ -72,7 +76,6 @@ export class MapService {
     return this.smartCityMapConfig;
   }
 
-  
   public get smartCityMap(): Map {
     return this.map;
   }
@@ -123,6 +126,17 @@ export class MapService {
 
 
   private onModeChangeLayerVisibility(mode: MapMode): void{
+    const msg = (mode === 'street') ? 'Athens eye' : (mode === 'sens') ? 'Αισθητήρες' :  
+                (mode === 'stats_q') ? 'Υποκειμενικοί δείκτες' : 'Αντικειμενικοί δείκτες';
+    this.mapMessagesService.showMapMessage({
+      message: `Μορφή χάρτη: ${msg}` ,
+      action: '',
+      duration: 3000, 
+      hPosition: 'center', 
+      vPosition: 'bottom'
+    });
+
+
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);

@@ -36,6 +36,8 @@ import { MapillaryDataModalComponent } from './map/Controls/mapillary-data-modal
 import { MapModeComponent } from './map/Controls/map-mode/map-mode.component';
 import { OpacitySliderComponent } from './map/Controls/opacity-slider/opacity-slider.component';
 import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-mode.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +57,7 @@ import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-m
     MatSelectModule, MatMenuModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
-    HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule
+    HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
