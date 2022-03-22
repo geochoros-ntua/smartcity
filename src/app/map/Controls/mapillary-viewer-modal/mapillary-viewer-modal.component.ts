@@ -45,7 +45,7 @@ export class MapillaryViewerModalComponent {
  
     this.mapMapillaryService.showMapillaryViewer(
         {...this.mapMapillaryService.mplConfig, 
-          detections: this.mapMapillaryService.tagComponent.getAll().length>0 ? detections : [], 
+          detections: this.mapMapillaryService.tagComponent.getAll().length>0 ? detections : undefined, 
           imageId: this.mapMapillaryService.selFeature.get('id'),
           imageCenter: center
         }
