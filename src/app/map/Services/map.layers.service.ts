@@ -32,6 +32,7 @@ export class MapLayersService {
   private OSMLayer!: TileLayer<OSM>;
   private GOSMLayer!: TileLayer<OSM>;
   private cartoDBDark!: TileLayer<XYZ>;
+  private cartoDBLight!: TileLayer<XYZ>;
 
   private mplSeqSource!: VectorSource<LineString | MultiLineString>;
   private MPL_SEQUENCES!: VectorLayer<VectorSource<LineString | MultiLineString>>;
@@ -67,7 +68,7 @@ export class MapLayersService {
 
   public checkedSeq = true;
   public checkedImg = true;
-  
+
 
   constructor(private http: HttpClient, private mapStyleService: MapStyleService) {
     // format to read the mpl 4326 layers response
@@ -83,6 +84,7 @@ export class MapLayersService {
     // if less than six groups selected 
     // then set a lower zoom level
     // give to the user some more point to view
+
     this.selectedFeatureGroups$.subscribe( (groups: string[]) => {
           this.selectedFeatureGroups = groups;
           if (groups.length > 6){
@@ -102,7 +104,10 @@ export class MapLayersService {
    */
   public initLayers(): void {
     // tile layers
+
     this.initCartoDarkLayer(true);
+    this.initCartoLightLayer(true);
+
     this.initOSMLayer(false);
     this.initGOSMLayer(false);
     // mplr vector layers
@@ -129,6 +134,10 @@ export class MapLayersService {
 
   public get cartoDarkLayer(): TileLayer<XYZ> {
     return this.cartoDBDark;
+  }
+
+  public get cartoLightLayer(): TileLayer<XYZ> {
+    return this.cartoDBLight;
   }
 
   public get MlSequencesLayer(): VectorLayer<VectorSource<LineString | MultiLineString>> {
@@ -205,6 +214,16 @@ export class MapLayersService {
       visible,
       source: new OSM({
         url: 'http://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
+      })
+    });
+  };
+
+
+  private initCartoLightLayer = (visible: boolean): void => {
+    this.cartoDBLight = new TileLayer({
+      visible,
+      source: new XYZ({
+        url: 'https://cartodb-basemaps-b.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'
       })
     });
   };
@@ -424,14 +443,14 @@ export class MapLayersService {
    * @param loadingMethodObject 
    */
   private loadingFn(loadingMethodObject: LoadingMethodObject): void {
-    
+
     const minCoords = olProj.transform(
       [loadingMethodObject.extent[0], loadingMethodObject.extent[1]], loadingMethodObject.projection, loadingMethodObject.dbprojection
-      );
+    );
 
     const maxCoords = olProj.transform(
       [loadingMethodObject.extent[2], loadingMethodObject.extent[3]], loadingMethodObject.projection, loadingMethodObject.dbprojection
-      );
+    );
 
     const filterPolCoords =
       `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}, ` +
@@ -443,15 +462,15 @@ export class MapLayersService {
 
     this.http.get(this.MPL_PRIVATE_URL +
       '?layer=' + loadingMethodObject.layerName +
-      '&bbox=' + filterPolCoords + 
-      (loadingMethodObject.layerName === VectorLayerNames.point ? 
-      '&filter=' + this.selectedFeatureGroups.map(grp => "'" + grp +"'") :
-      ''))
+      '&bbox=' + filterPolCoords +
+      (loadingMethodObject.layerName === VectorLayerNames.point ?
+        '&filter=' + this.selectedFeatureGroups.map(grp => "'" + grp + "'") :
+        ''))
       .subscribe(data => {
         //console.log('data', data);
         loadingMethodObject.source.addFeatures(loadingMethodObject.format.readFeatures(data));
       });
   }
 
-  
+
 }

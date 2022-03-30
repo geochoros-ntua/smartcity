@@ -1,5 +1,5 @@
-<div>
-  <mat-toolbar color="primary">
+<div class="example-container main-parent mat-typography mat-app-background" [class.athens-dark-theme]="isDarkTheme">
+  <mat-toolbar>
     <div fxShow="true" fxHide.gt-sm="true">
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
@@ -8,7 +8,7 @@
 
     <a mat-button class="companyName" routerLink="/">
       <!-- <img src="assets/icons/logo_v2_transparent.gif" style="height: 7vh;"> -->
-      <span>{{title}}</span>
+      <span>{{'TITLE' | translate }}</span>
     </a>
     <span class="example-spacer"></span>
     <div fxShow="true" fxHide.lt-md="true">
@@ -20,9 +20,9 @@
         [routerLinkActiveOptions]="{exact: false}">
         <mat-icon>public</mat-icon>
       </button>
-     
     </div>
-
+    <app-translate></app-translate>
+    <app-dark-theme></app-dark-theme>
   </mat-toolbar>
   <mat-sidenav-container fxFlexFill class="example-container" [hasBackdrop]="false">
 
@@ -36,7 +36,7 @@
           [routerLinkActiveOptions]="{exact: false}">
           <mat-icon>public</mat-icon>
         </button>
-        
+
       </div>
     </mat-sidenav>
     <mat-sidenav-content fxFlexFill>

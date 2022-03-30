@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,7 +39,16 @@ import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-m
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ZoominoutComponent } from './map/Controls/zoominout/zoominout.component';
 import { PopupComponent } from './map/Controls/popup/popup.component';
+import { TranslateService } from './shared/translate/translate.service';
+import { TranslateComponent } from './shared/translate/translate.component';
+import { TranslatePipe } from './shared/translate/translate.pipe';
+import { DarkThemeComponent } from './shared/dark-theme/dark-theme.component';
 
+
+export function setupTranslateFactory(
+  service: TranslateService): Function {
+  return () => service.use('en');
+}
 
 @NgModule({
   declarations: [
@@ -52,8 +61,14 @@ import { PopupComponent } from './map/Controls/popup/popup.component';
     MapModeComponent,
     OpacitySliderComponent,
     MapStatsModeComponent,
+<<<<<<< HEAD
     ZoominoutComponent,
     PopupComponent,
+=======
+    TranslateComponent,
+    TranslatePipe,
+    DarkThemeComponent
+>>>>>>> 56c15c5ed21c1fa5e8ce68acbe05ec2d10142931
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
@@ -63,7 +78,15 @@ import { PopupComponent } from './map/Controls/popup/popup.component';
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule 
   ],
-  providers: [],
+  providers: [
+    TranslateService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: setupTranslateFactory,
+      deps: [TranslateService],
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
