@@ -61,14 +61,11 @@ export function setupTranslateFactory(
     MapModeComponent,
     OpacitySliderComponent,
     MapStatsModeComponent,
-<<<<<<< HEAD
     ZoominoutComponent,
     PopupComponent,
-=======
     TranslateComponent,
     TranslatePipe,
     DarkThemeComponent
->>>>>>> 56c15c5ed21c1fa5e8ce68acbe05ec2d10142931
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
