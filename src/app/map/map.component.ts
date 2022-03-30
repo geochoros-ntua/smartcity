@@ -1,3 +1,5 @@
+import { MapLayersService } from './Services/map.layers.service';
+import { DarkThemeService } from './../shared/dark-theme/dark-theme.service';
 import { Component, OnInit } from '@angular/core';
 import { MapService } from './Services/map.service';
 import { SmartCityMapConfig } from './api/map.interfaces';
@@ -16,26 +18,34 @@ export class MapComponent implements OnInit {
 
   public mapConfig!: SmartCityMapConfig;
 
-  constructor(private mapService: MapService) {
+  constructor(private mapService: MapService, private mapLayersService: MapLayersService, private darkThemeService: DarkThemeService) {
 
   }
 
   ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
+    if (this.darkThemeService.getIsDarkTheme()) {
+      this.mapLayersService.cartoLightLayer.setVisible(false);
+      this.mapLayersService.cartoDarkLayer.setVisible(true);
+    }
+    else {
+      this.mapLayersService.cartoLightLayer.setVisible(true);
+      this.mapLayersService.cartoDarkLayer.setVisible(false);
+    }
   }
 
-  public isStreetMode(): boolean{
+  public isStreetMode(): boolean {
     return this.mapService.mapMode === MapMode.street;
   }
 
-  public isStatsMode(): boolean{
+  public isStatsMode(): boolean {
     return this.mapService.mapMode === MapMode.stats_i || this.mapService.mapMode === MapMode.stats_q;
   }
 
 
   private registerMapEvents(thisP: MapComponent): void {
-    
+
     // once first map render
     this.mapService.smartCityMap.once('rendercomplete', () => {
       thisP.mapService.smartCityMap.updateSize();

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +37,15 @@ import { MapModeComponent } from './map/Controls/map-mode/map-mode.component';
 import { OpacitySliderComponent } from './map/Controls/opacity-slider/opacity-slider.component';
 import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-mode.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateService } from './shared/translate/translate.service';
+import { TranslateComponent } from './shared/translate/translate.component';
+import { TranslatePipe } from './shared/translate/translate.pipe';
+import { DarkThemeComponent } from './shared/dark-theme/dark-theme.component';
 
+export function setupTranslateFactory(
+  service: TranslateService): Function {
+  return () => service.use('en');
+}
 
 @NgModule({
   declarations: [
@@ -50,6 +58,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MapModeComponent,
     OpacitySliderComponent,
     MapStatsModeComponent,
+    TranslateComponent,
+    TranslatePipe,
+    DarkThemeComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
@@ -59,7 +70,15 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule 
   ],
-  providers: [],
+  providers: [
+    TranslateService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: setupTranslateFactory,
+      deps: [TranslateService],
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

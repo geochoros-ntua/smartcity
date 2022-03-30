@@ -1,0 +1,15 @@
+<div>
+  <span style="vertical-align: middle;">{{selected}}</span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+
+    <mat-icon>language</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="changeLang('en')">
+      <span>EN</span>
+    </button>
+    <button mat-menu-item (click)="changeLang('gr')">
+      <span>GR</span>
+    </button>
+  </mat-menu>
+</div>

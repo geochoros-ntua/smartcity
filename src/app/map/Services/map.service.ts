@@ -52,6 +52,7 @@ export class MapService {
       target: this.smartCityMapConfig.mapDivId,
       layers: [
         this.mapLayersService.cartoDarkLayer,
+        this.mapLayersService.cartoLightLayer,
         this.mapLayersService.GosmLayer,
         this.mapLayersService.OsmLayer,
         this.mapLayersService.MlSequencesLayer,
