@@ -22,10 +22,10 @@ export class MapStatsModeComponent {
 
   public setSubMode(showFactors: boolean): void{
     if (showFactors){
-      this.mapService.$mapMode.next(MapMode.stats_i);
+      this.mapService.mapMode$.next(MapMode.stats_i);
       this.subModeTooltip.show();
     } else {
-      this.mapService.$mapMode.next(MapMode.stats_q);
+      this.mapService.mapMode$.next(MapMode.stats_q);
       this.subModeTooltip.show();
     }
   }

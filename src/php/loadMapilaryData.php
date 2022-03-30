@@ -10,8 +10,9 @@ $sequence_attrs = array('id','image_id');
 $image_attrs = array('id','compass_angle', 'sequence_id');
 $point_attrs = array('feature_id', 'value');
 $quest_dim_koin_attrs = array('label', 'name', 'area', 'q1', 'q2');
-$da_dim_koin_attrs = array('label', 'name', 'no', 'area');
-$da_geitonies_attrs = array('synoikia', 'name', 'geitonia', 'dk_id');
+$da_dim_koin_attrs = array('label', 'name', 'no', 'area', 's1', 's2');
+$da_geitonies_attrs = array('synoikia', 'name', 'geitonia', 'dk_id', 's1', 's2');
+$da_pdstr_attrs = array('streetname', 'c1_1', 'c1_2','c1_3','s1','s2','s4');
 
 
 $epsg =  'EPSG:4326';
@@ -63,6 +64,14 @@ if ($layer == 'mapillary_sequences'){
         SHAPE
     ) = 1';
     $attrs = $da_geitonies_attrs;
+    $epsg = 'EPSG:3857';
+} else if ($layer == 'da_pedestrian_ways'){
+    $sql = 'select OGR_FID, ST_AsGeoJSON(SHAPE) as GEOM, ' . implode(', ', $da_pdstr_attrs) . ' from da_pedestrian_ways where 
+    MBRIntersects(
+        ST_GeomFromText(\'Polygon((' . $bbox . '))\'),
+        SHAPE
+    ) = 1';
+    $attrs = $da_pdstr_attrs;
     $epsg = 'EPSG:3857';
 } else if ($layer == 'quest_dim_koin'){
     $sql = 'select OGR_FID, ST_AsGeoJSON(SHAPE) as GEOM, ' . implode(', ', $quest_dim_koin_attrs) . ' from quest_dim_koin where 

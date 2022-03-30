@@ -42,14 +42,18 @@ export class MapLayersService {
   private mplPntSource!: VectorSource<Point>;
   private MPL_POINTS!: VectorLayer<VectorSource<Point>>;
 
-  private factorsDKSource!: VectorSource<Polygon | MultiPolygon>;
-  private FACTORS_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
-
   private questDKSource!: VectorSource<Polygon | MultiPolygon>;
   private QUEST_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
 
+  private factorsDKSource!: VectorSource<Polygon | MultiPolygon>;
+  private FACTORS_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
   private factorsGeitSource!: VectorSource<Polygon | MultiPolygon>;
   private FACTORS_GEIT!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
+  private factorsPedWaysSource!: VectorSource<Polygon | MultiPolygon>;
+  private FACTORS_PEDESTRN!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
 
   private mplFormat: GeoJSON;
 
@@ -59,7 +63,7 @@ export class MapLayersService {
 
   public selectedFeatureGroups!: string[];
 
-  public $selectedFeatureGroups: BehaviorSubject<string[]> = new BehaviorSubject(Array.from( [...FEATURE_GROUPS.keys(), '0']));
+  public selectedFeatureGroups$: BehaviorSubject<string[]> = new BehaviorSubject(Array.from( [...FEATURE_GROUPS.keys(), '0']));
 
   public checkedSeq = true;
   public checkedImg = true;
@@ -79,7 +83,7 @@ export class MapLayersService {
     // if less than six groups selected 
     // then set a lower zoom level
     // give to the user some more point to view
-    this.$selectedFeatureGroups.subscribe( (groups: string[]) => {
+    this.selectedFeatureGroups$.subscribe( (groups: string[]) => {
           this.selectedFeatureGroups = groups;
           if (groups.length > 6){
             this.MPL_POINTS?.setMinZoom(18);
@@ -110,6 +114,7 @@ export class MapLayersService {
     // factors layers
     this.initFactorsDKLayer(false);
     this.initFactorsGeitLayer(false);
+    this.initFacorsPdstrLayer(false);
     // scrap layer
     this.initSelectionLayer(true);
   }
@@ -150,6 +155,10 @@ export class MapLayersService {
     return this.FACTORS_GEIT;
   }
 
+  public get FacorsPdstrLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
+    return this.FACTORS_PEDESTRN;
+  }
+
   public get SelectionLayer(): VectorLayer<VectorSource<Geometry>> {
     return this.selectionLayer;
   }
@@ -164,6 +173,8 @@ export class MapLayersService {
       this.MPL_SEQUENCES.setOpacity(value);
       this.MPL_POINTS.setOpacity(value);
       this.FACTORS_DK.setOpacity(value);
+      this.FACTORS_GEIT.setOpacity(value);
+      this.FACTORS_PEDESTRN.setOpacity(value);
       this.QUEST_DK.setOpacity(value);
   }
 
@@ -341,9 +352,37 @@ export class MapLayersService {
       visible,
       opacity: 0.7,
       minZoom: 14,
-      // maxZoom: 17,
+      maxZoom: 17,
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsGeitSource
+    });
+  };
+
+
+  private initFacorsPdstrLayer = (visible: boolean): void => {
+    this.factorsPedWaysSource = new VectorSource({
+      format: this.statsLayersFormat,
+      strategy: bboxStrategy,
+      loader: (extent, resolution, projection) => {
+        this.loadingFn({
+          extent,
+          resolution,
+          projection,
+          format: this.statsLayersFormat,
+          dbprojection: olProj.get('EPSG:3857'),
+          layerName: VectorLayerNames.factors_pdstr,
+          source: this.factorsPedWaysSource
+        });
+      }
+    });
+
+    this.FACTORS_PEDESTRN = new VectorLayer({
+      visible,
+      opacity: 0.7,
+      minZoom: 17,
+      // maxZoom: 17,
+      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
+      source: this.factorsPedWaysSource
     });
   };
 

@@ -31,7 +31,7 @@ export class MapillaryDataModalComponent {
   }
 
   public setActiveGroups(activeGroups: string[]): void {
-    this.mapLayersService.$selectedFeatureGroups.next(activeGroups);
+    this.mapLayersService.selectedFeatureGroups$.next(activeGroups);
   }
 
   public toggleLayerVisibility(layer: VectorLayerNames): void {
@@ -45,7 +45,7 @@ export class MapillaryDataModalComponent {
   }
 
   public toggleFeatureGroups(): void {
-    this.mapLayersService.$selectedFeatureGroups.next(
+    this.mapLayersService.selectedFeatureGroups$.next(
       this.allSelected.selected ? [...this.getFeatureGroups(), '0'] : []
     );
   }

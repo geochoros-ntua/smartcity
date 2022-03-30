@@ -13,7 +13,7 @@ export class MapModeComponent {
   constructor(public mapService: MapService) { }
 
   public setMapMode(mode: string): void{
-    this.mapService.$mapMode.next(MapUtils.getEnumByEnumValue(MapMode, mode));
+    this.mapService.mapMode$.next(MapUtils.getEnumByEnumValue(MapMode, mode));
   }
 
 

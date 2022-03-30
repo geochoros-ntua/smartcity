@@ -1,9 +1,11 @@
 import { Coordinate } from 'ol/coordinate';
 import { Extent } from 'ol/extent';
+import Feature from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import Geometry from 'ol/geom/Geometry';
 import Olmap from 'ol/Map';
 import * as olProj from 'ol/proj';
+import RenderFeature from 'ol/render/Feature';
 import VectorSource from 'ol/source/Vector';
 import { VectorLayerNames } from './map.enums';
 
@@ -51,5 +53,10 @@ export interface LoadingMethodObject {
     layerName: VectorLayerNames;
     format: GeoJSON;
     source: VectorSource<Geometry>;
+}
+
+export interface FeatureClickedWithPos {
+    feat: RenderFeature | Feature<Geometry>;
+    coord: Coordinate;
 }
 

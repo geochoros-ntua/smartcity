@@ -3,11 +3,11 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
-import { SmartCityMapillaryConfig, SmartCityMapConfig } from '../api/map.interfaces';
+import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.interfaces';
 import { MapMapillaryService } from './map.mapillary.service';
 import { MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 
@@ -18,9 +18,10 @@ import { AppMessagesService } from 'src/app/shared/messages.service';
 export class MapService {
   private map!: Map;
 
-  public $mapMode: Subject<MapMode> = new Subject<MapMode>();
+  public mapMode$: Subject<MapMode> = new Subject<MapMode>();
   public mapMode: MapMode = MapMode.street;
   public subFactorsMode: MapMode = MapMode.stats_i;
+  public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -37,10 +38,10 @@ export class MapService {
     // keep the map mode switching central
     // There should be more things to add here, 
     // so it is a good idea to keep it sharable
-    this.$mapMode.subscribe((mode: MapMode) => {
+    this.mapMode$.subscribe((mode: MapMode) => {
       this.mapMode = mode;
       if (this.mapMode == MapMode.stats_i || this.mapMode == MapMode.stats_q ){
-        this.subFactorsMode = this.mapMode;
+        this.subFactorsMode = this.mapMode;``
       }
       this.onModeChangeLayerVisibility(mode);
     });
@@ -60,6 +61,7 @@ export class MapService {
         this.mapLayersService.QuestDKLayer,
         this.mapLayersService.FactorsDKLayer,
         this.mapLayersService.FactorsGeitLayer,
+        this.mapLayersService.FacorsPdstrLayer,
         this.mapLayersService.SelectionLayer
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
@@ -111,6 +113,14 @@ export class MapService {
             this.mapMapillaryService.showFeatureOnImage(mapillaryViewerConfig, feature);
             break;
           }
+          case VectorLayerNames.factors_dk: {
+            this.smartCityMap.getOverlayById('popupoverlay').setPosition(undefined);
+            this.featureClickedWithPos$.next({
+              feat:feature,
+              coord:event.coordinate
+            });
+            break;
+          }
           default: {
             console.error('No such layer');
             break;
@@ -126,8 +136,10 @@ export class MapService {
 
 
   private onModeChangeLayerVisibility(mode: MapMode): void{
-    const msg = (mode === 'street') ? 'Athens eye' : (mode === 'sens') ? 'Αισθητήρες' :  
-                (mode === 'stats_q') ? 'Υποκειμενικοί δείκτες' : 'Αντικειμενικοί δείκτες';
+    const msg = 
+    (mode === 'street') ? 'Athens eye' : 
+    (mode === 'sens') ? 'Αισθητήρες' : 
+    (mode === 'stats_q') ? 'Υποκειμενικοί δείκτες' : 'Αντικειμενικοί δείκτες';
     this.mapMessagesService.showMapMessage({
       message: `Μορφή χάρτη: ${msg}` ,
       action: '',
@@ -144,6 +156,7 @@ export class MapService {
          this.mapLayersService.MlPointsLayer.setVisible(true);
          this.mapLayersService.FactorsDKLayer.setVisible(false);
          this.mapLayersService.FactorsGeitLayer.setVisible(false);
+         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          break; 
       } 
@@ -153,6 +166,7 @@ export class MapService {
          this.mapLayersService.MlPointsLayer.setVisible(false);
          this.mapLayersService.FactorsDKLayer.setVisible(true);
          this.mapLayersService.FactorsGeitLayer.setVisible(true);
+         this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          break; 
       } 
@@ -162,6 +176,7 @@ export class MapService {
         this.mapLayersService.MlPointsLayer.setVisible(false);
         this.mapLayersService.FactorsDKLayer.setVisible(false);
         this.mapLayersService.FactorsGeitLayer.setVisible(false);
+        this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
         break; 
      } 
@@ -171,6 +186,7 @@ export class MapService {
          this.mapLayersService.MlPointsLayer.setVisible(false);
          this.mapLayersService.FactorsDKLayer.setVisible(false);
          this.mapLayersService.FactorsGeitLayer.setVisible(false);
+         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
         break; 
       } 

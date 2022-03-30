@@ -37,6 +37,8 @@ import { MapModeComponent } from './map/Controls/map-mode/map-mode.component';
 import { OpacitySliderComponent } from './map/Controls/opacity-slider/opacity-slider.component';
 import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-mode.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ZoominoutComponent } from './map/Controls/zoominout/zoominout.component';
+import { PopupComponent } from './map/Controls/popup/popup.component';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MapModeComponent,
     OpacitySliderComponent,
     MapStatsModeComponent,
+    ZoominoutComponent,
+    PopupComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
