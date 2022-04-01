@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, filter, Subject, tap } from 'rxjs';
 import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 
 @Injectable({
@@ -14,16 +14,20 @@ export class DarkThemeService {
   constructor(private mapLayersService: MapLayersService) {
     // lets keep a single subscription for theme switching
     // and put any possible implementation in here  
-    this.isDarkTheme$.subscribe((status: boolean) => {
-      this.isDarkTheme = status;
-      if ( status ){
-        this.mapLayersService.cartoDarkLayer.setVisible(true);
-        this.mapLayersService.cartoLightLayer.setVisible(false);
-      } else {
-        this.mapLayersService.cartoDarkLayer.setVisible(false);
-        this.mapLayersService.cartoLightLayer.setVisible(true);
-      }
-      localStorage.setItem('isDarkTheme', JSON.stringify(status));
+    this.isDarkTheme$.pipe(
+      tap(val => {
+        this.isDarkTheme = val;
+      }),
+      filter( _ => !!this.mapLayersService.cartoDarkLayer)
+    ).subscribe((status: boolean) => {
+        if ( status ){
+          this.mapLayersService.cartoDarkLayer.setVisible(true);
+          this.mapLayersService.cartoLightLayer.setVisible(false);
+        } else {
+          this.mapLayersService.cartoDarkLayer.setVisible(false);
+          this.mapLayersService.cartoLightLayer.setVisible(true);
+        }
+        localStorage.setItem('isDarkTheme', JSON.stringify(status));
     });
   }
 
