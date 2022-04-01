@@ -16,7 +16,7 @@
                 <mat-option *ngFor="let group of getFeatureGroups()" [value]="group">
                     <mat-icon>
                         <img src='{{ "../../../../assets/package_objects/" + group + ".svg" }}'/>
-                    </mat-icon>{{group}}
+                    </mat-icon>{{getLabel(group)}}
                 </mat-option>
                 </mat-select>
         </mat-form-field>

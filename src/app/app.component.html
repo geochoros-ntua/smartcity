@@ -1,4 +1,4 @@
-<div class="example-container main-parent mat-typography mat-app-background" [class.athens-dark-theme]="isDarkTheme">
+<div class="example-container main-parent mat-typography mat-app-background" [class.athens-dark-theme]="darkThemeService.isDarkTheme$ | async">
   <mat-toolbar>
     <div fxShow="true" fxHide.gt-sm="true">
       <button mat-icon-button (click)="sidenav.toggle()">

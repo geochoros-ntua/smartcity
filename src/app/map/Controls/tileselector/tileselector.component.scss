@@ -1,9 +1,14 @@
 .tileSelectorCntrl {
-    top: 0.6em;
+    top: 0.8em;
     right: 1.2em;
     position: absolute; 
     z-index: 9999;  
     font-size: 12px;
     font-weight: bold;
-    // color: white;
   }
+
+::ng-deep .tileSelectorCntrl .mat-form-field-flex {
+    cursor: pointer;
+    padding: 5px;
+    background-color: rgba(255,255,255,0.5);
+}

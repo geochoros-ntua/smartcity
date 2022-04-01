@@ -25,7 +25,7 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
-    if (this.darkThemeService.getIsDarkTheme()) {
+    if (this.darkThemeService.darkTheme) {
       this.mapLayersService.cartoLightLayer.setVisible(false);
       this.mapLayersService.cartoDarkLayer.setVisible(true);
     }

@@ -30,6 +30,10 @@ export class MapillaryDataModalComponent {
     return Array.from( FEATURE_GROUPS.keys() );
   }
 
+  public getLabel(key: string ): string {
+    return FEATURE_GROUPS.get(key);
+  }
+
   public setActiveGroups(activeGroups: string[]): void {
     this.mapLayersService.selectedFeatureGroups$.next(activeGroups);
   }

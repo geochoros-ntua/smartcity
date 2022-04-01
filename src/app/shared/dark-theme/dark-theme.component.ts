@@ -7,34 +7,18 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './dark-theme.component.html',
   styleUrls: ['./dark-theme.component.scss']
 })
-export class DarkThemeComponent implements OnInit {
+export class DarkThemeComponent {
 
-  isDarkTheme: boolean = false;
 
-  constructor(private darkThemeService: DarkThemeService, private mapLayersService: MapLayersService) {
-    this.darkThemeService.isDarkTheme$.subscribe((status: boolean) => {
-      this.isDarkTheme = status;
-    })
+  constructor(public darkThemeService: DarkThemeService, private mapLayersService: MapLayersService) {
+    
   }
 
-  ngOnInit(): void {
-    // if (localStorage.getItem('isDarkTheme')) {
-    //   this.isDarkTheme = JSON.parse(localStorage.getItem('isDarkTheme'));
-    // }
-   }
 
-  changeTheme() {
-    this.isDarkTheme = !this.isDarkTheme;
-    localStorage.setItem('isDarkTheme', JSON.stringify(this.isDarkTheme));
-    this.darkThemeService.sendIsDarkTheme(this.isDarkTheme);
-    if (this.isDarkTheme) {
-      this.mapLayersService.cartoLightLayer.setVisible(false);
-      this.mapLayersService.cartoDarkLayer.setVisible(true);
-    }
-    else {
-      this.mapLayersService.cartoLightLayer.setVisible(true);
-      this.mapLayersService.cartoDarkLayer.setVisible(false);
-    }
+  toggleTheme() {
+    const isDarkTheme = !this.darkThemeService.darkTheme;
+    localStorage.setItem('isDarkTheme', JSON.stringify(isDarkTheme));
+    this.darkThemeService.isDarkTheme$.next(isDarkTheme);
   }
 
 }

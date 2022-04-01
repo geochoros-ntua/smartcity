@@ -17,7 +17,7 @@ export class AppMessagesService {
       duration: messageOptions.duration ? messageOptions.duration : 5000,
       horizontalPosition: messageOptions.hPosition ? messageOptions.hPosition : 'center',
       verticalPosition: messageOptions.vPosition ? messageOptions.vPosition : 'top',
-      panelClass: ['map-snackbar']
+      panelClass: messageOptions.styleClass ? [messageOptions.styleClass] : ['map-snackbar']
     });
   }
 

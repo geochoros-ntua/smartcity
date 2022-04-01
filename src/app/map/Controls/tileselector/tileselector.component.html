@@ -1,9 +1,9 @@
 <div class="tileSelectorCntrl" >
     <mat-form-field>
-      <mat-label>Επιλογή υποβάθρου</mat-label>
-      <mat-select value = "CARTODARK" (selectionChange)="setTileLayer($event.value)">
+      <mat-label>  {{'MAP.TILE-SELECTOR' | translate }}</mat-label>
+      <mat-select color="primary" value = "CARTODARK" (selectionChange)="setTileLayer($event.value)">
         <mat-option value="NONE">None</mat-option>
-        <mat-option value="CARTODARK">Carto Dark</mat-option>
+        <mat-option value="CARTODARK">Carto Light/Dark</mat-option>
         <mat-option value="OSM">OSM</mat-option>
         <mat-option value="GOSM">Google Sat</mat-option>
       </mat-select>  

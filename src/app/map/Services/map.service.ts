@@ -146,7 +146,8 @@ export class MapService {
       action: '',
       duration: 3000, 
       hPosition: 'center', 
-      vPosition: 'bottom'
+      vPosition: 'bottom',
+      styleClass: 'map-snackbar'
     });
 
 

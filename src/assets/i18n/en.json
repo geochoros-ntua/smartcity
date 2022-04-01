@@ -1,3 +1,6 @@
 {
-    "TITLE": "Athens Smart City!"
+    "TITLE": "Athens Smart City!",
+    "MAP" : {
+        "TILE-SELECTOR": "Choose background"
+    }
 }

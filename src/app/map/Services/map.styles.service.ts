@@ -89,7 +89,7 @@ export class MapStyleService {
         width: 2
       }),
       fill: new Fill({
-        color: [100, 255, 100, 1]
+        color: [0, 100, 255, 1]
       }),
       text: new Text({
         text: feature.get('name'),

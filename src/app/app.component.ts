@@ -9,18 +9,14 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Athens Smart City!';
 
-  isDarkTheme: boolean = false;
 
-  constructor(private darkThemeService: DarkThemeService) {
-    this.darkThemeService.isDarkTheme$.subscribe((status: boolean): void => {
-      this.isDarkTheme = status;
-    })
-  }
+  constructor(public darkThemeService: DarkThemeService) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('isDarkTheme')) {
-      this.isDarkTheme = JSON.parse(localStorage.getItem('isDarkTheme'));
-      this.darkThemeService.sendIsDarkTheme(this.isDarkTheme);
+      const isDarkTheme = JSON.parse(localStorage.getItem('isDarkTheme'));
+      this.darkThemeService.isDarkTheme$.next(isDarkTheme);
+
     }
   }
 
