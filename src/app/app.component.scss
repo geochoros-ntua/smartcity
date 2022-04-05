@@ -17,12 +17,11 @@
     
   ::ng-deep snack-bar-container simple-snack-bar {
     color: white;
-   // background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center !important;
   }
 
 
   ::ng-deep snack-bar-container {
-
     background:rgba(0, 0, 0, 0.5) !important;
   }
 

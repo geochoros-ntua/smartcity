@@ -76,6 +76,15 @@ export class MapMapillaryService {
             imageId: smartCityMapillaryConfig.imageId + '',
         };
         this.viewer = new mapillary.Viewer(options);
+        // set the filters
+        this.viewer.setFilter([
+            'all',
+            // ['==', 'creatorUsername', 'zaf3kala'],
+            ['==', 'cameraType', 'spherical'],
+            ['>', 'capturedAt', new Date(2021, 11, 1).getTime()],
+            ['<=', 'capturedAt', new Date(2022, 12, 31).getTime()]
+          ]);
+
 
         this.tagComponent = this.viewer.getComponent('tag');
         this.tagComponent.removeAll();

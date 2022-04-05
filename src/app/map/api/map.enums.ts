@@ -11,6 +11,7 @@ export enum TileLayerNames {
     OsmLayer = 'OSM',
     GosmLayer = 'GOSM',
     cartoDarkLayer = 'CARTODARK',
+    ktimaNetLayer = "KTBASEMAP",
     none = 'NONE'
 }
 

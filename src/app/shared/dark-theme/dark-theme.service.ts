@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, filter, Subject, tap } from 'rxjs';
+import { BehaviorSubject, filter, tap } from 'rxjs';
 import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class DarkThemeService {
 
 
   private isDarkTheme: boolean = false;
-  public isDarkTheme$ = new BehaviorSubject<boolean>(true);
+  public isDarkTheme$ = new BehaviorSubject<boolean>(false);
 
   constructor(private mapLayersService: MapLayersService) {
     // lets keep a single subscription for theme switching
@@ -20,14 +20,9 @@ export class DarkThemeService {
       }),
       filter( _ => !!this.mapLayersService.cartoDarkLayer)
     ).subscribe((status: boolean) => {
-        if ( status ){
-          this.mapLayersService.cartoDarkLayer.setVisible(true);
-          this.mapLayersService.cartoLightLayer.setVisible(false);
-        } else {
-          this.mapLayersService.cartoDarkLayer.setVisible(false);
-          this.mapLayersService.cartoLightLayer.setVisible(true);
-        }
-        localStorage.setItem('isDarkTheme', JSON.stringify(status));
+      this.mapLayersService.cartoDarkLayer.setVisible(status);
+      this.mapLayersService.cartoLightLayer.setVisible(!status);
+      localStorage.setItem('isDarkTheme', JSON.stringify(status));
     });
   }
 

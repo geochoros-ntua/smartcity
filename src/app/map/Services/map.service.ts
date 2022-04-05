@@ -40,7 +40,7 @@ export class MapService {
     // so it is a good idea to keep it sharable
     this.mapMode$.subscribe((mode: MapMode) => {
       this.mapMode = mode;
-      if (this.mapMode == MapMode.stats_i || this.mapMode == MapMode.stats_q ){
+      if (this.mapMode === MapMode.stats_i || this.mapMode === MapMode.stats_q ){
         this.subFactorsMode = this.mapMode;``
       }
       this.onModeChangeLayerVisibility(mode);
@@ -56,6 +56,7 @@ export class MapService {
         this.mapLayersService.cartoLightLayer,
         this.mapLayersService.GosmLayer,
         this.mapLayersService.OsmLayer,
+        this.mapLayersService.KtimaLayer,
         this.mapLayersService.MlSequencesLayer,
         this.mapLayersService.MlImagesLayer,
         this.mapLayersService.MlPointsLayer,

@@ -11,13 +11,16 @@ import { MessageOptions } from './api';
 export class AppMessagesService {
 
   constructor(private matSnackBar: MatSnackBar) { }
-
+/**
+ * Provide message and actions mandatory
+ * You may also pass duration, horizontalPosition, verticalPosition 
+ * @param messageOptions 
+ */
   showMapMessage(messageOptions: MessageOptions ): void {
     this.matSnackBar.open(messageOptions.message, messageOptions.action, {
-      duration: messageOptions.duration ? messageOptions.duration : 5000,
+      duration: 50000,
       horizontalPosition: messageOptions.hPosition ? messageOptions.hPosition : 'center',
       verticalPosition: messageOptions.vPosition ? messageOptions.vPosition : 'top',
-      panelClass: messageOptions.styleClass ? [messageOptions.styleClass] : ['map-snackbar']
     });
   }
 

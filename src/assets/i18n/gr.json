@@ -1,6 +1,14 @@
 {
-    "TITLE": "Αθήνα, η Έξυπνη Πόλη!",
+    "TITLE": "Πρότυπο Γεωχωρικό Παρατηρητήριο Δήμου Αθηναίων",
     "MAP" : {
-        "TILE-SELECTOR": "Επιλογή υποβάθρου"
+        "TILE-SELECTOR": "Επιλογή υποβάθρου",
+        "MODE-MPLR": "AthensEye",
+        "MODE-FACTORS": "Δείκτες",
+        "MODE-SENSORS": "Αισθητήρες",
+        "OBJECTIVE-FACTORS": "Αντικειμενικοί δείκτες",
+        "SUBJECTIVE-FACTORS": "Υποκειμενικοί Δείκτες",
+        "FEAT_DETECTIONS": "Βρέθηκαν {{x}} αντικείμενα",
+        "MPLR-DATA":"Δεδομένα AthensEye"
+        
     }
 }

@@ -1,8 +1,8 @@
 <div>
-    <button *ngIf="darkThemeService.isDarkTheme$ | async" mat-icon-button (click)="toggleTheme()">
+    <button *ngIf="(darkThemeService.isDarkTheme$ | async) === true" mat-icon-button (click)="toggleTheme()">
         <mat-icon>brightness_5</mat-icon>
     </button>
-    <button *ngIf="!(darkThemeService.isDarkTheme$ | async)" mat-icon-button (click)="toggleTheme()">
+    <button *ngIf="(darkThemeService.isDarkTheme$ | async) !== true" mat-icon-button (click)="toggleTheme()">
         <mat-icon>brightness_2</mat-icon>
     </button>
 </div>

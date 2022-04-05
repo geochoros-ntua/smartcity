@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import Feature from 'ol/Feature';
-import Geometry from 'ol/geom/Geometry';
 import Overlay from 'ol/Overlay';
-import RenderFeature from 'ol/render/Feature';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { FeatureClickedWithPos } from '../../api/map.interfaces';
 import { MapService } from '../../Services/map.service';
 

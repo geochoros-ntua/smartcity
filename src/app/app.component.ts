@@ -1,15 +1,14 @@
 import { DarkThemeService } from './shared/dark-theme/dark-theme.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'Athens Smart City!';
+export class AppComponent implements OnInit {
 
-
+  
   constructor(public darkThemeService: DarkThemeService) { }
 
   ngOnInit(): void {

@@ -1,6 +1,6 @@
 import { MapLayersService } from './../../map/Services/map.layers.service';
 import { DarkThemeService } from './dark-theme.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dark-theme',
@@ -15,7 +15,7 @@ export class DarkThemeComponent {
   }
 
 
-  toggleTheme() {
+  toggleTheme(): void {
     const isDarkTheme = !this.darkThemeService.darkTheme;
     localStorage.setItem('isDarkTheme', JSON.stringify(isDarkTheme));
     this.darkThemeService.isDarkTheme$.next(isDarkTheme);

@@ -5,7 +5,7 @@
     [checked]="isFactor" 
     (change)="setSubMode($event.checked)" 
     #subModeTooltip="matTooltip"
-    [matTooltip]="getToolTip()">
+    matTooltip="{{ isFactor ? ('MAP.OBJECTIVE-FACTORS' | translate ) :  ('MAP.SUBJECTIVE-FACTORS' | translate )}}">
 </mat-slide-toggle>
 </div>
 

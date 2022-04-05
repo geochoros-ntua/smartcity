@@ -30,8 +30,5 @@ export class MapStatsModeComponent {
     }
   }
 
-  public getToolTip(): string {
-    return this.isFactor ? 'Αντικειμενικοί δείκτες' : 'Υποκειμενικοί δείκτες';
-  }
 
 }

@@ -13,9 +13,10 @@ export class TileselectorComponent {
 
   constructor(private mapLayersService: MapLayersService, private dDarkThemeService: DarkThemeService) { }
 
-  setTileLayer(val: TileLayerNames): void  {
+  public setTileLayer(val: TileLayerNames): void  {
     switch (val) {
       case TileLayerNames.OsmLayer: {
+        this.mapLayersService.KtimaLayer.setVisible(false);
         this.mapLayersService.cartoDarkLayer.setVisible(false);
         this.mapLayersService.cartoLightLayer.setVisible(false);
         this.mapLayersService.OsmLayer.setVisible(true);
@@ -23,6 +24,7 @@ export class TileselectorComponent {
         break;
       }
       case TileLayerNames.GosmLayer: {
+        this.mapLayersService.KtimaLayer.setVisible(false);
         this.mapLayersService.cartoDarkLayer.setVisible(false);
         this.mapLayersService.cartoLightLayer.setVisible(false);
         this.mapLayersService.OsmLayer.setVisible(false);
@@ -31,11 +33,22 @@ export class TileselectorComponent {
       }
       case TileLayerNames.cartoDarkLayer: {
         this.setCartoOnThemeSwitcher();
+        this.mapLayersService.KtimaLayer.setVisible(false);
+        this.mapLayersService.OsmLayer.setVisible(false);
+        this.mapLayersService.GosmLayer.setVisible(false);
+        break;
+      }
+      case TileLayerNames.ktimaNetLayer: {
+        console.log('set it true')
+        this.mapLayersService.KtimaLayer.setVisible(true);
+        this.mapLayersService.cartoDarkLayer.setVisible(false);
+        this.mapLayersService.cartoLightLayer.setVisible(false);
         this.mapLayersService.OsmLayer.setVisible(false);
         this.mapLayersService.GosmLayer.setVisible(false);
         break;
       }
       case TileLayerNames.none: {
+        this.mapLayersService.KtimaLayer.setVisible(false);
         this.mapLayersService.cartoDarkLayer.setVisible(false);
         this.mapLayersService.cartoLightLayer.setVisible(false);
         this.mapLayersService.OsmLayer.setVisible(false);
@@ -48,14 +61,10 @@ export class TileselectorComponent {
     }
   }
 
-  setCartoOnThemeSwitcher(): void{
-    if ( this.dDarkThemeService.darkTheme === true){
-      this.mapLayersService.cartoDarkLayer.setVisible(true);
-      this.mapLayersService.cartoLightLayer.setVisible(false);
-    } else {
-      this.mapLayersService.cartoDarkLayer.setVisible(false);
-      this.mapLayersService.cartoLightLayer.setVisible(true);
-    }
+  private setCartoOnThemeSwitcher(): void{
+    const isDarkTheme = this.dDarkThemeService.darkTheme;
+    this.mapLayersService.cartoDarkLayer.setVisible(isDarkTheme);
+    this.mapLayersService.cartoLightLayer.setVisible(!isDarkTheme);
   }
 
 }

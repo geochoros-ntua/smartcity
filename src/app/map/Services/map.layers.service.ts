@@ -19,6 +19,7 @@ import { FEATURE_GROUPS } from '../api/map.datamaps';
 import Polygon from 'ol/geom/Polygon';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
+import TileWMS from 'ol/source/TileWMS';
 
 
 
@@ -33,6 +34,8 @@ export class MapLayersService {
   private GOSMLayer!: TileLayer<OSM>;
   private cartoDBDark!: TileLayer<XYZ>;
   private cartoDBLight!: TileLayer<XYZ>;
+  private KTIMALayer!: TileLayer<TileWMS>;
+  
 
   private mplSeqSource!: VectorSource<LineString | MultiLineString>;
   private MPL_SEQUENCES!: VectorLayer<VectorSource<LineString | MultiLineString>>;
@@ -110,6 +113,8 @@ export class MapLayersService {
 
     this.initOSMLayer(false);
     this.initGOSMLayer(false);
+    // ktimatologio
+    this.initKtimaLayer(false);
     // mplr vector layers
     this.initMapillarySequences(true);
     this.initMapillaryImages(true);
@@ -130,6 +135,10 @@ export class MapLayersService {
 
   public get OsmLayer(): TileLayer<OSM> {
     return this.OSMLayer;
+  }
+
+  public get KtimaLayer(): TileLayer<OSM> {
+    return this.KTIMALayer;
   }
 
   public get cartoDarkLayer(): TileLayer<XYZ> {
@@ -216,6 +225,16 @@ export class MapLayersService {
         url: 'http://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
       })
     });
+  };
+
+  private initKtimaLayer = (visible: boolean): void => {
+    this.KTIMALayer =  new TileLayer({
+      visible,
+      source: new TileWMS({
+        url: 'https://gis.ktimanet.gr/wms/wmsopen/wmsserver.aspx',
+        params: {'LAYERS': 'KTBASEMAP', 'TILED': true},
+      }),
+    })
   };
 
 
@@ -399,7 +418,6 @@ export class MapLayersService {
       visible,
       opacity: 0.7,
       minZoom: 17,
-      // maxZoom: 17,
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsPedWaysSource
     });
@@ -426,7 +444,6 @@ export class MapLayersService {
       visible,
       opacity: 0.7,
       minZoom: 10,
-      // maxZoom: 17,
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.questDKSource
     });

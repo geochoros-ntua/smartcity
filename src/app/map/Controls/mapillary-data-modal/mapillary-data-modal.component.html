@@ -3,9 +3,9 @@
     
     <div class="row filterSelectCntrl">
         
-        <mat-form-field fillColor="accent" appearance="fill" >
+        <mat-form-field >
             <mat-label>Feature Detections</mat-label>
-                <mat-select multiple 
+                <mat-select multiple class='dark'
                 [(value)]="mapLayersService.selectedFeatureGroups" 
                 (selectionChange)="setActiveGroups($event.value)" 
                 (closed)="refreshDetectionLayer()">

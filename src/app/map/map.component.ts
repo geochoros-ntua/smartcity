@@ -2,7 +2,6 @@ import { MapLayersService } from './Services/map.layers.service';
 import { DarkThemeService } from './../shared/dark-theme/dark-theme.service';
 import { Component, OnInit } from '@angular/core';
 import { MapService } from './Services/map.service';
-import { SmartCityMapConfig } from './api/map.interfaces';
 import { MapBrowserEvent } from 'ol';
 import { MapMode } from './api/map.enums';
 
@@ -16,23 +15,20 @@ import { MapMode } from './api/map.enums';
 
 export class MapComponent implements OnInit {
 
-  public mapConfig!: SmartCityMapConfig;
 
-  constructor(private mapService: MapService, private mapLayersService: MapLayersService, private darkThemeService: DarkThemeService) {
+  constructor(
+    private mapService: MapService, 
+    private mapLayersService: MapLayersService, 
+    private darkThemeService: DarkThemeService) {
 
   }
 
   ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
-    if (this.darkThemeService.darkTheme) {
-      this.mapLayersService.cartoLightLayer.setVisible(false);
-      this.mapLayersService.cartoDarkLayer.setVisible(true);
-    }
-    else {
-      this.mapLayersService.cartoLightLayer.setVisible(true);
-      this.mapLayersService.cartoDarkLayer.setVisible(false);
-    }
+    const isDarkTheme = this.darkThemeService.darkTheme;
+    this.mapLayersService.cartoDarkLayer.setVisible(isDarkTheme);
+    this.mapLayersService.cartoLightLayer.setVisible(!isDarkTheme);
   }
 
   public isStreetMode(): boolean {
@@ -42,7 +38,6 @@ export class MapComponent implements OnInit {
   public isStatsMode(): boolean {
     return this.mapService.mapMode === MapMode.stats_i || this.mapService.mapMode === MapMode.stats_q;
   }
-
 
   private registerMapEvents(thisP: MapComponent): void {
 

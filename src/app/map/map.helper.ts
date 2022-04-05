@@ -10,7 +10,7 @@ export default class MapUtils {
      * @returns MapMode
      */
     public static getEnumByEnumValue(myEnum: any, enumValue: string): MapMode {
-        let keys = Object.keys(myEnum).filter((x) => myEnum[x] == enumValue);
+        let keys = Object.keys(myEnum).filter((x) => myEnum[x] === enumValue);
         return keys.length > 0 ? myEnum[keys[0]] : '';
     }
 }

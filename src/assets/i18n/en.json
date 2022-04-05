@@ -1,6 +1,13 @@
 {
-    "TITLE": "Athens Smart City!",
+    "TITLE": "Walkable Athens",
     "MAP" : {
-        "TILE-SELECTOR": "Choose background"
+        "TILE-SELECTOR": "Choose background",
+        "MODE-MPLR": "AthensEye",
+        "MODE-FACTORS": "Factors",
+        "MODE-SENSORS": "Sensors",
+        "OBJECTIVE-FACTORS": "Objective factors",
+        "SUBJECTIVE-FACTORS": "Subjective factors",
+        "FEAT_DETECTIONS": "{{x}} objects found",
+        "MPLR-DATA":"AthensEye data"
     }
 }

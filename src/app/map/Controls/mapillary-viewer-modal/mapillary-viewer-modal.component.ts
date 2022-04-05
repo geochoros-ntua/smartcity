@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { PolygonGeometry } from 'mapillary-js';
+import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
 import { DetectionFeature } from '../../api/map.interfaces';
 import { MapMapillaryService } from '../../Services/map.mapillary.service';
 
@@ -11,9 +12,10 @@ import { MapMapillaryService } from '../../Services/map.mapillary.service';
 })
 
 export class MapillaryViewerModalComponent {
+
   
 
-  constructor( public mapMapillaryService: MapMapillaryService, private ref: ChangeDetectorRef) { 
+  constructor( public mapMapillaryService: MapMapillaryService, public darkThemeService: DarkThemeService) { 
 
   }
 
@@ -24,7 +26,7 @@ export class MapillaryViewerModalComponent {
     } else {
       this.mapMapillaryService.mplPopupClass = 'mapillaryViewer';
     }
-    this.ref.detectChanges();
+
     this.mapMapillaryService.removeDetection = false;
     this.mapMapillaryService.mapillaryViewer.getCenter().then(center => {
       const detections: DetectionFeature[] = this.mapMapillaryService.tagComponent
