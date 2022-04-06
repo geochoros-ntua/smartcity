@@ -32,12 +32,9 @@ export class TranslatePipe implements PipeTransform {
 
     if (value.includes(".")) {
       let keys = value.split(".");
-      let translateStr = this.translate.data[keys[0]][keys[1]];
-      translateStr = this.replaceArgs(translateStr,args);
-      return translateStr;
+      return this.replaceArgs(this.translate.data[keys[0]][keys[1]],args);
     } else {
-      let translateStr = this.translate.data[value] || value;
-      return this.replaceArgs(translateStr,args);
+      return this.replaceArgs(this.translate.data[value] || value,args);
     }
   }
 
