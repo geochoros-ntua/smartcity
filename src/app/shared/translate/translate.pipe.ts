@@ -29,18 +29,26 @@ export class TranslatePipe implements PipeTransform {
  * @returns 
  */
   public transform(value: string, args?: any): string {
-      if (value.includes(".")) {
-        let keys = value.split(".");
-        let translateStr = this.translate.data[keys[0]][keys[1]];
-        if (args) {
-          let match;
-          while(match = this.templateMatcher.exec(translateStr)){
-            translateStr = translateStr.replace(match[0],args[match[1]])
-        }
-      }
+
+    if (value.includes(".")) {
+      let keys = value.split(".");
+      let translateStr = this.translate.data[keys[0]][keys[1]];
+      translateStr = this.replaceArgs(translateStr,args);
       return translateStr;
     } else {
-      return this.translate.data[value] || value;
+      let translateStr = this.translate.data[value] || value;
+      return this.replaceArgs(translateStr,args);
     }
+  }
+
+  private replaceArgs(value: string, args?:any): string {
+    let translateStr = value;
+    if (args){
+      let match;
+      while(match = this.templateMatcher.exec(translateStr)){
+        translateStr = translateStr.replace(match[0],args[match[1]])
+      }
+    }
+    return translateStr;
   }
 }
