@@ -15,6 +15,8 @@ import RenderFeature from 'ol/render/Feature';
 import { Coordinate } from 'ol/coordinate';
 import { AppMessagesService } from '../../shared/messages.service';
 import { Alignment, Popup } from 'mapillary-js';
+import { TranslateService } from 'src/app/shared/translate/translate.service';
+import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 
 
 
@@ -39,6 +41,7 @@ export class MapMapillaryService {
     public removeDetection!: boolean;
     public mplConfig!: SmartCityMapillaryConfig;
     public mplPopupClass = 'mapillaryViewer';
+    private translatePipe: TranslatePipe;
 
 
 
@@ -46,7 +49,11 @@ export class MapMapillaryService {
         private http: HttpClient, 
         public dialog: MatDialog, 
         private mapMessagesService : AppMessagesService,
-        private mapLayersService: MapLayersService) { }
+        private mapLayersService: MapLayersService,
+        private service: TranslateService) { 
+            
+         this.translatePipe = new TranslatePipe(this.service);
+        }
 
     public get mapillaryViewer(): mapillary.Viewer {
         return this.viewer;
@@ -273,11 +280,12 @@ export class MapMapillaryService {
      * Show all possible detections found for the current displayed image
      */
     public showAllImageDetections(): void{
+        
         this.tagComponent.removeAll();
         this.http.get(this.MPL_ALL_DETECTIONS_URL + '?image_id=' +  this.selFeature.get('id'))
         .subscribe((result) => {
             this.mapMessagesService.showMapMessage({
-                    message: `Βρέθηκαν ${(result as DetectionFeatureDB[]).length} αντικείμενα`,
+                    message: this.translatePipe.transform('MAP.FEAT_DETECTIONS', {x:(result as DetectionFeatureDB[]).length}),
                     action: 'ΟΚ',
                     duration: 3000, 
                     hPosition: 'center', 

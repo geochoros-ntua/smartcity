@@ -5,6 +5,7 @@
         "MODE-MPLR": "AthensEye",
         "MODE-FACTORS": "Factors",
         "MODE-SENSORS": "Sensors",
+        "MAP-MODE":"Map mode: {{msg}}",
         "OBJECTIVE-FACTORS": "Objective factors",
         "SUBJECTIVE-FACTORS": "Subjective factors",
         "FEAT_DETECTIONS": "{{x}} objects found",

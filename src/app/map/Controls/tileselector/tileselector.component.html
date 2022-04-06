@@ -1,6 +1,6 @@
 <div class="tileSelectorCntrl" >
     <mat-form-field>
-      <mat-label>  {{'MAP.TILE-SELECTOR' | translate }}</mat-label>
+      <mat-label>  {{'MAP.TILE-SELECTOR' | translate: {x:3} }}</mat-label>
       <mat-select color="primary" value = "CARTODARK" (selectionChange)="setTileLayer($event.value)">
         <mat-option value="NONE">None</mat-option>
         <mat-option value="CARTODARK">Carto Light/Dark</mat-option>

@@ -10,6 +10,9 @@ import { VectorLayerNames, MapMode } from '../api/map.enums';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
+import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
+import { TranslateService } from 'src/app/shared/translate/translate.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Injectable({
@@ -22,6 +25,7 @@ export class MapService {
   public mapMode: MapMode = MapMode.street;
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
+  private translatePipe: TranslatePipe;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -33,7 +37,10 @@ export class MapService {
   constructor(
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
-    private mapMessagesService: AppMessagesService) {
+    private mapMessagesService: AppMessagesService,
+    private service: TranslateService
+    ) {
+      this.translatePipe = new TranslatePipe(this.service);
     // Subscribe
     // keep the map mode switching central
     // There should be more things to add here, 
@@ -139,11 +146,13 @@ export class MapService {
 
   private onModeChangeLayerVisibility(mode: MapMode): void{
     const msg = 
-    (mode === 'street') ? 'Athens eye' : 
-    (mode === 'sens') ? 'Αισθητήρες' : 
-    (mode === 'stats_q') ? 'Υποκειμενικοί δείκτες' : 'Αντικειμενικοί δείκτες';
+    (mode === 'street') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-MPLR')}) : 
+    (mode === 'sens') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-SENSORS')}) : 
+    (mode === 'stats_q') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.SUBJECTIVE-FACTORS')}) : 
+    this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.OBJECTIVE-FACTORS')});
+
     this.mapMessagesService.showMapMessage({
-      message: `Μορφή χάρτη: ${msg}` ,
+      message: msg ,
       action: '',
       duration: 3000, 
       hPosition: 'center', 

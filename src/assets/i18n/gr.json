@@ -5,10 +5,10 @@
         "MODE-MPLR": "AthensEye",
         "MODE-FACTORS": "Δείκτες",
         "MODE-SENSORS": "Αισθητήρες",
+        "MAP-MODE":"Χάρτης: {{msg}}",
         "OBJECTIVE-FACTORS": "Αντικειμενικοί δείκτες",
         "SUBJECTIVE-FACTORS": "Υποκειμενικοί Δείκτες",
         "FEAT_DETECTIONS": "Βρέθηκαν {{x}} αντικείμενα",
-        "MPLR-DATA":"Δεδομένα AthensEye"
-        
+        "MPLR-DATA":"Δεδομένα AthensEye" 
     }
 }
