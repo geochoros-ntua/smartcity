@@ -18,9 +18,6 @@ if (!$rs) {
     exit;
 }
 
-# some commemt 2
-# some more commemt 2
-
 $rows = array();
 # Loop through rows to build features. 
 while($r = mysqli_fetch_assoc($rs)) {
