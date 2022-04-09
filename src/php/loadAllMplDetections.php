@@ -6,7 +6,7 @@ header('Content-type: application/json');
 $image_id = $_REQUEST['image_id'];
 
 $sql = "select aa.geometry, aa.image_id, aa.feature_id, bb.value
-FROM mappillary_features_detail_da aa
+FROM mapillary_features_detail_da aa
 INNER JOIN mapillary_points bb ON aa.feature_id=bb.feature_id
 where aa.image_id = '$image_id'";
 
