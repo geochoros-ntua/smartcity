@@ -1,12 +1,43 @@
-.filterSelectCntrl {
-    font-size: 12px;
-  }
+.filterSelectCntrlDark {
+  font-size: 12px;
+}
 
+.filterSelectCntrlLight {
+  font-size: 12px;
+}
+
+::ng-deep .filterSelectCntrlDark .mat-form-field-flex {
+
+  padding: 5px;
+  background-color: rgba(0,0,0,0.5);
+}
+
+::ng-deep .filterSelectCntrlLight .mat-form-field-flex {
+  cursor: pointer;
+  padding: 5px;
+  background-color: rgba(255,255,255,0.5);
+}
+
+::ng-deep .customSelectDark .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: unset;
+}
+
+::ng-deep .customSelectDark .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  background-color: #607d8b;
+}
+
+::ng-deep .customSelectLight .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: unset;
+}
+
+::ng-deep .customSelectLight .mat-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  background-color: #4caf50;
+}
   
-  .dark{
-    color:#607d8b;;
-  }
+.dark{
+  color:#607d8b;;
+}
 
-  .light{
-    color:#4caf50;
-  }
+.light{
+  color:#4caf50;
+}

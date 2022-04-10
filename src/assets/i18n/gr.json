@@ -9,6 +9,12 @@
         "OBJECTIVE-FACTORS": "Αντικειμενικοί δείκτες",
         "SUBJECTIVE-FACTORS": "Υποκειμενικοί Δείκτες",
         "FEAT_DETECTIONS": "Βρέθηκαν {{x}} αντικείμενα",
-        "MPLR-DATA":"Δεδομένα AthensEye" 
+        "MPLR-DATA":"Δεδομένα AthensEye",
+        "LAYER-PATHS":"Εμφάνιση/Απόκρυψη διαδρομών",
+        "LAYER-POINTS":"Εμφάνιση/Απόκρυψη σημείων",
+        "LAYER-DETECTIONS":"Αντικείμενα Ανίχνευσης",
+        "MPLR-POPUP-CLOSE":"Κλείσε",  
+        "MPLR-POPUP-FULL":"Πλήρης έκταση οθόνης", 
+        "MPLR-POPUP-ALL":"Ολα τα αντικείμενα"     
     }
 }

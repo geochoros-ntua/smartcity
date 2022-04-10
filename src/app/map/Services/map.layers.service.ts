@@ -363,7 +363,7 @@ export class MapLayersService {
       visible,
       opacity: 0.7,
       minZoom: 10,
-      maxZoom: 14,
+      maxZoom: 15,
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsDKSource
     });
@@ -389,7 +389,7 @@ export class MapLayersService {
     this.FACTORS_GEIT = new VectorLayer({
       visible,
       opacity: 0.7,
-      minZoom: 14,
+      minZoom: 15,
       maxZoom: 17,
       style: (feature) => this.mapStyleService.dummyStyleFn(feature),
       source: this.factorsGeitSource

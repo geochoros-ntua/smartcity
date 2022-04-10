@@ -1,7 +1,7 @@
 
-.ol-popup {
+  .ol-popup {
     position: absolute;
-    background-color: black;
+    background-color: white;
     box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     padding: 10px;
     border-radius: 10px;
@@ -10,6 +10,14 @@
     left: -50px;
     min-width: 280px;
   }
+
+  .light{
+    background-color: white;
+  }
+  .dark{
+    background-color: black;
+  }
+
   .ol-popup:after, .ol-popup:before {
     top: 100%;
     border: solid transparent;
@@ -51,9 +59,10 @@
   }
 
   .mat-row:nth-child(even){
-    background-color:rgb(80, 78, 78)
+    background-color:rgb(128, 127, 127)
   }
 
-  .yellow-cell{
-    outline: thin solid #ffee00; 
+  .highlight-cell{
+    outline: thin solid rgb(0, 155, 0); 
   }
+  

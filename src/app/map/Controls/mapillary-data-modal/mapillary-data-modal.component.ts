@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatOption } from '@angular/material/core';
+import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
 import { FEATURE_GROUPS } from '../../api/map.datamaps';
 import { VectorLayerNames, MapMode } from '../../api/map.enums';
 import { MapLayersService } from '../../Services/map.layers.service';
@@ -19,7 +20,10 @@ export class MapillaryDataModalComponent {
   private allSelected!: MatOption;
 
 
-  constructor( private mapService: MapService, public mapLayersService: MapLayersService) { }
+  constructor( 
+    private mapService: MapService, 
+    public mapLayersService: MapLayersService, 
+    public darkThemeService: DarkThemeService) { }
 
 
   public get vectorLayerNames(): typeof VectorLayerNames {
