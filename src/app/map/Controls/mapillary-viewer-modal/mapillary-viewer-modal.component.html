@@ -4,13 +4,13 @@
   </button> -->
 <div mat-dialog-title >
 <!-- <h1>Viewwer</h1> -->
-    <button matTooltip="Κλείσε"  mat-button class="close-icon" [mat-dialog-close]="true">
+    <button matTooltip="{{'MAP.MPLR-POPUP-CLOSE' | translate}}"  mat-button class="close-icon" [mat-dialog-close]="true">
         <mat-icon [ngClass]="darkThemeService.darkTheme ? 'dark' : 'light'" >close</mat-icon>
     </button>
-    <button matTooltip="Πλήρης έκταση οθόνης" (click)="toggleFullScreen()" mat-button class="max-icon" >
+    <button matTooltip="{{'MAP.MPLR-POPUP-FULL' | translate}}" (click)="toggleFullScreen()" mat-button class="max-icon" >
         <mat-icon [ngClass]="darkThemeService.darkTheme ? 'dark' : 'light'" >{{this.mapMapillaryService.mplPopupClass === 'mapillaryViewer' ? 'fullscreen' : 'fullscreen_exit'}}</mat-icon>
     </button>
-    <button matTooltip="Ολα τα αντικείμενα" (click)="mapMapillaryService.showAllImageDetections()" mat-button class="show-all-feats-icon" >
+    <button matTooltip="{{'MAP.MPLR-POPUP-ALL' | translate}}" (click)="mapMapillaryService.showAllImageDetections()" mat-button class="show-all-feats-icon" >
         <mat-icon [ngClass]="darkThemeService.darkTheme ? 'dark' : 'light'" >category</mat-icon>
     </button>
 </div>

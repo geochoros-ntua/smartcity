@@ -15,7 +15,9 @@ export class MapillaryViewerModalComponent {
 
   
 
-  constructor( public mapMapillaryService: MapMapillaryService, public darkThemeService: DarkThemeService) { 
+  constructor( 
+    public mapMapillaryService: MapMapillaryService, 
+    public darkThemeService: DarkThemeService) { 
 
   }
 

@@ -9,6 +9,12 @@
         "OBJECTIVE-FACTORS": "Objective factors",
         "SUBJECTIVE-FACTORS": "Subjective factors",
         "FEAT_DETECTIONS": "{{x}} objects found",
-        "MPLR-DATA":"AthensEye data"
+        "MPLR-DATA":"AthensEye data",
+        "LAYER-PATHS":"Show/Hide Paths",
+        "LAYER-POINTS":"Show/Hide Image Points",
+        "LAYER-DETECTIONS":"Feature Detections",
+        "MPLR-POPUP-CLOSE":"Close",  
+        "MPLR-POPUP-FULL":"Full screen", 
+        "MPLR-POPUP-ALL":"Draw all detections"
     }
 }

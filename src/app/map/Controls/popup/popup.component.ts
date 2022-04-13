@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Overlay from 'ol/Overlay';
+import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
 import { FeatureClickedWithPos } from '../../api/map.interfaces';
 import { MapService } from '../../Services/map.service';
 
@@ -14,7 +15,7 @@ export class PopupComponent implements OnInit {
   private overlayPopup!: Overlay;
   public displayedColumns!: string[]; 
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService, public darkThemeService: DarkThemeService) { }
 
   ngOnInit(): void {
 

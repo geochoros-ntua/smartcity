@@ -1,20 +1,23 @@
-<form fxFlex autocomplete="off" style="margin: 10px">
-    <h3>Δεδομένα AthensEye</h3>
+<form fxFlex autocomplete="off" style="margin: 10px" [class.athens-dark-theme]="darkThemeService.isDarkTheme$ | async">
     
-    <div class="row filterSelectCntrl">
+    <h3>{{'MAP.MPLR-DATA' | translate}}</h3>
+    
+    <div [class]= "(darkThemeService.isDarkTheme$ | async) ? 'row filterSelectCntrlDark' : 'row filterSelectCntrlLight' " >
         
         <mat-form-field >
-            <mat-label>Feature Detections</mat-label>
-                <mat-select multiple class='dark'
+            <mat-label>{{'MAP.LAYER-DETECTIONS' | translate}}</mat-label>
+                <mat-select color="primary" multiple  
                 [(value)]="mapLayersService.selectedFeatureGroups" 
                 (selectionChange)="setActiveGroups($event.value)" 
                 (closed)="refreshDetectionLayer()">
-                <mat-option #allSelected 
+                <mat-option [class]="(darkThemeService.isDarkTheme$ | async) ? 'customSelectDark' : 'customSelectLight' " 
+                    #allSelected  
                     (click)="toggleFeatureGroups()" 
                     [value]="'0'">All
                 </mat-option>
-                <mat-option *ngFor="let group of getFeatureGroups()" [value]="group">
-                    <mat-icon>
+                <mat-option [class]="(darkThemeService.isDarkTheme$ | async) ? 'customSelectDark' : 'customSelectLight' "
+                    *ngFor="let group of getFeatureGroups()" [value]="group">
+                    <mat-icon >
                         <img src='{{ "../../../../assets/package_objects/" + group + ".svg" }}'/>
                     </mat-icon>{{getLabel(group)}}
                 </mat-option>
@@ -23,11 +26,17 @@
     </div>
 
     <div class="row">
-        <mat-checkbox [checked]="mapLayersService.checkedSeq" (change)="toggleLayerVisibility(vectorLayerNames.seq)" >Show/Hide Paths</mat-checkbox>
+        <mat-checkbox color="primary" 
+        [checked]="mapLayersService.checkedSeq" (change)="toggleLayerVisibility(vectorLayerNames.seq)">
+        {{'MAP.LAYER-PATHS' | translate}}
+        </mat-checkbox>
     </div>
     <div class="row">
-        <mat-checkbox [checked]="mapLayersService.checkedImg" (change)="toggleLayerVisibility(vectorLayerNames.img)">Show/Hide Image Points</mat-checkbox>
+        <mat-checkbox color="primary" 
+        [checked]="mapLayersService.checkedImg" (change)="toggleLayerVisibility(vectorLayerNames.img)">
+        {{'MAP.LAYER-POINTS' | translate}}
+        </mat-checkbox>
     </div>
-    
-    <!-- <h4>Feature Detections</h4> -->
+
+
 </form>
