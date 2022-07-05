@@ -18,7 +18,7 @@ export class MapComponent implements OnInit {
 
   constructor(
     private mapService: MapService, 
-    private mapLayersService: MapLayersService, 
+    public mapLayersService: MapLayersService, 
     private darkThemeService: DarkThemeService) {
 
   }

@@ -72,6 +72,8 @@ export class MapLayersService {
   public checkedSeq = true;
   public checkedImg = true;
 
+  public dataLoaded:boolean;
+
 
   constructor(private http: HttpClient, private mapStyleService: MapStyleService) {
     // format to read the mpl 4326 layers response
@@ -476,7 +478,7 @@ export class MapLayersService {
       `${minCoords[0].toFixed(4)} ${maxCoords[1].toFixed(4)}, ` +
       `${minCoords[0].toFixed(4)} ${minCoords[1].toFixed(4)}`;
 
-
+    this.dataLoaded = false;
     this.http.get(this.MPL_PRIVATE_URL +
       '?layer=' + loadingMethodObject.layerName +
       '&bbox=' + filterPolCoords +
@@ -485,6 +487,8 @@ export class MapLayersService {
         ''))
       .subscribe(data => {
         //console.log('data', data);
+        // this.mapS dataLoaded = false;
+        this.dataLoaded = true;
         loadingMethodObject.source.addFeatures(loadingMethodObject.format.readFeatures(data));
       });
   }

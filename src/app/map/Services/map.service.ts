@@ -7,12 +7,11 @@ import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } f
 import { MapMapillaryService } from './map.mapillary.service';
 import { MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Injectable({
