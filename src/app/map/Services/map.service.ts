@@ -5,17 +5,24 @@ import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.api';
 import { MapMapillaryService } from './map.mapillary.service';
-import { MapBrowserEvent } from 'ol';
+import { Feature, MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
-import { Subject } from 'rxjs';
+import { combineLatest, combineLatestAll, forkJoin, merge, Observable, Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
+<<<<<<< HEAD
 import { SensorsService } from './map.sensors.service';
 
 
 
+=======
+import Geometry from 'ol/geom/Geometry';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+
+>>>>>>> 8edf21e (implement pedestrian sensors functionality)
 /**
  * Author: p.tsagkis
  * Date: 7/2022
@@ -32,6 +39,7 @@ export class MapService {
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
+  private loadInterMethod: any;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -41,6 +49,7 @@ export class MapService {
   };
   
   constructor(
+    private http: HttpClient,
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
     private sensorsService: SensorsService,
@@ -174,7 +183,12 @@ export class MapService {
       vPosition: 'bottom',
       styleClass: 'map-snackbar'
     });
+<<<<<<< HEAD
     this.sensorsService.stopReportAutoLoad();
+=======
+
+    clearInterval(this.loadInterMethod);
+>>>>>>> 8edf21e (implement pedestrian sensors functionality)
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -218,7 +232,20 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(false);
         this.mapLayersService.SensorsLayer.setVisible(true);
+<<<<<<< HEAD
         this.sensorsService.initSensors();        
+=======
+
+        
+        this.mapLayersService.SensorsLayer.getSource().once('change', () => {
+          console.log("this source", this.mapLayersService.SensorsLayer.getSource())
+           this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
+        });
+        this.loadInterMethod = setInterval(() => {
+          this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
+        }, 10000);
+         
+>>>>>>> 8edf21e (implement pedestrian sensors functionality)
         break; 
       } 
       default: { 
@@ -229,4 +256,26 @@ export class MapService {
   }
 
 
+<<<<<<< HEAD
+=======
+  private loadReportForFeats(feats: Feature<Geometry>[]){
+    console.log('feats',feats)
+    feats.forEach(feat => {
+      console.log('live_report_id', feat.get('live_report_id'));
+      let reports: Observable<any>[] = [];
+      const reportIds: number[] =  feat.get('live_report_id').split(',');
+      reportIds.forEach(rId => {
+        reports.push(this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+rId));
+      })
+      const mergedObservables = combineLatest(reports);
+      mergedObservables.subscribe(data => {
+        feat.set('value', (Math.abs(data[0][0].inside) + Math.abs(data[1][0].inside)).toString()); 
+      });
+    })
+  }
+
+  private getReport(id:number): Observable<any>{
+    return this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+id);
+  }
+>>>>>>> 8edf21e (implement pedestrian sensors functionality)
 }

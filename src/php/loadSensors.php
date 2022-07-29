@@ -5,12 +5,25 @@ header('Content-type: application/json');
 
 $epsg =  'EPSG:3857';
 
+<<<<<<< HEAD
 
 $sql = "SELECT sm.id, sp.label, intensity_limits, 'sensors' as layer,  GROUP_CONCAT(sm.live_report_id SEPARATOR ',') live_report_id, sm.sensor_id, sm.mpl_imageid,  ST_AsGeoJSON(sp.SHAPE) GEOM  " . 
 " FROM sensor_points sp  " . 
 " INNER JOIN sensor_measures sm ON sm.sensor_id = sp.id group by sensor_id ";
 
 $attrs = ['label', 'live_report_id', 'layer', 'intensity_limits', 'mpl_imageid'];
+=======
+// SELECT date(datetime) as stat_day, SUM(ABS(value))
+// from sensor_measures_history
+// GROUP BY date(datetime)
+// order by stat_day;
+
+$sql = "SELECT sm.id, sp.label, GROUP_CONCAT(sm.live_report_id SEPARATOR ',') live_report_id, sm.sensor_id,  ST_AsGeoJSON(sp.SHAPE) GEOM  " . 
+" FROM sensor_points sp  " . 
+" INNER JOIN sensor_measures sm ON sm.sensor_id = sp.id group by sensor_id ";
+
+$attrs = ['label', 'live_report_id'];
+>>>>>>> 8edf21e (implement pedestrian sensors functionality)
 
 # Try query or error
 $rs = mysqli_query($con, $sql);  
