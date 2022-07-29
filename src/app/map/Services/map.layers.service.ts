@@ -21,6 +21,10 @@ import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
 import TileWMS from 'ol/source/TileWMS';
 
+/**
+ * Author: p.tsagkis
+ * Date: 7/2022
+ */
 
 
 @Injectable({
@@ -29,6 +33,8 @@ import TileWMS from 'ol/source/TileWMS';
 export class MapLayersService {
 
   private MPL_PRIVATE_URL = 'https://smartcity.fearofcrime.com/php/loadMapilaryData.php';
+
+  private SENSORS_URL = 'https://smartcity.fearofcrime.com/php/loadSensors.php';
 
   private OSMLayer!: TileLayer<OSM>;
   private GOSMLayer!: TileLayer<OSM>;
@@ -57,6 +63,8 @@ export class MapLayersService {
 
   private factorsPedWaysSource!: VectorSource<Polygon | MultiPolygon>;
   private FACTORS_PEDESTRN!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
+  private SENSORS!: VectorLayer<VectorSource<Point>>;
 
 
   private mplFormat: GeoJSON;
@@ -127,9 +135,13 @@ export class MapLayersService {
     this.initFactorsDKLayer(false);
     this.initFactorsGeitLayer(false);
     this.initFacorsPdstrLayer(false);
+    // sensors layer
+    this.initSensorLayer(false);
     // scrap layer
     this.initSelectionLayer(true);
   }
+
+ 
 
   public get GosmLayer(): TileLayer<OSM> {
     return this.GOSMLayer;
@@ -179,9 +191,15 @@ export class MapLayersService {
     return this.FACTORS_PEDESTRN;
   }
 
+  public get SensorsLayer(): VectorLayer<VectorSource<Point>> {
+    return this.SENSORS;
+  }
+
   public get SelectionLayer(): VectorLayer<VectorSource<Geometry>> {
     return this.selectionLayer;
   }
+
+
 
   /**
    * set for all vectors the opacity
@@ -196,6 +214,7 @@ export class MapLayersService {
       this.FACTORS_GEIT.setOpacity(value);
       this.FACTORS_PEDESTRN.setOpacity(value);
       this.QUEST_DK.setOpacity(value);
+      this.SENSORS.setOpacity(value);
   }
 
 
@@ -451,6 +470,24 @@ export class MapLayersService {
     });
   };
 
+
+  private initSensorLayer = (visible: boolean): void => {
+
+    this.SENSORS = new VectorLayer({
+      visible,
+      opacity:0.7,
+      style: (feature) => this.mapStyleService.sensorPointStyleFn(feature),
+      source:new VectorSource({
+          format: new GeoJSON({
+            dataProjection:'EPSG:3857',
+            featureProjection:'EPSG:3857',
+            geometryName:'geometry'
+          }),
+          url: this.SENSORS_URL,
+          wrapX:false
+      })
+    });
+  }
 
 
   /**

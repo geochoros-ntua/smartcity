@@ -5,14 +5,21 @@ import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.interfaces';
 import { MapMapillaryService } from './map.mapillary.service';
-import { MapBrowserEvent } from 'ol';
+import { Feature, MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
-import { Subject } from 'rxjs';
+import { combineLatest, combineLatestAll, forkJoin, merge, Observable, Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
+import Geometry from 'ol/geom/Geometry';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+
+/**
+ * Author: p.tsagkis
+ * Date: 7/2022
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +32,7 @@ export class MapService {
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
+  private loadInterMethod: any;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -34,6 +42,7 @@ export class MapService {
   };
   
   constructor(
+    private http: HttpClient,
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
     private mapMessagesService: AppMessagesService,
@@ -70,6 +79,7 @@ export class MapService {
         this.mapLayersService.FactorsDKLayer,
         this.mapLayersService.FactorsGeitLayer,
         this.mapLayersService.FacorsPdstrLayer,
+        this.mapLayersService.SensorsLayer,
         this.mapLayersService.SelectionLayer
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
@@ -159,7 +169,7 @@ export class MapService {
       styleClass: 'map-snackbar'
     });
 
-
+    clearInterval(this.loadInterMethod);
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -169,6 +179,7 @@ export class MapService {
          this.mapLayersService.FactorsGeitLayer.setVisible(false);
          this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
+         this.mapLayersService.SensorsLayer.setVisible(false);
          break; 
       } 
       case MapMode.stats_i: { 
@@ -179,6 +190,7 @@ export class MapService {
          this.mapLayersService.FactorsGeitLayer.setVisible(true);
          this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
+         this.mapLayersService.SensorsLayer.setVisible(false);
          break; 
       } 
       case MapMode.stats_q: { 
@@ -189,23 +201,55 @@ export class MapService {
         this.mapLayersService.FactorsGeitLayer.setVisible(false);
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
+        this.mapLayersService.SensorsLayer.setVisible(false);
         break; 
      } 
       case MapMode.sens: { 
-         this.mapLayersService.MlSequencesLayer.setVisible(false);
-         this.mapLayersService.MlImagesLayer.setVisible(false);
-         this.mapLayersService.MlPointsLayer.setVisible(false);
-         this.mapLayersService.FactorsDKLayer.setVisible(false);
-         this.mapLayersService.FactorsGeitLayer.setVisible(false);
-         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
-         this.mapLayersService.QuestDKLayer.setVisible(false);
+        this.mapLayersService.MlSequencesLayer.setVisible(false);
+        this.mapLayersService.MlImagesLayer.setVisible(false);
+        this.mapLayersService.MlPointsLayer.setVisible(false);
+        this.mapLayersService.FactorsDKLayer.setVisible(false);
+        this.mapLayersService.FactorsGeitLayer.setVisible(false);
+        this.mapLayersService.FacorsPdstrLayer.setVisible(false);
+        this.mapLayersService.QuestDKLayer.setVisible(false);
+        this.mapLayersService.SensorsLayer.setVisible(true);
+
+        
+        this.mapLayersService.SensorsLayer.getSource().once('change', () => {
+          console.log("this source", this.mapLayersService.SensorsLayer.getSource())
+           this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
+        });
+        this.loadInterMethod = setInterval(() => {
+          this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
+        }, 10000);
+         
         break; 
       } 
       default: { 
         console.error(`No such mode error: ${ mode }.`);
-         break; 
+        break; 
       } 
    } 
   }
 
+
+  private loadReportForFeats(feats: Feature<Geometry>[]){
+    console.log('feats',feats)
+    feats.forEach(feat => {
+      console.log('live_report_id', feat.get('live_report_id'));
+      let reports: Observable<any>[] = [];
+      const reportIds: number[] =  feat.get('live_report_id').split(',');
+      reportIds.forEach(rId => {
+        reports.push(this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+rId));
+      })
+      const mergedObservables = combineLatest(reports);
+      mergedObservables.subscribe(data => {
+        feat.set('value', (Math.abs(data[0][0].inside) + Math.abs(data[1][0].inside)).toString()); 
+      });
+    })
+  }
+
+  private getReport(id:number): Observable<any>{
+    return this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+id);
+  }
 }

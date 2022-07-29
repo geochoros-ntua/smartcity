@@ -82,7 +82,6 @@ export class MapStyleService {
 
 
   public dummyStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
-    // console.log('feature', feature)
     const polyStyleConfig: Style = new Style({
       stroke: new Stroke({
         color: [255, 0, 0, 1],
@@ -99,6 +98,40 @@ export class MapStyleService {
       })
     });
     return [polyStyleConfig];
+  }
+
+  public dummyPointStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
+    const val = feature.get('value');
+    const style =  new Style({
+      image: new Circle({
+        radius: (val > 30) ? 30 : val,
+        fill: new Fill({ color: [255, 0, 255, 0.7] }),
+        stroke: new Stroke({
+          color: [0, 0, 255, 0.7], width: 1
+        })
+      })
+    });
+    return [style];
+  }
+
+  public sensorPointStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
+    const val = feature.get('value');
+    const style =  new Style({
+      image: new Circle({
+        radius: (val > 30) ? 30 : (val<10) ? 10 : val,
+        fill: new Fill({ color: [255, 0, 255, 0.7] }),
+        stroke: new Stroke({
+          color: [0, 0, 255, 0.7], width: 1
+        })
+      }),
+      text: new Text({
+        text: feature.get('value'),
+        fill: new Fill({ color: 'white' }),
+        font: '20px Calibri,sans-serif',
+        stroke: new Stroke({ color: 'black', width: 4 })
+      })
+    })
+    return [style];
   }
   
 }
