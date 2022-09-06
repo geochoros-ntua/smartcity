@@ -5,13 +5,14 @@ import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.api';
 import { MapMapillaryService } from './map.mapillary.service';
-import { Feature, MapBrowserEvent } from 'ol';
+import { MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
-import { combineLatest, combineLatestAll, forkJoin, merge, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
+<<<<<<< HEAD
 <<<<<<< HEAD
 import { SensorsService } from './map.sensors.service';
 
@@ -20,6 +21,10 @@ import { SensorsService } from './map.sensors.service';
 =======
 import Geometry from 'ol/geom/Geometry';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+=======
+import { SensorsService } from './map.sensors.service';
+
+>>>>>>> 9d066a6 (imlement sensor graph)
 
 
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)
@@ -49,7 +54,6 @@ export class MapService {
   };
   
   constructor(
-    private http: HttpClient,
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
     private sensorsService: SensorsService,
@@ -151,7 +155,11 @@ export class MapService {
             break;
           }
           case VectorLayerNames.sens: {
+<<<<<<< HEAD
             this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
+=======
+            this.sensorsService.showReportGraph(feature.getId());
+>>>>>>> 9d066a6 (imlement sensor graph)
             break;
           }
           default: {
@@ -199,6 +207,7 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
+         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_i: { 
@@ -210,6 +219,7 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
+         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_q: { 
@@ -221,6 +231,7 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
         this.mapLayersService.SensorsLayer.setVisible(false);
+        this.sensorsService.stopReportAutoLoad();
         break; 
      } 
       case MapMode.sens: { 
@@ -232,6 +243,7 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(false);
         this.mapLayersService.SensorsLayer.setVisible(true);
+<<<<<<< HEAD
 <<<<<<< HEAD
         this.sensorsService.initSensors();        
 =======
@@ -246,6 +258,9 @@ export class MapService {
         }, 10000);
          
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)
+=======
+        this.sensorsService.initSensors();        
+>>>>>>> 9d066a6 (imlement sensor graph)
         break; 
       } 
       default: { 
@@ -256,6 +271,7 @@ export class MapService {
   }
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   private loadReportForFeats(feats: Feature<Geometry>[]){
@@ -278,4 +294,6 @@ export class MapService {
     return this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+id);
   }
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)
+=======
+>>>>>>> 9d066a6 (imlement sensor graph)
 }

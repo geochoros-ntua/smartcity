@@ -3,6 +3,7 @@ require 'connect.php';
 header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json');
 
+<<<<<<< HEAD
 $measureid = $_REQUEST['measureid'];
 $reportType = $_REQUEST['reportType'] ? $_REQUEST['reportType'] : 'hour';
 $from = $_REQUEST['from'];
@@ -33,10 +34,31 @@ if ($reportType == 'day'){
 $rs = mysqli_query($con, $sql);  
 if (!$rs) {
     echo 'An SQL error occured.\n' . $sql;
+=======
+$sensid = $_REQUEST['sensid'];
+$from = $_REQUEST['from'];
+$to = $_REQUEST['to'];
+
+$sql = " SELECT (select label from sensor_points where id =  $sensid) as title, " . 
+       " CONCAT(date(datetime), \" (\", DAYNAME(date(datetime)), \")\") as label,  date(datetime) date, SUM(ABS(value)) as value " .
+       " from sensor_measures_history " . 
+       " where date(datetime) between date('$from') and date('$to') " . 
+       " and measure_id in (select id from sensor_measures where sensor_id = $sensid)" . 
+       " GROUP BY date(datetime) " . 
+       " order by date desc ";
+
+$rs = mysqli_query($con, $sql);  
+if (!$rs) {
+    echo 'An SQL error occured.\n';
+>>>>>>> 9d066a6 (imlement sensor graph)
     exit;
 }
 
 $rows = array();
+<<<<<<< HEAD
+=======
+# Loop through rows to build features. 
+>>>>>>> 9d066a6 (imlement sensor graph)
 while($r = mysqli_fetch_assoc($rs)) {
     $feature = array(
         'title' => $r['title'],
@@ -44,9 +66,22 @@ while($r = mysqli_fetch_assoc($rs)) {
         'date' => $r['date'],
         'value' => $r['value']
         );
+<<<<<<< HEAD
+=======
+    # Add feature arrays to feature collection array
+>>>>>>> 9d066a6 (imlement sensor graph)
     array_push($rows, $feature);
 }
 echo json_encode( $rows);
 $con = NULL;
        
+<<<<<<< HEAD
+=======
+
+
+
+
+$con = NULL;
+
+>>>>>>> 9d066a6 (imlement sensor graph)
 ?>
