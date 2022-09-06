@@ -5,7 +5,7 @@ import { Feature } from 'ol';
 import Point from 'ol/geom/Point';
 import Map from 'ol/Map';
 import { MapLayersService } from './map.layers.service';
-import { DetectionFeature, DetectionFeatureDB, DetectionGeometry, SmartCityMapillaryConfig } from '../api/map.interfaces';
+import { DetectionFeature, DetectionFeatureDB, DetectionGeometry, SmartCityMapillaryConfig } from '../api/map.api';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MapillaryViewerModalComponent } from '../Controls/mapillary-viewer-modal/mapillary-viewer-modal.component';

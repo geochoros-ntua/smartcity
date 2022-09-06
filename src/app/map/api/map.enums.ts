@@ -1,5 +1,3 @@
-
-
 export enum MapMode {
     street = 'street',
     stats_q = 'stats_q',

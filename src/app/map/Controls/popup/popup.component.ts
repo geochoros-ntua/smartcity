@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Overlay from 'ol/Overlay';
 import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
-import { FeatureClickedWithPos } from '../../api/map.interfaces';
+import { FeatureClickedWithPos } from '../../api/map.api';
 import { MapService } from '../../Services/map.service';
 
 @Component({

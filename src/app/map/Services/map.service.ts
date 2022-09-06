@@ -3,17 +3,17 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
-import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.interfaces';
+import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.api';
 import { MapMapillaryService } from './map.mapillary.service';
-import { Feature, MapBrowserEvent } from 'ol';
+import { MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
-import { combineLatest, combineLatestAll, forkJoin, merge, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
-import Geometry from 'ol/geom/Geometry';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SensorsService } from './map.sensors.service';
+
 
 
 /**
@@ -42,13 +42,13 @@ export class MapService {
   };
   
   constructor(
-    private http: HttpClient,
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
+    private sensorsService: SensorsService,
     private mapMessagesService: AppMessagesService,
-    private service: TranslateService
+    private translateService: TranslateService
     ) {
-      this.translatePipe = new TranslatePipe(this.service);
+      this.translatePipe = new TranslatePipe(this.translateService);
     // Subscribe
     // keep the map mode switching central
     // There should be more things to add here, 
@@ -56,7 +56,9 @@ export class MapService {
     this.mapMode$.subscribe((mode: MapMode) => {
       this.mapMode = mode;
       if (this.mapMode === MapMode.stats_i || this.mapMode === MapMode.stats_q ){
-        this.subFactorsMode = this.mapMode;``
+        this.subFactorsMode = this.mapMode;
+      } else {
+        this.smartCityMap.getOverlayById('popupoverlay')?.setPosition(undefined);
       }
       this.onModeChangeLayerVisibility(mode);
     });
@@ -102,6 +104,7 @@ export class MapService {
 
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
     this.map.forEachFeatureAtPixel(event.pixel, feature => {
+      console.log('feature',feature)
       if (feature.get('layer')) {
         switch (feature.get('layer')) {
           case VectorLayerNames.seq: {
@@ -137,6 +140,10 @@ export class MapService {
               feat:feature,
               coord:event.coordinate
             });
+            break;
+          }
+          case VectorLayerNames.sens: {
+            this.sensorsService.showReportGraph(feature.getId());
             break;
           }
           default: {
@@ -180,6 +187,7 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
+         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_i: { 
@@ -191,6 +199,7 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
+         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_q: { 
@@ -202,6 +211,7 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
         this.mapLayersService.SensorsLayer.setVisible(false);
+        this.sensorsService.stopReportAutoLoad();
         break; 
      } 
       case MapMode.sens: { 
@@ -213,16 +223,7 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(false);
         this.mapLayersService.SensorsLayer.setVisible(true);
-
-        
-        this.mapLayersService.SensorsLayer.getSource().once('change', () => {
-          console.log("this source", this.mapLayersService.SensorsLayer.getSource())
-           this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
-        });
-        this.loadInterMethod = setInterval(() => {
-          this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
-        }, 10000);
-         
+        this.sensorsService.initSensors();        
         break; 
       } 
       default: { 
@@ -233,23 +234,4 @@ export class MapService {
   }
 
 
-  private loadReportForFeats(feats: Feature<Geometry>[]){
-    console.log('feats',feats)
-    feats.forEach(feat => {
-      console.log('live_report_id', feat.get('live_report_id'));
-      let reports: Observable<any>[] = [];
-      const reportIds: number[] =  feat.get('live_report_id').split(',');
-      reportIds.forEach(rId => {
-        reports.push(this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+rId));
-      })
-      const mergedObservables = combineLatest(reports);
-      mergedObservables.subscribe(data => {
-        feat.set('value', (Math.abs(data[0][0].inside) + Math.abs(data[1][0].inside)).toString()); 
-      });
-    })
-  }
-
-  private getReport(id:number): Observable<any>{
-    return this.http.get('https://smartcity.fearofcrime.com/php/loadLiveReport.php?report_id='+id);
-  }
 }

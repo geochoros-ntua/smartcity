@@ -13,7 +13,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
-import { LoadingMethodObject } from '../api/map.interfaces';
+import { LoadingMethodObject } from '../api/map.api';
 import { VectorLayerNames } from '../api/map.enums';
 import { FEATURE_GROUPS } from '../api/map.datamaps';
 import Polygon from 'ol/geom/Polygon';
