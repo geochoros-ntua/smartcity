@@ -60,3 +60,10 @@ export interface FeatureClickedWithPos {
     coord: Coordinate;
 }
 
+export interface GraphReport {
+    title: string,
+    label: string, 
+    date: string, 
+    value: string, 
+}
+

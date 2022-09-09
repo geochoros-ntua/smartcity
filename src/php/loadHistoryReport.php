@@ -13,7 +13,7 @@ $sql = " SELECT (select label from sensor_points where id =  $sensid) as title, 
        " where date(datetime) between date('$from') and date('$to') " . 
        " and measure_id in (select id from sensor_measures where sensor_id = $sensid)" . 
        " GROUP BY date(datetime) " . 
-       " order by date desc ";
+       " order by date ";
 
 $rs = mysqli_query($con, $sql);  
 if (!$rs) {
