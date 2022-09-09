@@ -67,4 +67,7 @@ export interface GraphReport {
     value: string, 
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 350fc03 (progress)
