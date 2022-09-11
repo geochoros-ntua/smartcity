@@ -13,4 +13,8 @@ export default class MapUtils {
         let keys = Object.keys(myEnum).filter((x) => myEnum[x] === enumValue);
         return keys.length > 0 ? myEnum[keys[0]] : '';
     }
+
+    public static formatDate(date: Date): string{
+        return date.getFullYear() + '-' + ((date.getMonth() + 1)) + '-' + date.getDate()
+    }
 }

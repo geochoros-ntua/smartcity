@@ -1,8 +1,6 @@
 <?php
 require 'connect.php';
 header('Access-Control-Allow-Origin: *');
-// header('Content-type: application/json');
-
 try {
     $sql = 'select * from sensor_measures';
     $rs = mysqli_query($con, $sql);  

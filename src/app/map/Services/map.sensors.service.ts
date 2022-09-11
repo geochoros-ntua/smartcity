@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SensorsGraphComponent } from '../Controls/sensors-graph/sensors-graph.component';
 import { GraphReport } from '../api/map.api';
 import { ChartType } from 'chart.js';
+import MapUtils from '../map.helper';
 
 
 /**
@@ -29,13 +30,14 @@ export class SensorsService {
     public dateTo: Date = new Date();
     public reportId: string | number;
     public selGraphType: ChartType = 'bar';
+    public selReportType: string = 'day';
     
     
     constructor(
       private http: HttpClient, 
       private mapLayersService: MapLayersService, 
       public dialog: MatDialog){
-        //start up using last week dataS
+        //start up using last week data (7  days)
         this.dateFrom.setDate(this.dateTo.getDate() - 7);
     }
 
@@ -45,13 +47,13 @@ export class SensorsService {
     
     public getHistoryReport(sensid: string | number): Observable<GraphReport[]>{
         return this.http.get<GraphReport[]>('https://smartcity.fearofcrime.com/php/loadHistoryReport.php?sensid=' + sensid +  
-        '&from='+ this.formatDate(this.dateFrom) +'&to=' + this.formatDate(this.dateTo) + '&type=day');
+        '&from='+ MapUtils.formatDate(this.dateFrom) +'&to=' + MapUtils.formatDate(this.dateTo) + '&reportType='+this.selReportType);
     } 
 
 
     public initSensors(): void{
         this.mapLayersService.SensorsLayer.getSource().once('change', () => {
-             this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
+             this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
           });
           this.startReportAutoLoad();
           
@@ -60,7 +62,7 @@ export class SensorsService {
     public startReportAutoLoad(): void{
         // reload live reports every 10 secs
         this.loadInterMethod = setInterval(() => {
-            this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
+            this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
           }, 10000);
     }
 
@@ -69,40 +71,36 @@ export class SensorsService {
     }
 
 
-    private loadReportForFeats(feats: Feature<Geometry>[]): void{
+    private loadLiveReportForFeats(feats: Feature<Geometry>[]): void{
         feats.forEach(feat => {
-          let reports: Observable<any>[] = [];
-          const reportIds: number[] =  feat.get('live_report_id').split(',');
-          reportIds.forEach(rId => {
-            reports.push(this.getLiveReport(rId));
-          })
-          const mergedObservables = combineLatest(reports);
-          mergedObservables.subscribe(data => {
+          const reports: Observable<any>[] = feat.get('live_report_id').split(',')
+          .map((rId: number) =>  this.getLiveReport(rId));
+         
+          combineLatest(reports)
+          .subscribe(data => {
             feat.set('value', (Math.abs(data[0][0].inside) + Math.abs(data[1][0].inside)).toString()); 
           });
-        })
+        });
       }
     
       
       
     public showReportGraph(reportId: string | number){
-    this.mapLayersService.dataLoaded = false;
-    this.reportId = reportId;
-    this.dialogRef?.close();
-    this.getHistoryReport(reportId).subscribe(res => {
-      this.mapLayersService.dataLoaded = true;
-        this.dialogRef = this.dialog.open(SensorsGraphComponent, {
-            maxWidth: '80vw',
-            maxHeight: '80vh',
-            height: '80%',
-            width: '80%',
-            data: res
-        });
-    });
+      this.mapLayersService.dataLoaded = false;
+      this.reportId = reportId;
+      this.dialogRef?.close();
+      
+      this.getHistoryReport(reportId).subscribe(res => {
+        this.mapLayersService.dataLoaded = true;
+          this.dialogRef = this.dialog.open(SensorsGraphComponent, {
+              maxWidth: '80vw',
+              maxHeight: '80vh',
+              height: '80%',
+              width: '80%',
+              data: res
+          });
+      });
     }
 
-    
-    public formatDate(date: Date): string{
-        return date.getFullYear() + '-' + ((date.getMonth() + 1)) + '-' + date.getDate()
-    }
+
 }

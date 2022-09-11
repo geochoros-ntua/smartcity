@@ -32,7 +32,6 @@ export class MapService {
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
-  private loadInterMethod: any;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -60,7 +59,7 @@ export class MapService {
       } else {
         this.smartCityMap.getOverlayById('popupoverlay')?.setPosition(undefined);
       }
-      this.onModeChangeLayerVisibility(mode);
+      this.onModeChange(mode);
     });
   }
 
@@ -160,7 +159,7 @@ export class MapService {
   }
 
 
-  private onModeChangeLayerVisibility(mode: MapMode): void{
+  private onModeChange(mode: MapMode): void{
     const msg = 
     (mode === 'street') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-MPLR')}) : 
     (mode === 'sens') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-SENSORS')}) : 
@@ -175,8 +174,7 @@ export class MapService {
       vPosition: 'bottom',
       styleClass: 'map-snackbar'
     });
-
-    clearInterval(this.loadInterMethod);
+    this.sensorsService.stopReportAutoLoad();
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -187,7 +185,6 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
-         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_i: { 
@@ -199,7 +196,6 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
-         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_q: { 
@@ -211,7 +207,6 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
         this.mapLayersService.SensorsLayer.setVisible(false);
-        this.sensorsService.stopReportAutoLoad();
         break; 
      } 
       case MapMode.sens: { 
