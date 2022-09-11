@@ -36,16 +36,31 @@ if (!$rs) {
     echo 'An SQL error occured.\n' . $sql;
 =======
 $sensid = $_REQUEST['sensid'];
+$reportType = $_REQUEST['reportType'] ? $_REQUEST['reportType'] : 'hour';
 $from = $_REQUEST['from'];
 $to = $_REQUEST['to'];
 
-$sql = " SELECT (select label from sensor_points where id =  $sensid) as title, " . 
-       " CONCAT(date(datetime), \" (\", DAYNAME(date(datetime)), \")\") as label,  date(datetime) date, SUM(ABS(value)) as value " .
-       " from sensor_measures_history " . 
-       " where date(datetime) between date('$from') and date('$to') " . 
-       " and measure_id in (select id from sensor_measures where sensor_id = $sensid)" . 
-       " GROUP BY date(datetime) " . 
-       " order by date ";
+$sql = "";
+if ($reportType == 'day'){
+    $sql = " SELECT (select label from sensor_points where id =  $sensid) as title, " . 
+    " CONCAT(date(datetime), \" (\", DAYNAME(date(datetime)), \")\") as label,  date(datetime) date, SUM(ABS(value)) as value " .
+    " from sensor_measures_history " . 
+    " where date(datetime) between date('$from') and date('$to') " . 
+    " and measure_id in (select id from sensor_measures where sensor_id = $sensid)" . 
+    " GROUP BY date " . 
+    " order by date ";
+} else if ($reportType == 'hour'){
+    $sql = " SELECT (select label from sensor_points where id =  $sensid) as title, " .
+    " datetime as label, " .
+    " CONCAT(DATE_FORMAT(datetime, '%Y-%m-%d'), '-', HOUR(DATE_FORMAT(datetime,'%H:%i:%s'))) as DATEHOUR, " . 
+    " date(datetime) date, " .
+    " SUM(ABS(value)) as value " .
+    " from sensor_measures_history " .
+    " where date(datetime) between date('$from') and date('$to') " . 
+    " and measure_id in (select id from sensor_measures where sensor_id = $sensid) " .
+    " GROUP BY DATEHOUR ORDER BY datetime";
+}
+
 
 $rs = mysqli_query($con, $sql);  
 if (!$rs) {
@@ -56,9 +71,12 @@ if (!$rs) {
 
 $rows = array();
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 # Loop through rows to build features. 
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+>>>>>>> b50acd9 (more progress)
 while($r = mysqli_fetch_assoc($rs)) {
     $feature = array(
         'title' => $r['title'],
@@ -67,14 +85,18 @@ while($r = mysqli_fetch_assoc($rs)) {
         'value' => $r['value']
         );
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     # Add feature arrays to feature collection array
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+>>>>>>> b50acd9 (more progress)
     array_push($rows, $feature);
 }
 echo json_encode( $rows);
 $con = NULL;
        
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
@@ -84,4 +106,6 @@ $con = NULL;
 $con = NULL;
 
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+>>>>>>> b50acd9 (more progress)
 ?>

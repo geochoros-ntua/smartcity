@@ -18,6 +18,7 @@ import { SensorsGraphComponent } from '../Controls/sensors-tab-layout/sensors-gr
 import { GraphReport } from '../api/map.api';
 import { ChartType } from 'chart.js';
 import MapUtils from '../map.helper';
+<<<<<<< HEAD
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
 import { SensorsTabLayoutComponent } from '../Controls/sensors-tab-layout/sensors-tab-layout.component';
@@ -29,6 +30,8 @@ import { SensorsGraphComponent } from '../Controls/sensors-graph/sensors-graph.c
 import { GraphReport } from '../api/map.api';
 import { ChartType } from 'chart.js';
 >>>>>>> 350fc03 (progress)
+=======
+>>>>>>> b50acd9 (more progress)
 
 
 /**
@@ -79,13 +82,14 @@ export class SensorsService {
 =======
     public reportId: string | number;
     public selGraphType: ChartType = 'bar';
+    public selReportType: string = 'day';
     
     
     constructor(
       private http: HttpClient, 
       private mapLayersService: MapLayersService, 
       public dialog: MatDialog){
-        //start up using last week dataS
+        //start up using last week data (7  days)
         this.dateFrom.setDate(this.dateTo.getDate() - 7);
     }
 
@@ -95,19 +99,27 @@ export class SensorsService {
     
     public getHistoryReport(sensid: string | number): Observable<GraphReport[]>{
         return this.http.get<GraphReport[]>('https://smartcity.fearofcrime.com/php/loadHistoryReport.php?sensid=' + sensid +  
+<<<<<<< HEAD
         '&from='+ this.formatDate(this.dateFrom) +'&to=' + this.formatDate(this.dateTo) + '&type=day');
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+        '&from='+ MapUtils.formatDate(this.dateFrom) +'&to=' + MapUtils.formatDate(this.dateTo) + '&reportType='+this.selReportType);
+>>>>>>> b50acd9 (more progress)
     } 
 
 
     public initSensors(): void{
         this.mapLayersService.SensorsLayer.getSource().once('change', () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
           console.log('getFeatures', this.mapLayersService.SensorsLayer.getSource().getFeatures())
              this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
 =======
              this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+             this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
+>>>>>>> b50acd9 (more progress)
           });
           this.startReportAutoLoad();
           
@@ -117,10 +129,14 @@ export class SensorsService {
         // reload live reports every 10 secs
         this.loadInterMethod = setInterval(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
 =======
             this.loadReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+            this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures())
+>>>>>>> b50acd9 (more progress)
           }, 10000);
     }
 
@@ -163,23 +179,22 @@ export class SensorsService {
         this.dialogRef = this.dialog.open(SensorsTabLayoutComponent, {
 =======
 
-    private loadReportForFeats(feats: Feature<Geometry>[]): void{
+    private loadLiveReportForFeats(feats: Feature<Geometry>[]): void{
         feats.forEach(feat => {
-          let reports: Observable<any>[] = [];
-          const reportIds: number[] =  feat.get('live_report_id').split(',');
-          reportIds.forEach(rId => {
-            reports.push(this.getLiveReport(rId));
-          })
-          const mergedObservables = combineLatest(reports);
-          mergedObservables.subscribe(data => {
+          const reports: Observable<any>[] = feat.get('live_report_id').split(',')
+          .map((rId: number) =>  this.getLiveReport(rId));
+         
+          combineLatest(reports)
+          .subscribe(data => {
             feat.set('value', (Math.abs(data[0][0].inside) + Math.abs(data[1][0].inside)).toString()); 
           });
-        })
+        });
       }
     
       
       
     public showReportGraph(reportId: string | number){
+<<<<<<< HEAD
     this.mapLayersService.dataLoaded = false;
     this.reportId = reportId;
     this.dialogRef?.close();
@@ -210,4 +225,23 @@ export class SensorsService {
         return date.getFullYear() + '-' + ((date.getMonth() + 1)) + '-' + date.getDate()
     }
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+      this.mapLayersService.dataLoaded = false;
+      this.reportId = reportId;
+      this.dialogRef?.close();
+      
+      this.getHistoryReport(reportId).subscribe(res => {
+        this.mapLayersService.dataLoaded = true;
+          this.dialogRef = this.dialog.open(SensorsGraphComponent, {
+              maxWidth: '80vw',
+              maxHeight: '80vh',
+              height: '80%',
+              width: '80%',
+              data: res
+          });
+      });
+    }
+
+
+>>>>>>> b50acd9 (more progress)
 }

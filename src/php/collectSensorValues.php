@@ -2,11 +2,14 @@
 require 'connect.php';
 header('Access-Control-Allow-Origin: *');
 <<<<<<< HEAD
+<<<<<<< HEAD
 try {
     $sql = 'select * from sensor_measures where sensor_id=1';
 =======
 // header('Content-type: application/json');
 
+=======
+>>>>>>> b50acd9 (more progress)
 try {
     $sql = 'select * from sensor_measures';
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)

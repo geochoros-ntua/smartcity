@@ -44,7 +44,6 @@ export class MapService {
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
-  private loadInterMethod: any;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -192,11 +191,15 @@ export class MapService {
       styleClass: 'map-snackbar'
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
     this.sensorsService.stopReportAutoLoad();
 =======
 
     clearInterval(this.loadInterMethod);
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)
+=======
+    this.sensorsService.stopReportAutoLoad();
+>>>>>>> b50acd9 (more progress)
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -207,7 +210,6 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
-         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_i: { 
@@ -219,7 +221,6 @@ export class MapService {
          this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
-         this.sensorsService.stopReportAutoLoad();
          break; 
       } 
       case MapMode.stats_q: { 
@@ -231,7 +232,6 @@ export class MapService {
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
         this.mapLayersService.SensorsLayer.setVisible(false);
-        this.sensorsService.stopReportAutoLoad();
         break; 
      } 
       case MapMode.sens: { 
