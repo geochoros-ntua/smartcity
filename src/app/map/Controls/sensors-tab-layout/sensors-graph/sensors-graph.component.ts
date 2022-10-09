@@ -1,10 +1,10 @@
 import { ThrowStmt } from '@angular/compiler';
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Chart, ChartType, registerables } from 'chart.js';
-import { GraphReport } from '../../api/map.api';
-import { SensorsService } from '../../Services/map.sensors.service';
+import { GraphReport } from '../../../api/map.api';
+import { SensorsService } from '../../../Services/map.sensors.service';
 
 
 @Component({
@@ -15,7 +15,12 @@ import { SensorsService } from '../../Services/map.sensors.service';
 
 
 export class SensorsGraphComponent implements OnInit {
-  @ViewChild('graphCanvas') graphCanvas: ElementRef | undefined;
+  @ViewChild('graphCanvas') 
+  graphCanvas: ElementRef | undefined;
+
+  @Input()
+  public data: GraphReport[];
+
   public sensChart: any;
   public graphTitle: string = '';
   public dateRange: FormGroup;
@@ -23,7 +28,7 @@ export class SensorsGraphComponent implements OnInit {
   public graphTypes: string[] = ['bar', 'line'];
   public reportTypes: string[] = ['day', 'hour'];
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: GraphReport[], private cdRef: ChangeDetectorRef, public sensorsService: SensorsService ) {
+  constructor( private cdRef: ChangeDetectorRef, public sensorsService: SensorsService ) {
 
   }
 
@@ -44,6 +49,7 @@ export class SensorsGraphComponent implements OnInit {
   }
 
   initChart(labels: string[], values: string[]): void {
+
     this.sensChart = new Chart(this.graphCanvas?.nativeElement, {
       type: this.sensorsService.selGraphType,
       options: {
@@ -53,7 +59,7 @@ export class SensorsGraphComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: 'Pedestrians passed (per ' + this.sensorsService.selReportType +')',
+            label: this.sensorsService.translatePipe.transform('MAP.SENS-REPORT') + ' (per ' + this.sensorsService.selReportType +')',
             fill: true,
             borderWidth: 2,
             backgroundColor: 'rgba(75,192,192,0.6)',
@@ -77,6 +83,7 @@ export class SensorsGraphComponent implements OnInit {
         ],
       },
     });
+    
   }
 
   public redrawGraph(toDate: any): void {
@@ -84,7 +91,7 @@ export class SensorsGraphComponent implements OnInit {
       this.sensorsService.dateFrom = this.dateRange.get('start').value;
       this.sensorsService.dateTo = this.dateRange.get('end').value;
      
-      this.sensorsService.getHistoryReport(this.sensorsService.reportId).subscribe((res: GraphReport[]) => {
+      this.sensorsService.getHistoryReport(this.sensorsService.selMeasureId).subscribe((res: GraphReport[]) => {
         this.sensChart.data.labels = res.map((item: GraphReport) => item.label);
         this.sensChart.data.datasets[0].data = res.map((item: GraphReport) => item.value);
         this.sensChart.update();
@@ -101,8 +108,8 @@ export class SensorsGraphComponent implements OnInit {
 
   public setReportType(type: string): void{
     this.sensorsService.selReportType = type;
-    this.sensChart.data.datasets[0].label = 'Pedestrians passed (per ' + this.sensorsService.selReportType +')';
-    this.sensorsService.getHistoryReport(this.sensorsService.reportId).subscribe((res: GraphReport[]) => {
+    this.sensChart.data.datasets[0].label = this.sensorsService.translatePipe.transform('MAP.SENS-REPORT') + ' (per ' + this.sensorsService.selReportType +')';
+    this.sensorsService.getHistoryReport(this.sensorsService.selMeasureId).subscribe((res: GraphReport[]) => {
       this.sensChart.data.labels = res.map((item: GraphReport) => item.label);
       this.sensChart.data.datasets[0].data = res.map((item: GraphReport) => item.value);
       this.sensChart.update();

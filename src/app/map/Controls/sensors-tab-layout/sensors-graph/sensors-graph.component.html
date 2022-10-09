@@ -3,7 +3,7 @@
 
 <div class="row">
   <mat-form-field appearance="fill">
-    <mat-label>Enter a date range</mat-label>
+    <mat-label>{{'MAP.DATE-RANGE' | translate}}</mat-label>
     <mat-date-range-input [formGroup]="dateRange" [max]="nowDate" [rangePicker]="picker">
       <input matStartDate formControlName="start" placeholder="Start date">
       <input matEndDate formControlName="end" placeholder="End date" (dateChange)="redrawGraph($event)">
@@ -13,7 +13,7 @@
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Graph type</mat-label>
+    <mat-label>{{'MAP.GRAPH-TYPE' | translate}}</mat-label>
     <mat-select [(value)]="sensorsService.selGraphType" (selectionChange)="setGraphType($event.value)">
       <mat-option *ngFor="let type of graphTypes" [value]="type">
         {{type}}
@@ -21,7 +21,7 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>Report type</mat-label>
+    <mat-label>{{'MAP.REPORT-TYPE' | translate}}</mat-label>
     <mat-select [(value)]="sensorsService.selReportType" (selectionChange)="setReportType($event.value)">
       <mat-option *ngFor="let rtype of reportTypes" [value]="rtype">
         {{rtype}}
@@ -31,8 +31,7 @@
 
   
 </div>
-
-<div mat-dialog-content>
-  <canvas #graphCanvas style="height:10vh; width:20vw"></canvas>
+<div class="row">
+  <canvas #graphCanvas style="max-height:45vh !important; height:45vh !important;" ></canvas>
   <hr color="primary">
 </div>

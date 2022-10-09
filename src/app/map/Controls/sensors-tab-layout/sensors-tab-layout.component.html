@@ -1,0 +1,9 @@
+<mat-tab-group [class]="(darkThemeService.isDarkTheme$ | async) ? 'tab-dark' : 'tab-light' " mat-align-tabs="start">
+    <mat-tab label="{{'MAP.SENSORS-LIVE' | translate}}"  >
+         <app-sensors-card [imageid]="data.imageid" [title]="data.data[0].title"></app-sensors-card>
+    </mat-tab>
+    <mat-tab label="{{'MAP.SENSORS-GRAPHS' | translate}}">
+        <app-sensors-graph [data]="data.data" ></app-sensors-graph>
+    </mat-tab>
+</mat-tab-group>
+  

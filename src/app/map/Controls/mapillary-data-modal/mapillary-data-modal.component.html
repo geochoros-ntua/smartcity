@@ -26,13 +26,13 @@
     </div>
 
     <div class="row">
-        <mat-checkbox color="primary" 
+        <mat-checkbox color="primary" [class]="(darkThemeService.isDarkTheme$ | async) ? 'checkboxDark' : 'checkboxLight' "
         [checked]="mapLayersService.checkedSeq" (change)="toggleLayerVisibility(vectorLayerNames.seq)">
         {{'MAP.LAYER-PATHS' | translate}}
         </mat-checkbox>
     </div>
     <div class="row">
-        <mat-checkbox color="primary" 
+        <mat-checkbox color="primary"  [class]="(darkThemeService.isDarkTheme$ | async) ? 'checkboxDark' : 'checkboxLight' "
         [checked]="mapLayersService.checkedImg" (change)="toggleLayerVisibility(vectorLayerNames.img)">
         {{'MAP.LAYER-POINTS' | translate}}
         </mat-checkbox>

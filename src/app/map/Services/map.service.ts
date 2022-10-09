@@ -142,7 +142,7 @@ export class MapService {
             break;
           }
           case VectorLayerNames.sens: {
-            this.sensorsService.showReportGraph(feature.getId());
+            this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
             break;
           }
           default: {

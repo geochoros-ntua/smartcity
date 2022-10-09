@@ -13,7 +13,7 @@
 }
 
 ::ng-deep .filterSelectCntrlLight .mat-form-field-flex {
-  cursor: pointer;
+
   padding: 5px;
   background-color: rgba(255,255,255,0.5);
 }
@@ -35,9 +35,19 @@
 }
   
 .dark{
-  color:#607d8b;;
+  color:#607d8b;
 }
 
 .light{
   color:#4caf50;
 }
+
+::ng-deep .checkboxDark .mat-checkbox-frame {
+  background-color: #607d8b;
+}
+
+
+
+
+
+

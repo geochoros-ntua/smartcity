@@ -43,9 +43,13 @@ import { TranslateService } from './shared/translate/translate.service';
 import { TranslateComponent } from './shared/translate/translate.component';
 import { TranslatePipe } from './shared/translate/translate.pipe';
 import { DarkThemeComponent } from './shared/dark-theme/dark-theme.component';
-import { SensorsGraphComponent } from './map/Controls/sensors-graph/sensors-graph.component';
+import { SensorsGraphComponent } from './map/Controls/sensors-tab-layout/sensors-graph/sensors-graph.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatCardModule } from '@angular/material/card'; 
+import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
+import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
 
 
 export function setupTranslateFactory(
@@ -69,7 +73,9 @@ export function setupTranslateFactory(
     TranslateComponent,
     TranslatePipe,
     DarkThemeComponent,
-    SensorsGraphComponent
+    SensorsGraphComponent,
+    SensorsTabLayoutComponent,
+    SensorsCardComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
@@ -78,7 +84,7 @@ export function setupTranslateFactory(
     MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule,
-    MatDatepickerModule, MatNativeDateModule
+    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule
   ],
   providers: [
     TranslateService,

@@ -20,6 +20,7 @@ import Polygon from 'ol/geom/Polygon';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
 import TileWMS from 'ol/source/TileWMS';
+import MapUtils from '../map.helper';
 
 /**
  * Author: p.tsagkis
@@ -32,9 +33,8 @@ import TileWMS from 'ol/source/TileWMS';
 })
 export class MapLayersService {
 
-  private MPL_PRIVATE_URL = 'https://smartcity.fearofcrime.com/php/loadMapilaryData.php';
-
-  private SENSORS_URL = 'https://smartcity.fearofcrime.com/php/loadSensors.php';
+  private MPL_PRIVATE_URL = MapUtils.backEndBaseUrl + 'loadMapilaryData.php';
+  private SENSORS_URL = MapUtils.backEndBaseUrl + 'loadSensors.php';
 
   private OSMLayer!: TileLayer<OSM>;
   private GOSMLayer!: TileLayer<OSM>;
@@ -523,8 +523,6 @@ export class MapLayersService {
         '&filter=' + this.selectedFeatureGroups.map(grp => "'" + grp + "'") :
         ''))
       .subscribe(data => {
-        //console.log('data', data);
-        // this.mapS dataLoaded = false;
         this.dataLoaded = true;
         loadingMethodObject.source.addFeatures(loadingMethodObject.format.readFeatures(data));
       });

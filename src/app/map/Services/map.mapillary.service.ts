@@ -17,6 +17,7 @@ import { AppMessagesService } from '../../shared/messages.service';
 import { Alignment, Popup } from 'mapillary-js';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
+import MapUtils from '../map.helper';
 
 
 
@@ -27,9 +28,9 @@ import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 
 export class MapMapillaryService {
 
-    private MPL_KEY = 'MLY|4195156090570097|6a0d147f286068b5fc9a83bb734dc467';
-    private MPL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadMplDetections.php';
-    private MPL_ALL_DETECTIONS_URL = 'https://smartcity.fearofcrime.com/php/loadAllMplDetections.php';
+    public MPL_KEY = 'MLY|4195156090570097|6a0d147f286068b5fc9a83bb734dc467';
+    private MPL_DETECTIONS_URL = MapUtils.backEndBaseUrl + 'loadMplDetections.php';
+    private MPL_ALL_DETECTIONS_URL = MapUtils.backEndBaseUrl + 'loadAllMplDetections.php';
 
     private viewer!: mapillary.Viewer;
     private mapillaryDialogRefP!: MatDialogRef<MapillaryViewerModalComponent>;
@@ -64,6 +65,7 @@ export class MapMapillaryService {
     }
 
     /**
+     * Author: p.tsagkis
      * Initialise the mapillary viewer
      * This is fired when clicking in any mpl object on map
      * either lines | points | features
@@ -249,7 +251,7 @@ export class MapMapillaryService {
     }
 
     /**
-     * When clicking on a point
+     * When clicking on a point, show mapillary viewer and
      * draw the feature over the image
      * @param mapillaryViewerConfig 
      * @param feature 

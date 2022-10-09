@@ -115,23 +115,32 @@ export class MapStyleService {
   }
 
   public sensorPointStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
-    const val = feature.get('value');
-    const style =  new Style({
+    const val = parseInt(feature.get('value')) ? parseInt(feature.get('value')) : 0;
+    
+    let style =  new Style({});
+    // if (val){
+      console.log('val',val)
+    const intLimits = feature.get('intensity_limits').split(',');
+    
+    style =  new Style({
       image: new Circle({
         radius: (val > 30) ? 30 : (val<10) ? 10 : val,
-        fill: new Fill({ color: [255, 0, 255, 0.7] }),
+        fill: val< intLimits[0] ? new Fill({ color: [0, 255, 0, 0.7] }) : 
+        (val> intLimits[1]) ? new Fill({ color: [255, 0, 0, 0.7] }) : new Fill({ color: [255, 165, 0, 0.7] }) ,
         stroke: new Stroke({
           color: [0, 0, 255, 0.7], width: 1
         })
       }),
       text: new Text({
-        text: feature.get('value'),
+        text: val + '\n' + (val< intLimits[0] ? 'Χαμηλή ένταση' : (val> intLimits[1]) ? 'Υψηλή ένταση' : 'Μέτρια ένταση'),
         fill: new Fill({ color: 'white' }),
-        font: '20px Calibri,sans-serif',
+        font: '18px Calibri,sans-serif',
         stroke: new Stroke({ color: 'black', width: 4 })
       })
     })
+   // }
     return [style];
+    
   }
   
 }
