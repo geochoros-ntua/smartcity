@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { PolygonGeometry } from 'mapillary-js';
 import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
-import { DetectionFeature } from '../../api/map.interfaces';
+import { DetectionFeature } from '../../api/map.api';
 import { MapMapillaryService } from '../../Services/map.mapillary.service';
 
 

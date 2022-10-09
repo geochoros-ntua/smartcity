@@ -15,6 +15,12 @@
         "LAYER-DETECTIONS":"Αντικείμενα Ανίχνευσης",
         "MPLR-POPUP-CLOSE":"Κλείσε",  
         "MPLR-POPUP-FULL":"Πλήρης έκταση οθόνης", 
-        "MPLR-POPUP-ALL":"Ολα τα αντικείμενα"     
+        "MPLR-POPUP-ALL":"Ολα τα αντικείμενα",
+        "SENS-REPORT":"Αριθμός πεζών",
+        "DATE-RANGE":"Έυρος ημερ/νιων",
+        "GRAPH-TYPE": "Τύπος γραφήματος",
+        "REPORT-TYPE": "Τύπος αναφοράς",
+        "SENSORS-LIVE":"Live δεδομένα",
+        "SENSORS-GRAPHS":"Γραφήματα δεδομένων (ιστορικό)"                  
     }
 }

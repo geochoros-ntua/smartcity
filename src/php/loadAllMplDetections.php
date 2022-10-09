@@ -32,7 +32,7 @@ while($r = mysqli_fetch_assoc($rs)) {
     array_push($rows, $feature);
 }
 echo json_encode( $rows);
-$conn = NULL;
+$con = NULL;
 
 
 ?>

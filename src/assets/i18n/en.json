@@ -15,6 +15,12 @@
         "LAYER-DETECTIONS":"Feature Detections",
         "MPLR-POPUP-CLOSE":"Close",  
         "MPLR-POPUP-FULL":"Full screen", 
-        "MPLR-POPUP-ALL":"Draw all detections"
+        "MPLR-POPUP-ALL":"Draw all detections",
+        "SENS-REPORT":"Pedestrians passed",
+        "DATE-RANGE":"Date range",
+        "GRAPH-TYPE": "Graph type",
+        "REPORT-TYPE": "Report type",
+        "SENSORS-LIVE":"Live data",
+        "SENSORS-GRAPHS":"Data Graphs (historic)"    
     }
 }
