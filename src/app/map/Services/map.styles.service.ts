@@ -116,6 +116,9 @@ export class MapStyleService {
 
   public sensorPointStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> caa8ac9 (implement sensors functionality)
     const val = parseInt(feature.get('value')) ? parseInt(feature.get('value')) : 0;
     
     let style =  new Style({});
@@ -124,6 +127,7 @@ export class MapStyleService {
     const intLimits = feature.get('intensity_limits').split(',');
     
     style =  new Style({
+<<<<<<< HEAD
       image: new Circle({
         radius: (val > 30) ? 30 : (val<10) ? 10 : val,
         fill: val< intLimits[0] ? new Fill({ color: [0, 255, 0, 0.7] }) : 
@@ -135,11 +139,18 @@ export class MapStyleService {
         radius: (val > 30) ? 30 : (val<10) ? 10 : val,
         fill: new Fill({ color: [255, 0, 255, 0.7] }),
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)
+=======
+      image: new Circle({
+        radius: (val > 30) ? 30 : (val<10) ? 10 : val,
+        fill: val< intLimits[0] ? new Fill({ color: [0, 255, 0, 0.7] }) : 
+        (val> intLimits[1]) ? new Fill({ color: [255, 0, 0, 0.7] }) : new Fill({ color: [255, 165, 0, 0.7] }) ,
+>>>>>>> caa8ac9 (implement sensors functionality)
         stroke: new Stroke({
           color: [0, 0, 255, 0.7], width: 1
         })
       }),
       text: new Text({
+<<<<<<< HEAD
 <<<<<<< HEAD
         text: val + '\n' + (val< intLimits[0] ? 'Χαμηλή ένταση' : (val> intLimits[1]) ? 'Υψηλή ένταση' : 'Μέτρια ένταση'),
         fill: new Fill({ color: 'white' }),
@@ -152,13 +163,21 @@ export class MapStyleService {
     
 =======
         text: feature.get('value'),
+=======
+        text: val + '\n' + (val< intLimits[0] ? 'Χαμηλή ένταση' : (val> intLimits[1]) ? 'Υψηλή ένταση' : 'Μέτρια ένταση'),
+>>>>>>> caa8ac9 (implement sensors functionality)
         fill: new Fill({ color: 'white' }),
-        font: '20px Calibri,sans-serif',
+        font: '18px Calibri,sans-serif',
         stroke: new Stroke({ color: 'black', width: 4 })
       })
     })
+   // }
     return [style];
+<<<<<<< HEAD
 >>>>>>> 8edf21e (implement pedestrian sensors functionality)
+=======
+    
+>>>>>>> caa8ac9 (implement sensors functionality)
   }
   
 }

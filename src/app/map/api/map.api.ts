@@ -68,6 +68,10 @@ export interface GraphReport {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 350fc03 (progress)
+=======
+
+>>>>>>> caa8ac9 (implement sensors functionality)

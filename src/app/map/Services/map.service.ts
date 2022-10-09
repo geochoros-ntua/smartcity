@@ -155,10 +155,14 @@ export class MapService {
           }
           case VectorLayerNames.sens: {
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
 =======
             this.sensorsService.showReportGraph(feature.getId());
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+            this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
+>>>>>>> caa8ac9 (implement sensors functionality)
             break;
           }
           default: {

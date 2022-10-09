@@ -35,8 +35,11 @@ export class MapLayersService {
 
   private MPL_PRIVATE_URL = MapUtils.backEndBaseUrl + 'loadMapilaryData.php';
   private SENSORS_URL = MapUtils.backEndBaseUrl + 'loadSensors.php';
+<<<<<<< HEAD
 
   private SENSORS_URL = 'https://smartcity.fearofcrime.com/php/loadSensors.php';
+=======
+>>>>>>> caa8ac9 (implement sensors functionality)
 
   private OSMLayer!: TileLayer<OSM>;
   private GOSMLayer!: TileLayer<OSM>;

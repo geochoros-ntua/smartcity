@@ -4,6 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 $measureid = $_REQUEST['measureid'];
 $reportType = $_REQUEST['reportType'] ? $_REQUEST['reportType'] : 'hour';
 $from = $_REQUEST['from'];
@@ -36,36 +37,43 @@ if (!$rs) {
     echo 'An SQL error occured.\n' . $sql;
 =======
 $sensid = $_REQUEST['sensid'];
+=======
+$measureid = $_REQUEST['measureid'];
+>>>>>>> caa8ac9 (implement sensors functionality)
 $reportType = $_REQUEST['reportType'] ? $_REQUEST['reportType'] : 'hour';
 $from = $_REQUEST['from'];
 $to = $_REQUEST['to'];
 
 $sql = "";
 if ($reportType == 'day'){
-    $sql = " SELECT (select label from sensor_points where id =  $sensid) as title, " . 
-    " CONCAT(date(datetime), \" (\", DAYNAME(date(datetime)), \")\") as label,  date(datetime) date, SUM(ABS(value)) as value " .
-    " from sensor_measures_history " . 
-    " where date(datetime) between date('$from') and date('$to') " . 
-    " and measure_id in (select id from sensor_measures where sensor_id = $sensid)" . 
+    $sql = " SELECT bb.gate as title, " . 
+    " CONCAT(date(aa.datetime), \" (\", DAYNAME(date(aa.datetime)), \")\") as label,  date(aa.datetime) date, SUM(ABS(aa.value)) as value " .
+    " from sensor_measures_history aa left join sensor_measures bb on bb.id = aa.measure_id " . 
+    " where date(aa.datetime) between date('$from') and date('$to') " . 
+    " and aa.measure_id = $measureid " . 
     " GROUP BY date " . 
     " order by date ";
 } else if ($reportType == 'hour'){
-    $sql = " SELECT (select label from sensor_points where id =  $sensid) as title, " .
-    " datetime as label, " .
-    " CONCAT(DATE_FORMAT(datetime, '%Y-%m-%d'), '-', HOUR(DATE_FORMAT(datetime,'%H:%i:%s'))) as DATEHOUR, " . 
-    " date(datetime) date, " .
-    " SUM(ABS(value)) as value " .
-    " from sensor_measures_history " .
-    " where date(datetime) between date('$from') and date('$to') " . 
-    " and measure_id in (select id from sensor_measures where sensor_id = $sensid) " .
-    " GROUP BY DATEHOUR ORDER BY datetime";
+    $sql = " SELECT bb.gate as title, " .
+    " DATE_ADD( DATE_FORMAT(aa.datetime, '%Y-%m-%d %H:00:00'), " . 
+    " INTERVAL IF(MINUTE(aa.datetime) < 30, 0, 1) HOUR ) AS label, " .
+    " date(aa.datetime) date, " .
+    " SUM(ABS(aa.value)) as value " .
+    " from sensor_measures_history aa left join sensor_measures bb on bb.id = aa.measure_id " . 
+    " where date(aa.datetime) between date('$from') and date('$to') " . 
+    " and aa.measure_id = $measureid " .
+    " GROUP BY label ORDER BY datetime";
 }
 
 
 $rs = mysqli_query($con, $sql);  
 if (!$rs) {
+<<<<<<< HEAD
     echo 'An SQL error occured.\n';
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+    echo 'An SQL error occured.\n' . $sql;
+>>>>>>> caa8ac9 (implement sensors functionality)
     exit;
 }
 

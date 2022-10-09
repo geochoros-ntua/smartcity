@@ -45,6 +45,7 @@ import { TranslateComponent } from './shared/translate/translate.component';
 import { TranslatePipe } from './shared/translate/translate.pipe';
 import { DarkThemeComponent } from './shared/dark-theme/dark-theme.component';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { SensorsGraphComponent } from './map/Controls/sensors-tab-layout/sensors-graph/sensors-graph.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -58,6 +59,15 @@ import { SensorsGraphComponent } from './map/Controls/sensors-graph/sensors-grap
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+import { SensorsGraphComponent } from './map/Controls/sensors-tab-layout/sensors-graph/sensors-graph.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs'; 
+import { MatCardModule } from '@angular/material/card'; 
+import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
+import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
+>>>>>>> caa8ac9 (implement sensors functionality)
 
 
 export function setupTranslateFactory(
@@ -82,6 +92,7 @@ export function setupTranslateFactory(
     TranslatePipe,
     DarkThemeComponent,
 <<<<<<< HEAD
+<<<<<<< HEAD
     SensorsGraphComponent,
     SensorsTabLayoutComponent,
     SensorsCardComponent,
@@ -90,6 +101,11 @@ export function setupTranslateFactory(
 =======
     SensorsGraphComponent
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+    SensorsGraphComponent,
+    SensorsTabLayoutComponent,
+    SensorsCardComponent
+>>>>>>> caa8ac9 (implement sensors functionality)
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
@@ -99,10 +115,14 @@ export function setupTranslateFactory(
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule,
 <<<<<<< HEAD
+<<<<<<< HEAD
     MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule
 =======
     MatDatepickerModule, MatNativeDateModule
 >>>>>>> 9d066a6 (imlement sensor graph)
+=======
+    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule
+>>>>>>> caa8ac9 (implement sensors functionality)
   ],
   providers: [
     TranslateService,

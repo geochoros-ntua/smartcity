@@ -26,6 +26,10 @@
         "GRAPH-TYPE": "Graph type",
         "REPORT-TYPE": "Report type",
         "SENSORS-LIVE":"Live data",
+<<<<<<< HEAD
         "SENSORS-GRAPHS":"Data Graphs (historic)"  
+=======
+        "SENSORS-GRAPHS":"Data Graphs (historic)"    
+>>>>>>> caa8ac9 (implement sensors functionality)
     }
 }
