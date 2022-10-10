@@ -129,7 +129,7 @@ while($row = mysqli_fetch_assoc($rs)) {
 }
 
 echo json_encode($geojson, JSON_NUMERIC_CHECK);
-$conn = NULL;
+$con = NULL;
 
 # this is the ogr command to import spatial data to mysql. We do not use it any more. 
 # Just keep it here for importing new data from shp etc.

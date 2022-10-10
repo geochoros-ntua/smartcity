@@ -1,5 +1,3 @@
-
-
 export enum MapMode {
     street = 'street',
     stats_q = 'stats_q',
@@ -23,6 +21,7 @@ export enum VectorLayerNames {
     factors_dk ='da_dim_koin',
     factors_geit ='da_geitonies',
     factors_pdstr ='da_pedestrian_ways',
-    quest_dk ='quest_dim_koin'
+    quest_dk ='quest_dim_koin',
+    sens='sensors'
 }
 

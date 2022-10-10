@@ -3,7 +3,7 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
-import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.interfaces';
+import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.api';
 import { MapMapillaryService } from './map.mapillary.service';
 import { MapBrowserEvent } from 'ol';
 import { VectorLayerNames, MapMode } from '../api/map.enums';
@@ -12,7 +12,14 @@ import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
+import { SensorsService } from './map.sensors.service';
 
+
+
+/**
+ * Author: p.tsagkis
+ * Date: 7/2022
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +43,11 @@ export class MapService {
   constructor(
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
+    private sensorsService: SensorsService,
     private mapMessagesService: AppMessagesService,
-    private service: TranslateService
+    private translateService: TranslateService
     ) {
-      this.translatePipe = new TranslatePipe(this.service);
+      this.translatePipe = new TranslatePipe(this.translateService);
     // Subscribe
     // keep the map mode switching central
     // There should be more things to add here, 
@@ -47,9 +55,11 @@ export class MapService {
     this.mapMode$.subscribe((mode: MapMode) => {
       this.mapMode = mode;
       if (this.mapMode === MapMode.stats_i || this.mapMode === MapMode.stats_q ){
-        this.subFactorsMode = this.mapMode;``
+        this.subFactorsMode = this.mapMode;
+      } else {
+        this.smartCityMap.getOverlayById('popupoverlay')?.setPosition(undefined);
       }
-      this.onModeChangeLayerVisibility(mode);
+      this.onModeChange(mode);
     });
   }
 
@@ -70,6 +80,7 @@ export class MapService {
         this.mapLayersService.FactorsDKLayer,
         this.mapLayersService.FactorsGeitLayer,
         this.mapLayersService.FacorsPdstrLayer,
+        this.mapLayersService.SensorsLayer,
         this.mapLayersService.SelectionLayer
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
@@ -92,6 +103,7 @@ export class MapService {
 
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
     this.map.forEachFeatureAtPixel(event.pixel, feature => {
+      console.log('feature',feature)
       if (feature.get('layer')) {
         switch (feature.get('layer')) {
           case VectorLayerNames.seq: {
@@ -129,6 +141,10 @@ export class MapService {
             });
             break;
           }
+          case VectorLayerNames.sens: {
+            this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
+            break;
+          }
           default: {
             console.error('No such layer');
             break;
@@ -143,7 +159,7 @@ export class MapService {
   }
 
 
-  private onModeChangeLayerVisibility(mode: MapMode): void{
+  private onModeChange(mode: MapMode): void{
     const msg = 
     (mode === 'street') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-MPLR')}) : 
     (mode === 'sens') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-SENSORS')}) : 
@@ -158,8 +174,7 @@ export class MapService {
       vPosition: 'bottom',
       styleClass: 'map-snackbar'
     });
-
-
+    this.sensorsService.stopReportAutoLoad();
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -169,6 +184,7 @@ export class MapService {
          this.mapLayersService.FactorsGeitLayer.setVisible(false);
          this.mapLayersService.FacorsPdstrLayer.setVisible(false);
          this.mapLayersService.QuestDKLayer.setVisible(false);
+         this.mapLayersService.SensorsLayer.setVisible(false);
          break; 
       } 
       case MapMode.stats_i: { 
@@ -179,6 +195,7 @@ export class MapService {
          this.mapLayersService.FactorsGeitLayer.setVisible(true);
          this.mapLayersService.FacorsPdstrLayer.setVisible(true);
          this.mapLayersService.QuestDKLayer.setVisible(false);
+         this.mapLayersService.SensorsLayer.setVisible(false);
          break; 
       } 
       case MapMode.stats_q: { 
@@ -189,23 +206,27 @@ export class MapService {
         this.mapLayersService.FactorsGeitLayer.setVisible(false);
         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
         this.mapLayersService.QuestDKLayer.setVisible(true);
+        this.mapLayersService.SensorsLayer.setVisible(false);
         break; 
      } 
       case MapMode.sens: { 
-         this.mapLayersService.MlSequencesLayer.setVisible(false);
-         this.mapLayersService.MlImagesLayer.setVisible(false);
-         this.mapLayersService.MlPointsLayer.setVisible(false);
-         this.mapLayersService.FactorsDKLayer.setVisible(false);
-         this.mapLayersService.FactorsGeitLayer.setVisible(false);
-         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
-         this.mapLayersService.QuestDKLayer.setVisible(false);
+        this.mapLayersService.MlSequencesLayer.setVisible(false);
+        this.mapLayersService.MlImagesLayer.setVisible(false);
+        this.mapLayersService.MlPointsLayer.setVisible(false);
+        this.mapLayersService.FactorsDKLayer.setVisible(false);
+        this.mapLayersService.FactorsGeitLayer.setVisible(false);
+        this.mapLayersService.FacorsPdstrLayer.setVisible(false);
+        this.mapLayersService.QuestDKLayer.setVisible(false);
+        this.mapLayersService.SensorsLayer.setVisible(true);
+        this.sensorsService.initSensors();        
         break; 
       } 
       default: { 
         console.error(`No such mode error: ${ mode }.`);
-         break; 
+        break; 
       } 
    } 
   }
+
 
 }

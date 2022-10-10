@@ -1,0 +1,28 @@
+<div style="display: flex;">
+
+    <mat-card class="sensor-card">
+        <mat-card-header>
+          <div mat-card-avatar></div>
+          <mat-card-title>{{title}}</mat-card-title>
+          <mat-card-subtitle>{{sensorsService?.currentViewLiveReport[0].when}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            
+            <table>
+                <tr *ngFor="let report of sensorsService?.currentViewLiveReport">
+                    <td><h5>{{report.name}}</h5></td>
+                    <td style="color:green; font-size:36px"><h4>{{report.inside}}</h4></td>
+                </tr>
+                <tr> 
+                    <td><h3>Σύνολο</h3></td>
+                    <td style="color:green; font-size:36px"><h1>{{getSumInside(sensorsService?.currentViewLiveReport)}}</h1></td>
+                </tr>
+            </table>
+            
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="mapillary-card">
+      <div id="sensorMapillaryDivId" style="height:50vh; width: 40vw; "></div>
+    </mat-card>
+
+    </div>
