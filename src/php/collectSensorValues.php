@@ -5,6 +5,7 @@ header('Access-Control-Allow-Origin: *');
 <<<<<<< HEAD
 try {
 <<<<<<< HEAD
+<<<<<<< HEAD
     $sql = 'select * from sensor_measures where sensor_id=1';
 =======
 // header('Content-type: application/json');
@@ -21,6 +22,12 @@ try {
 =======
     $sql = 'select * from sensor_measures';
 >>>>>>> 82969d4 (add groups on measures)
+=======
+    $sql = 'select * from sensor_measures';
+=======
+    $sql = 'select * from sensor_measures where sensor_id=1';
+>>>>>>> 376afd6 (home_about)
+>>>>>>> c73c64c (home_about)
     $rs = mysqli_query($con, $sql);  
     if (!$rs) {
         echo 'An SQL error occured.\n';

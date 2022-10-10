@@ -54,6 +54,7 @@ import { MatCardModule } from '@angular/material/card';
 import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
 import { AboutComponent } from './about/about.component';
+<<<<<<< HEAD
 =======
 import { SensorsGraphComponent } from './map/Controls/sensors-graph/sensors-graph.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -68,6 +69,8 @@ import { MatCardModule } from '@angular/material/card';
 import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
 >>>>>>> caa8ac9 (implement sensors functionality)
+=======
+>>>>>>> c73c64c (home_about)
 
 
 export function setupTranslateFactory(
@@ -104,8 +107,14 @@ export function setupTranslateFactory(
 =======
     SensorsGraphComponent,
     SensorsTabLayoutComponent,
+<<<<<<< HEAD
     SensorsCardComponent
 >>>>>>> caa8ac9 (implement sensors functionality)
+=======
+    SensorsCardComponent,
+    HomeComponent,
+    AboutComponent
+>>>>>>> c73c64c (home_about)
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
