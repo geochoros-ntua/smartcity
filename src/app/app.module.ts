@@ -43,6 +43,8 @@ import { TranslateService } from './shared/translate/translate.service';
 import { TranslateComponent } from './shared/translate/translate.component';
 import { TranslatePipe } from './shared/translate/translate.pipe';
 import { DarkThemeComponent } from './shared/dark-theme/dark-theme.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 
 export function setupTranslateFactory(
@@ -65,7 +67,9 @@ export function setupTranslateFactory(
     PopupComponent,
     TranslateComponent,
     TranslatePipe,
-    DarkThemeComponent
+    DarkThemeComponent,
+    HomeComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

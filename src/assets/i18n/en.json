@@ -1,5 +1,10 @@
 {
     "TITLE": "Walkable Athens",
+    "MENU": {
+      "HOME": "Home",
+      "ABOUT": "About",
+      "MAP": "Map"
+    },
     "MAP" : {
         "TILE-SELECTOR": "Choose background",
         "MODE-MPLR": "AthensEye",
