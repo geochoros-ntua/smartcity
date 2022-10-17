@@ -1,3 +1,4 @@
+import { HomeComponent } from './home/home.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 
@@ -50,6 +51,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card'; 
 import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
+import { AboutComponent } from './about/about.component';
 
 
 export function setupTranslateFactory(
@@ -75,7 +77,9 @@ export function setupTranslateFactory(
     DarkThemeComponent,
     SensorsGraphComponent,
     SensorsTabLayoutComponent,
-    SensorsCardComponent
+    SensorsCardComponent,
+    HomeComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
