@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./dark-theme.component.scss']
 })
 export class DarkThemeComponent {
+  elementRef: any;
 
 
   constructor(public darkThemeService: DarkThemeService, private mapLayersService: MapLayersService) {
