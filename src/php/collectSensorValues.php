@@ -4,6 +4,7 @@ header('Access-Control-Allow-Origin: *');
 <<<<<<< HEAD
 <<<<<<< HEAD
 try {
+<<<<<<< HEAD
     $sql = 'select * from sensor_measures where sensor_id=1';
 =======
 // header('Content-type: application/json');
@@ -17,6 +18,9 @@ try {
 =======
     $sql = 'select * from sensor_measures where sensor_id=1';
 >>>>>>> caa8ac9 (implement sensors functionality)
+=======
+    $sql = 'select * from sensor_measures';
+>>>>>>> 82969d4 (add groups on measures)
     $rs = mysqli_query($con, $sql);  
     if (!$rs) {
         echo 'An SQL error occured.\n';
@@ -49,7 +53,8 @@ try {
         do
         {
             $value = $array[$i]['inside']."\n";
-            $insert_sql = "insert into sensor_measures_history (measure_id, value) values ( " . $measure_id . "," . $value . ") ";
+            $gate_id = $array[$i]["id"];
+            $insert_sql = "insert into sensor_measures_history (measure_id, gate_id, value) values ( " . $measure_id . "," . $gate_id . "," . $value . ") ";
             if ($con->query($insert_sql) === TRUE) {
                 echo "New record created successfully";
             } else {

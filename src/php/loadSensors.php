@@ -8,10 +8,11 @@ $epsg =  'EPSG:3857';
 <<<<<<< HEAD
 <<<<<<< HEAD
 
-$sql = "SELECT sm.id, sp.label, intensity_limits, 'sensors' as layer,  GROUP_CONCAT(sm.live_report_id SEPARATOR ',') live_report_id, sm.sensor_id, sm.mpl_imageid,  ST_AsGeoJSON(sp.SHAPE) GEOM  " . 
+$sql = "SELECT sm.id, sp.label, sp.intensity_limits, 'sensors' as layer, sm.gate_groups, GROUP_CONCAT(sm.live_report_id SEPARATOR ',') live_report_id, sm.sensor_id, sm.mpl_imageid,  ST_AsGeoJSON(sp.SHAPE) GEOM  " . 
 " FROM sensor_points sp  " . 
 " INNER JOIN sensor_measures sm ON sm.sensor_id = sp.id group by sensor_id ";
 
+<<<<<<< HEAD
 $attrs = ['label', 'live_report_id', 'layer', 'intensity_limits', 'mpl_imageid'];
 =======
 // SELECT date(datetime) as stat_day, SUM(ABS(value))
@@ -35,6 +36,9 @@ $attrs = ['label', 'live_report_id', 'layer'];
 =======
 $attrs = ['label', 'live_report_id', 'layer', 'intensity_limits', 'mpl_imageid'];
 >>>>>>> caa8ac9 (implement sensors functionality)
+=======
+$attrs = ['label', 'live_report_id', 'gate_groups', 'layer', 'intensity_limits', 'mpl_imageid'];
+>>>>>>> 82969d4 (add groups on measures)
 
 # Try query or error
 $rs = mysqli_query($con, $sql);  
