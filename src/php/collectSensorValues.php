@@ -2,7 +2,7 @@
 require 'connect.php';
 header('Access-Control-Allow-Origin: *');
 try {
-    $sql = 'select * from sensor_measures where sensor_id=1';
+    $sql = 'select * from sensor_measures';
     $rs = mysqli_query($con, $sql);  
     if (!$rs) {
         echo 'An SQL error occured.\n';
@@ -33,7 +33,8 @@ try {
         do
         {
             $value = $array[$i]['inside']."\n";
-            $insert_sql = "insert into sensor_measures_history (measure_id, value) values ( " . $measure_id . "," . $value . ") ";
+            $gate_id = $array[$i]["id"];
+            $insert_sql = "insert into sensor_measures_history (measure_id, gate_id, value) values ( " . $measure_id . "," . $gate_id . "," . $value . ") ";
             if ($con->query($insert_sql) === TRUE) {
                 echo "New record created successfully";
             } else {
