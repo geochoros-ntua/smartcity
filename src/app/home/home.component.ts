@@ -12,13 +12,10 @@ export class HomeComponent implements OnInit {
 
   imgSrc = '';
 
-  lang = 'gr';
 
-  constructor(private translateService: TranslateService) {
-    this.translateService.lang$.subscribe(value => {
-      this.lang = value.toString();
-    });
-    this.lang = this.translateService.getLang();
+
+  constructor(public translateService: TranslateService) {
+
   }
 
   ngOnInit(): void {

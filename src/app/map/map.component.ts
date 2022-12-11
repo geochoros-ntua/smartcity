@@ -13,31 +13,24 @@ import { MapMode } from './api/map.enums';
 })
 
 
-export class MapComponent implements OnInit {
 
+export class MapComponent implements OnInit {
+  isStreet: boolean; 
+  isStats: boolean; 
 
   constructor(
     private mapService: MapService, 
-    public mapLayersService: MapLayersService, 
-    private darkThemeService: DarkThemeService) {
+    public mapLayersService: MapLayersService) {
 
   }
 
   ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
-    const isDarkTheme = this.darkThemeService.darkTheme;
-    this.mapLayersService.cartoDarkLayer.setVisible(isDarkTheme);
-    this.mapLayersService.cartoLightLayer.setVisible(!isDarkTheme);
+    this.isStreet = (this.mapService.mapMode === MapMode.street);
+    this.isStats = (this.mapService.mapMode === MapMode.stats_i || this.mapService.mapMode === MapMode.stats_q);
   }
 
-  public isStreetMode(): boolean {
-    return this.mapService.mapMode === MapMode.street;
-  }
-
-  public isStatsMode(): boolean {
-    return this.mapService.mapMode === MapMode.stats_i || this.mapService.mapMode === MapMode.stats_q;
-  }
 
   private registerMapEvents(thisP: MapComponent): void {
 

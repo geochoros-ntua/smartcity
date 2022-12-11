@@ -7,10 +7,10 @@
 <div id="map_div">
 
   <app-tileselector></app-tileselector>
-  <app-mapillary-data *ngIf="isStreetMode()"></app-mapillary-data>
+  <app-mapillary-data *ngIf="isStreet"></app-mapillary-data>
   <app-map-mode></app-map-mode>
   <app-opacity-slider></app-opacity-slider>
-  <app-map-stats-mode  *ngIf="isStatsMode()"></app-map-stats-mode>
+  <app-map-stats-mode *ngIf="isStats"></app-map-stats-mode>
   <app-zoominout></app-zoominout>
 
   <app-popup></app-popup>

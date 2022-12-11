@@ -2,11 +2,7 @@
 require 'connect.php';
 header('Access-Control-Allow-Origin: *');
 try {
-<<<<<<< HEAD
     $sql = 'select * from sensor_measures';
-=======
-    $sql = 'select * from sensor_measures where sensor_id=1';
->>>>>>> 376afd6 (home_about)
     $rs = mysqli_query($con, $sql);  
     if (!$rs) {
         echo 'An SQL error occured.\n';
