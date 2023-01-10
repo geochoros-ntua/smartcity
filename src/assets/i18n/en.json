@@ -26,6 +26,10 @@
         "GRAPH-TYPE": "Graph type",
         "REPORT-TYPE": "Report type",
         "SENSORS-LIVE":"Live data",
+<<<<<<< HEAD
         "SENSORS-GRAPHS":"Data Graphs (historic)"  
+=======
+        "SENSORS-GRAPHS":"Data Graphs (historic)"    
+>>>>>>> c73c64cc70771f3695caba42d35907a3903d272e
     }
 }
