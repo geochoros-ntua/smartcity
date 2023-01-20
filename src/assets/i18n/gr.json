@@ -27,5 +27,10 @@
         "REPORT-TYPE": "Τύπος αναφοράς",
         "SENSORS-LIVE":"Live δεδομένα",
         "SENSORS-GRAPHS":"Γραφήματα δεδομένων (ιστορικό)"                  
+    },
+    "RESPONSES" : {
+        "VARIABLE" : "Variable",
+        "FILTER_VARIABLE" : "Filter variable",
+        "fILTER_VALUES" : "Filter values"
     }
 }

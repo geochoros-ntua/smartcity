@@ -248,6 +248,10 @@ a {
   display: none !important;
 }
 
+.spacer {
+  flex: auto;
+}
+
 @media only screen and (max-width: 700px) {
   .profile-item {
     width: 100% !important;
