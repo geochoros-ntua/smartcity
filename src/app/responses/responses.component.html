@@ -1,0 +1,43 @@
+<section>
+    <div class="responses-container">
+        <div class="variables-container">
+            <mat-form-field appearance="fill" class="select-variable">
+                <mat-label>{{ "RESPONSES.VARIABLE" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedVariable" (selectionChange)="filterResponses()">
+                    <mat-option *ngFor="let variable of variables" [value]="variable.id">{{ variable.id + '. ' +
+                        variable.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="filters-container">
+            <mat-form-field appearance="fill" class="select-filter-variable">
+                <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedFilterVariable" (selectionChange)="getFilterValues(selectedFilterVariable)">
+                    <mat-option *ngFor="let filterVariable of filterVariables" [value]="filterVariable">{{
+                        filterVariable}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="selectedFilterVariable" appearance="fill" class="select-filter-variable">
+                <mat-label>{{ "RESPONSES.FILTER_VALUES" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedFilterValues" (selectionChange)="filterResponses()" multiple>
+                    <mat-option *ngFor="let value of filterVariableValues" [value]="value">{{
+                        value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="spacer"></div>
+            <button mat-icon-button (click)="resetFilters()">
+                <mat-icon>clear_all</mat-icon> 
+            </button>
+        </div>
+
+        <div class="row">
+            <canvas #graphCanvas style="max-height:45vh !important; height:45vh !important;"></canvas>
+            <hr color="primary">
+        </div>
+
+    </div>
+</section>

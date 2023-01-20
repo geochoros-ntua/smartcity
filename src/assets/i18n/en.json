@@ -26,10 +26,17 @@
         "GRAPH-TYPE": "Graph type",
         "REPORT-TYPE": "Report type",
         "SENSORS-LIVE":"Live data",
-<<<<<<< HEAD
         "SENSORS-GRAPHS":"Data Graphs (historic)"  
+<<<<<<< HEAD
 =======
         "SENSORS-GRAPHS":"Data Graphs (historic)"    
 >>>>>>> caa8ac9 (implement sensors functionality)
+=======
+    },
+    "RESPONSES" : {
+        "VARIABLE" : "Variable",
+        "FILTER_VARIABLE" : "Filter variable",
+        "fILTER_VALUES" : "Filter values"
+>>>>>>> e16d20a (responses search v 0.1)
     }
 }
