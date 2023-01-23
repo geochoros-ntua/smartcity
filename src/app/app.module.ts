@@ -53,6 +53,8 @@ import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sen
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
 import { AboutComponent } from './about/about.component';
 import { ResponsesComponent } from './responses/responses.component';
+import { TeamComponent } from './team/team.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 export function setupTranslateFactory(
@@ -81,7 +83,9 @@ export function setupTranslateFactory(
     SensorsCardComponent,
     HomeComponent,
     AboutComponent,
-    ResponsesComponent
+    ResponsesComponent,
+    TeamComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

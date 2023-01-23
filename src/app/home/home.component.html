@@ -1,20 +1,40 @@
 <section>
     <div class="front-image">
-        <div class="front-image-info">
+        <div [ngClass]="innerWidth > 670 ? 'front-image-info' : 'front-image-info-mobile'">
             <div class="slide-left">
                 <h1 class="title-a">{{'TITLE' | translate}}</h1>
             </div>
+
         </div>
-        <div class="front-image-blend"></div>
+        <div [ngClass]="innerWidth > 670 ? 'front-buttons-container' : 'front-buttons-container-mobile'">
+            <div
+                [ngClass]="innerWidth > 670 ? 'front-buttons-inner-container' : 'front-buttons-inner-container-mobile'">
+                <div [ngClass]="innerWidth > 670 ? 'left-container' : 'left-container-mobile'" routerLink="/about">
+                    <div class="front-button-container front-button-container-left background-color-primary border-color-primary">
+                        <div class="front-button-text">
+                            {{"HOME.INFO" | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/map">
+                    <div class="front-button-container front-button-container-right background-color-accent border-color-accent">
+                        <div class="front-button-text">
+                            {{"HOME.MAPS" | translate}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="front-image-blend"></div> 
         <div class="front-image-bg" [ngStyle]="getBgStyle()">
         </div>
 
         <div class="front-image-cover"></div>
-        <button class="scroll-down" mat-icon-button (click)="scrollDown()">
+        <!-- <button class="scroll-down" mat-icon-button (click)="scrollDown()">
             <mat-icon>expand_more</mat-icon>
-        </button>
+        </button> -->
     </div>
-    <div class="front-content">
+    <!-- <div class="front-content">
         <mat-card class="front-text">
             <h2>Σκοπός του Ψηφιακού Παρατηρητηρίου</h2>
             <p>
@@ -82,10 +102,10 @@
                 οικονομία. </p>
         </mat-card>
 
-    </div>
+    </div> -->
 
 
-
+    <!-- 
     <div class="footer">
         <div class="inner-footer">
 
@@ -108,5 +128,5 @@
 
             <p class="copyright">&#169; NTUA, 2022. All rights reserved.</p>
         </div>
-    </div>
+    </div> -->
 </section>

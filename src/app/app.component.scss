@@ -53,3 +53,15 @@
     font-size: 100%;
   }
   
+  .menu-whole {
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    align-self: center;
+    margin-right: 16px;
+  }
+
+  .menu-div {
+    padding: 0 8px 0 8px;
+    cursor: pointer;
+  }

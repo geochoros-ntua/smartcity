@@ -13,7 +13,8 @@
         <div class="filters-container">
             <mat-form-field appearance="fill" class="select-filter-variable">
                 <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedFilterVariable" (selectionChange)="getFilterValues(selectedFilterVariable)">
+                <mat-select [(ngModel)]="selectedFilterVariable"
+                    (selectionChange)="getFilterValues(selectedFilterVariable)">
                     <mat-option *ngFor="let filterVariable of filterVariables" [value]="filterVariable">{{
                         filterVariable}}
                     </mat-option>
@@ -28,9 +29,20 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div class="spacer"></div>
+        </div>
+            <div class="filters-container">
+            <mat-form-field appearance="fill" class="select-filter-variable">
+                <mat-label>{{ "RESPONSES.CHART_TYPE" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedChartType" (selectionChange)="filterResponses()">
+                    <mat-option *ngFor="let value of chartTypeValues" [value]="value.id">{{ lang === 'en' ?
+                        value.name_en : value.name_gr}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- <div class="spacer"></div> -->
             <button mat-icon-button (click)="resetFilters()">
-                <mat-icon>clear_all</mat-icon> 
+                <mat-icon>clear_all</mat-icon>
             </button>
         </div>
 

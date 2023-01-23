@@ -1,5 +1,5 @@
 import { TranslateService } from './../shared/translate/translate.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +13,13 @@ export class HomeComponent implements OnInit {
   imgSrc = '';
 
   lang = 'gr';
+  
+  innerWidth = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.innerWidth = window.innerWidth;
+  }
 
   constructor(private translateService: TranslateService) {
     this.translateService.lang$.subscribe(value => {

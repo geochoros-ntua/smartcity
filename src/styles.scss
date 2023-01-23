@@ -122,12 +122,12 @@ body {
 body {
   margin: 0;
   // font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-family: "Rajdhani", sans-serif;
+  font-family: 'Roboto Mono', monospace;
   background: #5e747e;
 }
 
 $custom-typography: mat.define-typography-config(
-  $font-family: "Fira Sans, sans-serif",
+  $font-family: "'Roboto Mono', monospace",
 );
 // $font-family: "Rajdhani, sans-serif",
 // $headline: mat-typography-level(32px, 48px, 700),
@@ -308,6 +308,7 @@ a {
 
 .is-active {
   color: mat.get-color-from-palette($athens-accent);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.87);
   mat-icon {
     color: mat.get-color-from-palette($athens-accent) !important;
   }
@@ -323,6 +324,165 @@ a {
 
 .spacer {
   flex: auto;
+}
+
+// menu
+
+.menu-div:hover {
+  color:  mat.get-color-from-palette($athens-accent);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.87);
+  transition: all 0.3s ease-in-out;
+}
+
+// home stuff
+
+.color-primary {
+  color:  mat.get-color-from-palette($athens-primary);
+}
+
+.color-accent {
+  color:  mat.get-color-from-palette($athens-accent);
+}
+
+.background-color-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: -0.5em;
+  background-color:  mat.get-color-from-palette($athens-primary);
+}
+
+.background-color-accent::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: -0.5em;
+  background-color:  mat.get-color-from-palette($athens-accent);
+}
+
+.border-color-primary {
+  border-color:  mat.get-color-from-palette($athens-primary);
+}
+
+.border-color-accent {
+  border-color:  mat.get-color-from-palette($athens-accent);
+}
+
+.front-button-container-left::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-color:  mat.get-color-from-palette($athens-primary);
+  border-radius: 50%;
+  border-style: dashed;
+  border-width: 0.5em;
+  margin: -0.5em;
+  transition: all 0.4s ease-in-out;
+}
+
+.front-button-container-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-color:  mat.get-color-from-palette($athens-accent);
+  border-radius: 50%;
+  border-style: dashed;
+  border-width: 0.5em;
+  margin: -0.5em;
+  transition: all 0.4s ease-in-out;
+}
+
+
+// about stuff
+
+.icons-container {
+  // display: flex;
+  // flex-direction: column;
+  width: 40px;
+  padding: 16px;
+  border-color:  mat.get-color-from-palette($athens-primary);
+  border-style: dashed;
+  border-width: 0.3em;
+}
+
+.first-title-container {
+  position: relative;
+  h3 {
+    padding: 0 8px 8px 8px;
+  }
+}
+
+.second-title-container {
+  position: relative;
+  h3 {
+    padding: 8px 8px 0 8px;
+  }
+}
+
+.third-title-container {
+  position: relative;
+  h3 {
+    margin: 0;
+    padding: 0 8px 0 8px;
+  }
+}
+
+.first-text-container {
+  position: relative;
+  p {
+    padding: 0 8px 32px 8px;
+  }
+}
+
+.second-text-container {
+  position: relative;
+  p {
+    padding: 0 8px 32px 8px;
+  }
+}
+
+.first-title-container::before {
+  content: "";
+  border-bottom-color:  mat.get-color-from-palette($athens-accent);
+  border-bottom-style: dashed;
+  border-bottom-width: 0.3em;
+  width: 110%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateX(-42px);
+}
+
+.first-text-container::before {
+  content: "";
+  border-bottom-color:  mat.get-color-from-palette($athens-accent);
+  border-bottom-style: dashed;
+  border-bottom-width: 0.3em;
+  width: 1128px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: translateX(-42px);
+}
+
+.about-link {
+  color: mat.get-color-from-palette($athens-warn);
 }
 
 @media only screen and (max-width: 700px) {
