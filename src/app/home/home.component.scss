@@ -1,6 +1,3 @@
-@import "~@angular/material/theming";
-@import "../../styles.scss";
-
 .front-image {
   position: relative;
   overflow: hidden;
@@ -116,8 +113,8 @@
 }
 
 // .footer {
-  //   background: mat-color($watc-app-primary);
-  // color: #fff;
+//   background: mat-color($watc-app-primary);
+// color: #fff;
 // }
 
 .inner-footer {
@@ -339,7 +336,109 @@ footer a {
   color: white;
 }
 
+.front-image-info-mobile {
+  position: absolute;
+  top: 2%;
+  right: 10%;
+  text-align: end;
+  z-index: 2;
+  color: white;
+}
+
 .slide-left {
   -webkit-animation: slide-left 2s ease-out both;
   animation: slide-left 2s ease-out both;
+}
+
+.front-buttons-container {
+  position: absolute;
+  bottom: 20%;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  margin: auto;
+}
+
+.front-buttons-container-mobile {
+  position: absolute;
+  bottom: 2%;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  margin: auto;
+}
+
+.front-buttons-inner-container {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.front-buttons-inner-container-mobile {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.front-button-container {
+  position: relative;
+  width: 15rem;
+  height: 15rem;
+  cursor: pointer;
+  transform: scale(1);
+  transition: all 0.4s ease-in-out;
+}
+
+.front-button-container:hover {
+  transform: scale(1.2);
+}
+
+.front-button-container-left:hover::after {
+  transform: rotate(45deg);
+}
+
+.front-button-container-right:hover::after {
+  transform: rotate(45deg);
+}
+
+.front-button-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.5;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.left-container {
+  width: 50%;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+
+.right-container {
+  width: 50%;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+
+.front-button-text {
+  color: rgba($color: #ffffff, $alpha: 0.87);
+  font-size: 30px;
+  font-weight: bold;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

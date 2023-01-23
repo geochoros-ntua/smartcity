@@ -1,9 +1,14 @@
 {
     "TITLE": "Walkable Athens",
     "MENU": {
-      "HOME": "Home",
-      "ABOUT": "About",
-      "MAP": "Map"
+      "HOME": "HOME",
+      "ABOUT": "ABOUT",
+      "MAP": "MAPS",
+      "TEAM" : "TEAM",
+      "QUESTIONNAIRE" : "QUESTIONNAIRE",
+      "CONTACT" : "CONTACT",
+      "DIGITAL" : "DIGITAL",
+      "OBSERVATORY" : "OBSERVATORY"
     },
     "MAP" : {
         "TILE-SELECTOR": "Choose background",
@@ -36,7 +41,16 @@
     "RESPONSES" : {
         "VARIABLE" : "Variable",
         "FILTER_VARIABLE" : "Filter variable",
+<<<<<<< HEAD
         "fILTER_VALUES" : "Filter values"
 >>>>>>> e16d20a (responses search v 0.1)
+=======
+        "fILTER_VALUES" : "Filter values",
+        "CHART_TYPE" : "Chart type"
+    },
+    "HOME": {
+        "INFO" : "INFO",
+        "MAPS" : "MAPS"
+>>>>>>> ebf3687 (responses and theming v0.1)
     }
 }

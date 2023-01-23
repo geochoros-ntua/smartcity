@@ -1,5 +1,5 @@
 import { DarkThemeService } from './shared/dark-theme/dark-theme.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { slideInAnimation } from './animations';
 
@@ -14,7 +14,14 @@ import { slideInAnimation } from './animations';
 })
 export class AppComponent implements OnInit {
 
-  
+  innerWidth = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.innerWidth = window.innerWidth;
+  }
+
+
   constructor(public darkThemeService: DarkThemeService) { }
 
   ngOnInit(): void {

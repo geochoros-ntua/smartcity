@@ -1,0 +1,21 @@
+.team-container {
+    padding: 32px;
+    max-width: 1170px;
+    margin: auto;
+}
+
+.profile-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 200px;
+  }
+
+  .item-img {
+    text-align: center;
+  }
+  
+  .item-content {
+    text-align: center;
+    margin-bottom: 32px;
+  }

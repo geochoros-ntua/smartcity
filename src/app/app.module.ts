@@ -74,7 +74,12 @@ import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-
 >>>>>>> c73c64c (home_about)
 =======
 import { ResponsesComponent } from './responses/responses.component';
+<<<<<<< HEAD
 >>>>>>> e16d20a (responses search v 0.1)
+=======
+import { TeamComponent } from './team/team.component';
+import { ContactComponent } from './contact/contact.component';
+>>>>>>> ebf3687 (responses and theming v0.1)
 
 
 export function setupTranslateFactory(
@@ -122,8 +127,14 @@ export function setupTranslateFactory(
 >>>>>>> c73c64c (home_about)
 =======
     AboutComponent,
+<<<<<<< HEAD
     ResponsesComponent
 >>>>>>> e16d20a (responses search v 0.1)
+=======
+    ResponsesComponent,
+    TeamComponent,
+    ContactComponent
+>>>>>>> ebf3687 (responses and theming v0.1)
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

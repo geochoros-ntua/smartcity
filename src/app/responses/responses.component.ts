@@ -1,3 +1,4 @@
+import { TranslateService } from './../shared/translate/translate.service';
 import { filter } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -16,20 +17,34 @@ export class ResponsesComponent implements OnInit {
 
   responses: any[] = [];
   variables: any[] = [];
+
+  chartTypeValues: any[] = [
+    { id: 0, value: 'bar', name_en: 'bar', name_gr: 'bar' },
+    { id: 1, value: 'pie', name_en: 'pie', name_gr: 'pie' },
+  ]
+
+
   filterVariables: any[] = [];
   filterVariableValues: any[] = [];
 
 
   selectedVariable: number = 62;
-  selectedFilterVariable: string = ''
-  selectedFilterValues: string[] = []
+  selectedFilterVariable: string = '';
+  selectedFilterValues: string[] = [];
+  selectedChartType: number = 0;
 
-  graphTypes: any[] = ['bar'];
   graphTitle: string = '';
 
   responsesChart: any;
 
-  constructor(private httpClient: HttpClient) { }
+  lang: string = 'gr';
+
+  constructor(private httpClient: HttpClient, private translateService: TranslateService) {
+    this.translateService.lang$.subscribe(value => {
+      this.lang = value.toString();
+    });
+    this.lang = this.translateService.getLang();
+  }
 
   ngOnInit(): void {
     Chart.register(...registerables);
@@ -69,7 +84,7 @@ export class ResponsesComponent implements OnInit {
         this.responses.push(response);
       }
 
-      console.log(this.responses)
+      // console.log(this.responses)
 
       this.filterResponses()
     })
@@ -112,7 +127,7 @@ export class ResponsesComponent implements OnInit {
       return prev;
     }, {});
 
-    console.log(frequency);
+    // console.log(frequency);
     const sortedFrequency = Object.keys(frequency)
       .sort()
       .reduce((accumulator: any, key) => {
@@ -121,8 +136,16 @@ export class ResponsesComponent implements OnInit {
         return accumulator;
       }, {});
 
-    console.log(sortedFrequency);
-    this.initChart(labels, sortedFrequency);
+    const frequencyForPie = Object.values(sortedFrequency)
+
+    if (this.selectedChartType === 1) {
+      this.initChart(labels, frequencyForPie);
+
+    }
+    else {
+      this.initChart(labels, sortedFrequency);
+    }
+
   }
 
   initChart(labels: string[], values: any[]): void {
@@ -131,7 +154,7 @@ export class ResponsesComponent implements OnInit {
     }
 
     this.responsesChart = new Chart(this.graphCanvas?.nativeElement, {
-      type: 'bar',
+      type: this.selectedChartType === 1 ? 'pie' : 'bar',
       options: {
         responsive: true
       },
@@ -158,8 +181,6 @@ export class ResponsesComponent implements OnInit {
   }
 
   getFilterValues(filter: any) {
-    console.log(filter)
-
     this.filterVariableValues = [...new Set(this.responses.map(item => item[filter]))];
 
   }
@@ -167,6 +188,7 @@ export class ResponsesComponent implements OnInit {
   resetFilters() {
     this.selectedFilterValues = [];
     this.selectedFilterVariable = '';
+    this.selectedChartType = 0;
     this.filterResponses();
   }
 
