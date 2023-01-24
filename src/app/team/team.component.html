@@ -1,0 +1,30 @@
+<div class="team-container">
+    <!-- <h2>Ομάδα έργου</h2>
+    <div class="main-info">
+        <p class="geochoros-text">
+        </p>
+    </div> -->
+    <div class="teams">
+        <div class="research-team">
+
+            <mat-list>
+                <mat-list-item class="profile-item" *ngFor="let member of team">
+                    <div class="item-img">
+                        <div class="img-filter"></div>
+                        <img class="profile-img" [src]="member.img">
+                    </div>
+                    <div class="item-content">
+                        <div style="line-height: 20px; font-size: 20px; font-weight: 700;" mat-line>
+                            {{member.title}}{{member.name}}<span><a title="ORCID" href="{{member.rid}}" target="_blank"
+                                    class="rid-link"><img style="margin-left: 8px;" width="20" height="20"
+                                        src="assets/icons/orcid.logo.icon.svg" type="image/svg+xml"
+                                        class="rid-button"></a></span></div>
+                        <div style="font-style: italic;" mat-line> {{member.description}} </div>
+                        <div mat-line> <a href="mailto: {{member.email }}">{{member.email}}</a>
+                        </div>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>

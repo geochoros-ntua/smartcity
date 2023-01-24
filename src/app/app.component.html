@@ -1,31 +1,36 @@
 <div class="example-container main-parent mat-typography mat-app-background"
   [class.athens-dark-theme]="darkThemeService.isDarkTheme$ | async">
   <mat-toolbar>
-    <!-- <div fxShow="true" fxHide.gt-sm="true">
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div> -->
+    <img src="assets/icons/logo.png" style="height: 7vh;">
 
-    <!-- <a mat-button class="companyName" routerLink="home"> -->
-      <img src="assets/icons/logo.png" style="height: 7vh;">
-      <!-- <span>{{'TITLE' | translate }}</span> -->
-    <!-- </a> -->
+    <div style="margin-right: 8px" class="color-primary" *ngIf="innerWidth > 760">{{'MENU.DIGITAL' | translate}}</div>
+    <div class="color-accent" *ngIf="innerWidth > 760">{{'MENU.OBSERVATORY' | translate}}</div>
     <span class="example-spacer"></span>
-    <!-- <div fxShow="true" fxHide.lt-md="true"> -->
-    <!-- <button mat-icon-button routerLink="/home" [routerLinkActive]="['is-active']"
-        [routerLinkActiveOptions]="{exact: false}">
-        <mat-icon>home</mat-icon>
-      </button> -->
-    <!-- <button mat-icon-button routerLink="/map" [routerLinkActive]="['is-active']"
-        [routerLinkActiveOptions]="{exact: false}">
-        <mat-icon>public</mat-icon>
-      </button>
-    </div> -->
 
-    <app-translate></app-translate>
-    <app-dark-theme></app-dark-theme>
-    <button mat-icon-button [matMenuTriggerFor]="menuParent">
+    <div class="menu-whole" *ngIf="innerWidth > 1470">
+      <div class="menu-div" routerLink="/home" [routerLinkActive]="['is-active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        {{'MENU.HOME' | translate}}
+      </div>
+      <div class="menu-div" routerLink="/about" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+        {{'MENU.ABOUT' | translate}}
+      </div>
+      <div class="menu-div" routerLink="/team" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+        {{'MENU.TEAM' | translate}}
+      </div>
+      <div class="menu-div" routerLink="/map" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
+        {{'MENU.MAP' | translate}}
+      </div>
+      <div class="menu-div" routerLink="/responses" routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{exact: true}">
+        {{'MENU.QUESTIONNAIRE' | translate}}
+      </div>
+      <div class="menu-div" routerLink="/contact" routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{exact: true}">
+        {{'MENU.CONTACT' | translate}}
+      </div>
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="menuParent" *ngIf="innerWidth <= 1470">
       <mat-icon>menu</mat-icon>
       <mat-menu #menuParent="matMenu">
         <button class="menu-button" mat-menu-item routerLink="/home" [routerLinkActive]="['is-active']"
@@ -36,34 +41,32 @@
           [routerLinkActiveOptions]="{exact: true}">
           <mat-icon>info</mat-icon>{{'MENU.ABOUT' | translate}}
         </button>
+        <button class="menu-button" mat-menu-item routerLink="/team" [routerLinkActive]="['is-active']"
+          [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon>group</mat-icon>{{'MENU.TEAM' | translate}}
+        </button>
         <button class="menu-button" mat-menu-item routerLink="/map" [routerLinkActive]="['is-active']"
           [routerLinkActiveOptions]="{exact: true}">
           <mat-icon>map</mat-icon>{{'MENU.MAP' | translate}}
         </button>
+        <button class="menu-button" mat-menu-item routerLink="/responses" [routerLinkActive]="['is-active']"
+          [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon>question_mark</mat-icon>{{'MENU.QUESTIONNAIRE' | translate}}
+        </button>
+        <button class="menu-button" mat-menu-item routerLink="/contact" [routerLinkActive]="['is-active']"
+          [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon>mail</mat-icon>{{'MENU.CONTACT' | translate}}
+        </button>
       </mat-menu>
     </button>
+    <app-translate></app-translate>
+    <app-dark-theme></app-dark-theme>
+
   </mat-toolbar>
-  <!-- <mat-sidenav-container fxFlexFill class="example-container" [hasBackdrop]="false">
 
-    <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over" opened="false" fxHide.gt-sm="true">
-      <div style="padding: 8px;" fxLayout="column"> -->
-  <!-- <button mat-icon-button routerLink="/home" [routerLinkActive]="['is-active']"
-          [routerLinkActiveOptions]="{exact: false}">
-          <mat-icon>home</mat-icon>
-        </button> -->
-  <!-- <button mat-icon-button routerLink="/app-map" [routerLinkActive]="['is-active']"
-          [routerLinkActiveOptions]="{exact: false}">
-          <mat-icon>public</mat-icon>
-        </button>
-
-      </div>
-    </mat-sidenav>
-    <mat-sidenav-content fxFlexFill> -->
 
   <div [@routeAnimations]="prepareRoute(outlet)">
     <router-outlet #outlet="outlet"></router-outlet>
   </div>
 
-  <!-- </mat-sidenav-content>
-  </mat-sidenav-container> -->
 </div>

@@ -1,0 +1,33 @@
+.contact-container {
+  padding: 32px;
+  max-width: 1170px;
+  margin: auto;
+}
+
+.inner-footer {
+    max-width: 1170px;
+    margin: auto;
+  }
+  
+  .copyright {
+    margin: 0;
+    padding: 32px;
+  }
+  
+  .footer-logos {
+    margin: 0;
+    padding-left: 32px;
+    padding-right: 32px;
+    display: flex;
+  }
+  
+  .footer-logo {
+    height: 100px;
+    margin-right: 32px;
+  }
+  
+  footer a {
+    display: flex;
+    align-items: center;
+  }
+  

@@ -52,6 +52,9 @@ import { MatCardModule } from '@angular/material/card';
 import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
 import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
+import { ResponsesComponent } from './responses/responses.component';
+import { TeamComponent } from './team/team.component';
 
 
 export function setupTranslateFactory(
@@ -79,7 +82,10 @@ export function setupTranslateFactory(
     SensorsTabLayoutComponent,
     SensorsCardComponent,
     HomeComponent,
-    AboutComponent
+    AboutComponent,
+    ResponsesComponent,
+    TeamComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

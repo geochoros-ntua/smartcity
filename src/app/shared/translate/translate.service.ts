@@ -10,6 +10,9 @@ export class TranslateService {
   data: any = {};
   lang: string = 'en';
 
+  private language = new Subject<string>();
+  lang$ = this.language.asObservable();
+
   constructor(private http: HttpClient) { }
 
   use(lang: string): Promise<any> {
@@ -32,7 +35,11 @@ export class TranslateService {
 
   setLang(lang: string) {
     this.lang = lang;
+    this.language.next(lang);
   }
 
+  getLang() {
+    return this.lang;
+  }
 
 }

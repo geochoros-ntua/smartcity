@@ -1,55 +1,67 @@
 .companyName {
-    font-size: 150%;
-  }
+  font-size: 150%;
+}
+
+.mat-toolbar {
+  height: 7vh;
+}
+
+div {
+  overflow: inherit;
+}
+
+.mat-sidenav-container {
+  min-height: 92vh !important;
+}
+
   
-  .mat-toolbar {
-    height: 7vh;
-  }
-  
-  div {
-    overflow: inherit;
-  }
-  
-  .mat-sidenav-container {
-    min-height: 92vh !important;
-  }
+::ng-deep snack-bar-container simple-snack-bar {
+  color: white;
+  justify-content: center !important;
+}
 
-    
-  ::ng-deep snack-bar-container simple-snack-bar {
-    color: white;
-    justify-content: center !important;
-  }
-
-  .mylittle{
-    color: red;
-  }
-
-
-  ::ng-deep snack-bar-container {
-    background:rgba(0, 0, 0, 0.5) !important;
-  }
+.mylittle{
+  color: red;
+}
 
 
-  a {
-    text-decoration: none;
-    font-size: 110%;
-    white-space: normal;
-  }
-  
-  button {
-    font-size: 110%;
-    min-width: min-content;
-  }
-  
-  .example-icon {
-    padding: 0 14px;
-  }
-  
-  .example-spacer {
-    flex: 1 1 auto;
-  }
-  
-  .mat-sidenav-content {
-    font-size: 100%;
-  }
-  
+::ng-deep snack-bar-container {
+  background:rgba(0, 0, 0, 0.5) !important;
+}
+
+
+a {
+  text-decoration: none;
+  font-size: 110%;
+  white-space: normal;
+}
+
+button {
+  font-size: 110%;
+  min-width: min-content;
+}
+
+.example-icon {
+  padding: 0 14px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-sidenav-content {
+  font-size: 100%;
+}
+
+.menu-whole {
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+  align-self: center;
+  margin-right: 16px;
+}
+
+.menu-div {
+  padding: 0 8px 0 8px;
+  cursor: pointer;
+}
