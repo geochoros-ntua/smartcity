@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
 import { TileLayerNames } from '../../api/map.enums';
 import { MapLayersService } from '../../Services/map.layers.service';
@@ -9,9 +9,15 @@ import { MapLayersService } from '../../Services/map.layers.service';
   templateUrl: './tileselector.component.html',
   styleUrls: ['./tileselector.component.scss']
 })
-export class TileselectorComponent {
+export class TileselectorComponent implements OnInit {
 
-  constructor(private mapLayersService: MapLayersService, private dDarkThemeService: DarkThemeService) { }
+  constructor(private mapLayersService: MapLayersService, private dDarkThemeService: DarkThemeService) { 
+
+  }
+
+  ngOnInit(): void {
+    this.setCartoOnThemeSwitcher();
+  }
 
   public setTileLayer(val: TileLayerNames): void  {
     switch (val) {
@@ -39,7 +45,6 @@ export class TileselectorComponent {
         break;
       }
       case TileLayerNames.ktimaNetLayer: {
-        console.log('set it true')
         this.mapLayersService.KtimaLayer.setVisible(true);
         this.mapLayersService.cartoDarkLayer.setVisible(false);
         this.mapLayersService.cartoLightLayer.setVisible(false);

@@ -27,8 +27,16 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
-    this.isStreet = (this.mapService.mapMode === MapMode.street);
-    this.isStats = (this.mapService.mapMode === MapMode.stats_i || this.mapService.mapMode === MapMode.stats_q);
+    this.resetMapType(this.mapService.mapMode);
+    this.mapService.mapMode$.subscribe( mode =>{
+      this.resetMapType(mode);
+    })
+    
+  }
+
+  private resetMapType(mode:MapMode): void{
+    this.isStreet = (mode === MapMode.street);
+    this.isStats = (mode === MapMode.stats_i || mode === MapMode.stats_q);
   }
 
 
