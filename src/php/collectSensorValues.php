@@ -6,6 +6,7 @@ header('Access-Control-Allow-Origin: *');
 try {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     $sql = 'select * from sensor_measures where sensor_id=1';
 =======
 // header('Content-type: application/json');
@@ -28,6 +29,16 @@ try {
     $sql = 'select * from sensor_measures where sensor_id=1';
 >>>>>>> 376afd6 (home_about)
 >>>>>>> c73c64c (home_about)
+=======
+    $sql = 'select * from sensor_measures where sensor_id=1';
+=======
+<<<<<<< HEAD
+    $sql = 'select * from sensor_measures';
+=======
+    $sql = 'select * from sensor_measures where sensor_id=1';
+>>>>>>> 376afd6 (home_about)
+>>>>>>> c73c64cc70771f3695caba42d35907a3903d272e
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
     $rs = mysqli_query($con, $sql);  
     if (!$rs) {
         echo 'An SQL error occured.\n';
@@ -99,7 +110,12 @@ try {
         do
         {
             $value = $array[$i]['inside']."\n";
+<<<<<<< HEAD
             $insert_sql = "insert into sensor_measures_history (measure_id, value) values ( " . $measure_id . "," . $value . ") ";
+=======
+            $gate_id = $array[$i]["id"];
+            $insert_sql = "insert into sensor_measures_history (measure_id, gate_id, value) values ( " . $measure_id . "," . $gate_id . "," . $value . ") ";
+>>>>>>> c73c64cc70771f3695caba42d35907a3903d272e
             if ($con->query($insert_sql) === TRUE) {
                 echo "New record created successfully";
             } else {

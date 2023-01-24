@@ -33,24 +33,33 @@
         "SENSORS-LIVE":"Live data",
         "SENSORS-GRAPHS":"Data Graphs (historic)"  
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         "SENSORS-GRAPHS":"Data Graphs (historic)"    
 >>>>>>> caa8ac9 (implement sensors functionality)
 =======
+=======
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
     },
     "RESPONSES" : {
         "VARIABLE" : "Variable",
         "FILTER_VARIABLE" : "Filter variable",
 <<<<<<< HEAD
+<<<<<<< HEAD
         "fILTER_VALUES" : "Filter values"
 >>>>>>> e16d20a (responses search v 0.1)
 =======
+=======
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
         "fILTER_VALUES" : "Filter values",
         "CHART_TYPE" : "Chart type"
     },
     "HOME": {
         "INFO" : "INFO",
         "MAPS" : "MAPS"
+<<<<<<< HEAD
 >>>>>>> ebf3687 (responses and theming v0.1)
+=======
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
     }
 }

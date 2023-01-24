@@ -22,6 +22,7 @@ $attrs = ['label', 'live_report_id', 'layer', 'intensity_limits', 'mpl_imageid']
 =======
 >>>>>>> 9d066a6 (imlement sensor graph)
 
+<<<<<<< HEAD
 $sql = "SELECT sm.id, sp.label, intensity_limits, 'sensors' as layer,  GROUP_CONCAT(sm.live_report_id SEPARATOR ',') live_report_id, sm.sensor_id, sm.mpl_imageid,  ST_AsGeoJSON(sp.SHAPE) GEOM  " . 
 " FROM sensor_points sp  " . 
 " INNER JOIN sensor_measures sm ON sm.sensor_id = sp.id group by sensor_id ";
@@ -35,10 +36,20 @@ $attrs = ['label', 'live_report_id', 'layer'];
 >>>>>>> 9d066a6 (imlement sensor graph)
 =======
 $attrs = ['label', 'live_report_id', 'layer', 'intensity_limits', 'mpl_imageid'];
+<<<<<<< HEAD
 >>>>>>> caa8ac9 (implement sensors functionality)
 =======
 $attrs = ['label', 'live_report_id', 'gate_groups', 'layer', 'intensity_limits', 'mpl_imageid'];
 >>>>>>> 82969d4 (add groups on measures)
+=======
+=======
+$sql = "SELECT sm.id, sp.label, sp.intensity_limits, 'sensors' as layer, sm.gate_groups, GROUP_CONCAT(sm.live_report_id SEPARATOR ',') live_report_id, sm.sensor_id, sm.mpl_imageid,  ST_AsGeoJSON(sp.SHAPE) GEOM  " . 
+" FROM sensor_points sp  " . 
+" INNER JOIN sensor_measures sm ON sm.sensor_id = sp.id group by sensor_id ";
+
+$attrs = ['label', 'live_report_id', 'gate_groups', 'layer', 'intensity_limits', 'mpl_imageid'];
+>>>>>>> c73c64cc70771f3695caba42d35907a3903d272e
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
 
 # Try query or error
 $rs = mysqli_query($con, $sql);  

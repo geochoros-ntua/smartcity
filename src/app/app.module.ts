@@ -56,6 +56,7 @@ import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-
 import { AboutComponent } from './about/about.component';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { SensorsGraphComponent } from './map/Controls/sensors-graph/sensors-graph.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -80,6 +81,11 @@ import { ResponsesComponent } from './responses/responses.component';
 import { TeamComponent } from './team/team.component';
 import { ContactComponent } from './contact/contact.component';
 >>>>>>> ebf3687 (responses and theming v0.1)
+=======
+import { ResponsesComponent } from './responses/responses.component';
+import { TeamComponent } from './team/team.component';
+import { ContactComponent } from './contact/contact.component';
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
 
 
 export function setupTranslateFactory(
@@ -110,6 +116,7 @@ export function setupTranslateFactory(
     SensorsCardComponent,
     HomeComponent,
 <<<<<<< HEAD
+<<<<<<< HEAD
     AboutComponent
 =======
     SensorsGraphComponent
@@ -135,6 +142,12 @@ export function setupTranslateFactory(
     TeamComponent,
     ContactComponent
 >>>>>>> ebf3687 (responses and theming v0.1)
+=======
+    AboutComponent,
+    ResponsesComponent,
+    TeamComponent,
+    ContactComponent
+>>>>>>> 95ead2967e72b0a523cf31fa48d85a2ddd5a7bc6
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
