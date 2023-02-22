@@ -26,7 +26,6 @@ export class SensorsCardComponent implements OnInit {
   }
 
   ngAfterViewInit(){
-    console.log('this.imageid', this.imageid)
     this.initMapillarySensorViewer(this.imageid);
   }
 

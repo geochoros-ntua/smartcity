@@ -14,6 +14,14 @@ import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
 import { SensorsService } from './map.sensors.service';
 
+import  olMap from 'ol/Map';
+import  { FeatureLike } from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import {Circle,  Stroke, Style} from 'ol/style';
+import {easeOut} from 'ol/easing.js';
+import {getVectorContext} from 'ol/render.js';
+import {unByKey} from 'ol/Observable.js';
+
 
 
 /**
@@ -28,7 +36,7 @@ export class MapService {
   private map!: Map;
 
   public mapMode$: Subject<MapMode> = new Subject<MapMode>();
-  public mapMode: MapMode = MapMode.street;
+  public mapMode: MapMode = MapMode.sens;
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
@@ -59,6 +67,7 @@ export class MapService {
       } else {
         this.smartCityMap.getOverlayById('popupoverlay')?.setPosition(undefined);
       }
+      console.log('mode',mode)
       this.onModeChange(mode);
     });
   }
@@ -81,25 +90,74 @@ export class MapService {
         this.mapLayersService.FactorsGeitLayer,
         this.mapLayersService.FacorsPdstrLayer,
         this.mapLayersService.SensorsLayer,
-        this.mapLayersService.SelectionLayer
+        this.mapLayersService.SelectionLayer,
+        this.mapLayersService.MaskLayer
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
       view: new View({
         center: olProj.transform(this.smartCityMapConfig.center, 'EPSG:4326', 'EPSG:3857'),
         projection: 'EPSG:3857',
+        extent: [2622261, 4568699, 2662125, 4586458],
         zoom: this.smartCityMapConfig.zoomLevel
       })
     });
 
+    this.mapLayersService.SensorsLayer.getSource().on('addfeature', (e) => {
+      setInterval(() => {
+        this.flashFeature(e.feature);
+        this.smartCityMap.render();
+      }, 2000);
+
+    });
+
   }
 
-  public get smartCityConfig():SmartCityMapConfig{
+  public get smartCityConfig(): SmartCityMapConfig{
     return this.smartCityMapConfig;
   }
 
   public get smartCityMap(): Map {
     return this.map;
   }
+
+  public flashFeature(feature: FeatureLike): void {
+    const featVal = parseInt(feature.get('value'));
+    const intLimits = feature.get('intensity_limits').split(',');
+    const duration = featVal< intLimits[0] ?  3000 : (featVal< intLimits[1] &&  featVal> intLimits[0]) ? 2000 : 1000;
+    const start = Date.now();
+    const flashGeom: Geometry = (feature.getGeometry() as Geometry).clone();
+
+    const listenerKey = this.mapLayersService.SensorsLayer.on('postrender', (event: any) => {
+      const frameState = event.frameState;
+      const elapsed = frameState.time - start;
+      if (elapsed >= duration) {
+        unByKey(listenerKey);
+        return;
+      }
+      const vectorContext = getVectorContext(event);
+      const elapsedRatio = elapsed / duration;
+      
+      
+      const radius = easeOut(elapsedRatio) * (featVal< intLimits[0] ?  15 : (featVal< intLimits[1] &&  featVal> intLimits[0]) ? 25 : 35) + 5;
+      const opacity = easeOut(1 - elapsedRatio);
+
+      const style = new Style({
+        image: new Circle({
+          radius: radius,
+          stroke: new Stroke({
+            color: 'rgba(255, 0, 0, ' + opacity + ')',
+            width: 1.25 + opacity,
+          }),
+        }),
+      });
+
+      vectorContext.setStyle(style);
+      vectorContext.drawGeometry(flashGeom);
+      this.smartCityMap.render();
+    });
+    
+  }
+  
 
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
     this.map.forEachFeatureAtPixel(event.pixel, feature => {
