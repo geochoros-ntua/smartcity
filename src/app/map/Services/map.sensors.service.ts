@@ -36,6 +36,7 @@ export class SensorsService {
     public selGraphType: ChartType = 'bar';
     public selReportType: string = 'day';
     public currentViewLiveReport: any = [];
+    public graphLoaded: boolean;
     
     
     constructor(
@@ -60,7 +61,6 @@ export class SensorsService {
 
     public initSensors(): void{
         this.mapLayersService.SensorsLayer.getSource().once('change', () => {
-          console.log('getFeatures', this.mapLayersService.SensorsLayer.getSource().getFeatures())
              this.loadLiveReportForFeats(this.mapLayersService.SensorsLayer.getSource().getFeatures());
           });
           this.startReportAutoLoad();
@@ -104,7 +104,6 @@ export class SensorsService {
       const historyReport$ = this.getHistoryReport(measureId);
       const liveReport$ = this.getLiveReport(liveReportId);
       combineLatest([liveReport$, historyReport$]).subscribe(([liveResp, histResp]) =>{
-        console.log(liveResp, histResp, this.selMeasureId)
         this.currentViewLiveReport = liveResp.map((rp: any) => {
           return {...rp, when: new Date()}
         }); 
@@ -114,7 +113,7 @@ export class SensorsService {
             maxHeight: '80vh',
             height: '80%',
             width: '80%',
-            data: { data: histResp, imageid: imageid}
+            data: { data: histResp, imageid}
         });
       })
 

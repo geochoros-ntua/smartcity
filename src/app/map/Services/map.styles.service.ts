@@ -116,10 +116,7 @@ export class MapStyleService {
 
   public sensorPointStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
     const val = parseInt(feature.get('value')) ? parseInt(feature.get('value')) : 0;
-    
     let style =  new Style({});
-    // if (val){
-      console.log('val',val)
     const intLimits = feature.get('intensity_limits').split(',');
     
     style =  new Style({
@@ -137,10 +134,8 @@ export class MapStyleService {
         font: '18px Calibri,sans-serif',
         stroke: new Stroke({ color: 'black', width: 4 })
       })
-    })
-   // }
+    });
     return [style];
-    
   }
   
 }

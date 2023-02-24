@@ -14,7 +14,7 @@ export class MapModeComponent implements OnInit{
   constructor(public mapService: MapService) { }
 
   ngOnInit(): void {
-    this.setMapMode(MapMode.street);
+    this.setMapMode(this.mapService.mapMode);
   }
 
   

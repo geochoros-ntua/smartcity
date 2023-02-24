@@ -1,8 +1,10 @@
-import { ThrowStmt } from '@angular/compiler';
-import { ChangeDetectorRef, Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
+
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Chart, ChartType, registerables } from 'chart.js';
+import { FeatureLike } from 'ol/Feature';
+import { combineLatest, Observable } from 'rxjs';
+import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 import { GraphReport } from '../../../api/map.api';
 import { SensorsService } from '../../../Services/map.sensors.service';
 
@@ -20,26 +22,29 @@ export class SensorsGraphComponent implements OnInit {
 
   @Input()
   public data: GraphReport[];
-
   public sensChart: any;
   public graphTitle: string = '';
-  public dateRange: FormGroup;
+  public graphForm: FormGroup;
   public nowDate: Date = new Date();
-  public graphTypes: string[] = ['bar', 'line'];
-  public reportTypes: string[] = ['day', 'hour'];
+  public graphTypes: {type: string,label:string}[] = [{type: 'bar', label: 'GRAPH.BAR'}, {type: 'line', label: 'GRAPH.LINE'}];
+  public reportTypes: {type: string,label:string}[] = [{type: 'day', label: 'GRAPH.DAY'}, {type: 'hour', label: 'GRAPH.HOUR'}];
 
-  constructor( private cdRef: ChangeDetectorRef, public sensorsService: SensorsService ) {
+  
+  constructor( private cdRef: ChangeDetectorRef, public sensorsService: SensorsService , public mapLayersService: MapLayersService) {
 
   }
 
   ngOnInit(): void {
     Chart.register(...registerables);
-    this.dateRange = new FormGroup({
+    this.graphForm = new FormGroup({
       start: new FormControl(new Date(this.sensorsService.dateFrom)),
       end: new FormControl(new Date(this.sensorsService.dateTo)),
+      graphCompareSelector: new FormControl()
     });
+    
   }
 
+  
   ngAfterViewInit(): void {
     const labels = this.data.map((item: GraphReport) => item.label);
     const values = this.data.map((item: GraphReport) => item.value);
@@ -48,7 +53,8 @@ export class SensorsGraphComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
-  initChart(labels: string[], values: string[]): void {
+
+  public initChart(labels: string[], values: string[]): void {
 
     this.sensChart = new Chart(this.graphCanvas?.nativeElement, {
       type: this.sensorsService.selGraphType,
@@ -59,7 +65,7 @@ export class SensorsGraphComponent implements OnInit {
         labels: labels,
         datasets: [
           {
-            label: this.sensorsService.translatePipe.transform('MAP.SENS-REPORT') + ' (per ' + this.sensorsService.selReportType +')',
+            label: this.translateLabel(),
             fill: true,
             borderWidth: 2,
             backgroundColor: 'rgba(75,192,192,0.6)',
@@ -86,18 +92,59 @@ export class SensorsGraphComponent implements OnInit {
     
   }
 
+  public getCompareSensors(): FeatureLike[] {
+    return this.mapLayersService.SensorsLayer
+    .getSource()
+    .getFeatures()
+    .filter( feat => feat.getId() !== this.sensorsService.selMeasureId);
+    
+  }
+
+  public setComparingSensors(feats: FeatureLike[]): void {
+
+    const sensorsLabels: string[] = [];
+    const compareReports$: Observable<GraphReport[]>[] = [];
+    this.sensorsService.graphLoaded = feats.length > 0 ? false : true;
+    
+    feats.forEach((vv: FeatureLike) => {
+      compareReports$.push(this.sensorsService.getHistoryReport(vv.getId()));
+      sensorsLabels.push(vv.get('label'))
+    });
+
+    this.sensChart.data.datasets.splice(1);
+    this.sensChart.update();
+    
+    combineLatest(compareReports$).subscribe(result => {
+      result.forEach( (cr,i) => {
+        this.sensChart.data.datasets = [...this.sensChart.data.datasets, {...this.getStyleForGraph(i),
+          label: sensorsLabels[i] + ' ' + this.translateLabel(),
+          data: this.sensChart.data.labels
+          .map((r:string) => (cr.map(rrr => rrr.label).includes(r)) ? cr.find(rrr => rrr.label === r).value : 0)
+        }];
+      });
+      
+      this.sensChart.update();
+      this.sensorsService.graphLoaded = true;
+    });
+
+  }
+
+
   public redrawGraph(toDate: any): void {
     if (toDate.value){
-      this.sensorsService.dateFrom = this.dateRange.get('start').value;
-      this.sensorsService.dateTo = this.dateRange.get('end').value;
-     
+      this.sensorsService.dateFrom = this.graphForm.get('start').value;
+      this.sensorsService.dateTo = this.graphForm.get('end').value;
+      this.sensorsService.graphLoaded = false;
       this.sensorsService.getHistoryReport(this.sensorsService.selMeasureId).subscribe((res: GraphReport[]) => {
         this.sensChart.data.labels = res.map((item: GraphReport) => item.label);
         this.sensChart.data.datasets[0].data = res.map((item: GraphReport) => item.value);
-        this.sensChart.update();
+        this.handleCompareGrpahsAndUpdate();
+        this.sensorsService.graphLoaded = true;
       });
+      
     }
   }
+
 
   public setGraphType(type: ChartType): void{
     this.sensorsService.selGraphType = type;
@@ -106,17 +153,55 @@ export class SensorsGraphComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
+
   public setReportType(type: string): void{
     this.sensorsService.selReportType = type;
-    this.sensChart.data.datasets[0].label = this.sensorsService.translatePipe.transform('MAP.SENS-REPORT') + ' (per ' + this.sensorsService.selReportType +')';
+    this.sensChart.data.datasets[0].label = this.translateLabel();
+    this.sensorsService.graphLoaded = false;
     this.sensorsService.getHistoryReport(this.sensorsService.selMeasureId).subscribe((res: GraphReport[]) => {
       this.sensChart.data.labels = res.map((item: GraphReport) => item.label);
       this.sensChart.data.datasets[0].data = res.map((item: GraphReport) => item.value);
-      this.sensChart.update();
+      this.handleCompareGrpahsAndUpdate();
+      this.sensorsService.graphLoaded = true;
     });
+    
+  }
+
+  private handleCompareGrpahsAndUpdate(): void{
+    if (this.graphForm.get('graphCompareSelector')?.value){
+      this.setComparingSensors(this.graphForm.get('graphCompareSelector')?.value);
+    } else {
+      this.sensChart.update();
+    }
+  }
+
+  private getStyleForGraph(index: number): any{
+    const backgroundColors = ['rgba(255,0,0,0.6)', 'rgba(0,255,0,0.6)', 'rgba(255,255,0,0.6)', 'rgba(255,255,0,0.6)'];
+    const borderColors = ['rgba(255,0,0,1)', 'rgba(0,255,0,1)', 'rgba(255,255,0,1)', 'rgba(255,255,0,1)'];
+    return {
+      backgroundColor: backgroundColors[index],
+      borderColor: borderColors[index],
+      borderWidth: 2,
+      fill: true,
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointRadius: 1,
+      pointHitRadius: 10,
+    }
+  }
+
+
+  public isDisabled(feat: FeatureLike): boolean{
+    return this.sensChart?.data.datasets.length > 5 && 
+    !this.graphForm.get('graphCompareSelector')?.value?.map( (f: FeatureLike) => f.getId()).includes(feat.getId());
   }
 
   
+  private translateLabel(): string{
+    return this.sensorsService.translatePipe.transform('MAP.SENS-REPORT') +
+    this.sensorsService.translatePipe.transform(this.reportTypes.find(rt => rt.type === this.sensorsService.selReportType).label) +')'
+  }
+
   
 
 }

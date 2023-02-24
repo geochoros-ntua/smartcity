@@ -21,6 +21,8 @@ import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
 import TileWMS from 'ol/source/TileWMS';
 import MapUtils from '../map.helper';
+import { VectorImage } from 'ol/layer';
+import { Fill, Stroke, Style } from 'ol/style';
 
 /**
  * Author: p.tsagkis
@@ -63,6 +65,8 @@ export class MapLayersService {
 
   private factorsPedWaysSource!: VectorSource<Polygon | MultiPolygon>;
   private FACTORS_PEDESTRN!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
+
+  private ATHENS_MASK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
 
   private SENSORS!: VectorLayer<VectorSource<Point>>;
 
@@ -139,6 +143,8 @@ export class MapLayersService {
     this.initSensorLayer(false);
     // scrap layer
     this.initSelectionLayer(true);
+    // outline cosmetic layer
+    this.initMaskLayer();
   }
 
  
@@ -199,6 +205,10 @@ export class MapLayersService {
     return this.selectionLayer;
   }
 
+  public get MaskLayer(): VectorLayer<VectorSource<Geometry>> {
+    return this.ATHENS_MASK;
+  }
+
 
 
   /**
@@ -221,6 +231,33 @@ export class MapLayersService {
   /**
    * PRIVATES
    */
+
+  private initMaskLayer(){
+
+      this.ATHENS_MASK = new VectorImage({
+        source: new VectorSource({
+          url:'./assets/geodata/athens_mask.geojson',
+          format: new GeoJSON({
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
+          })
+        }),
+
+        visible: true,
+        style: (feat, res) => {
+          return new Style({
+            stroke: new Stroke({
+              color: 'black',
+              width: 1.25
+            }),
+            fill: new Fill({
+              color: 'rgba(0, 0, 0, 0.7)'
+            })
+          })
+        },
+      }); 
+      this.ATHENS_MASK.set('name', 'athens_outline')
+  }
 
   private initSelectionLayer = (visible: boolean): void => {
     this.selectionLayer = new VectorLayer({
@@ -487,6 +524,8 @@ export class MapLayersService {
           wrapX:false
       })
     });
+
+   
   }
 
 

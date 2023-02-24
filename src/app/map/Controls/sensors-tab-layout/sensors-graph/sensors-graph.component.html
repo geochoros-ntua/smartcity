@@ -1,10 +1,11 @@
 
 <h1 mat-dialog-title>{{graphTitle}}</h1>
-
+<ng-container>
+<form [formGroup]="graphForm">
 <div class="row">
   <mat-form-field appearance="fill">
     <mat-label>{{'MAP.DATE-RANGE' | translate}}</mat-label>
-    <mat-date-range-input [formGroup]="dateRange" [max]="nowDate" [rangePicker]="picker">
+    <mat-date-range-input [formGroup]="graphForm" [max]="nowDate" [rangePicker]="picker">
       <input matStartDate formControlName="start" placeholder="Start date">
       <input matEndDate formControlName="end" placeholder="End date" (dateChange)="redrawGraph($event)">
     </mat-date-range-input>
@@ -15,23 +16,38 @@
   <mat-form-field appearance="fill">
     <mat-label>{{'MAP.GRAPH-TYPE' | translate}}</mat-label>
     <mat-select [(value)]="sensorsService.selGraphType" (selectionChange)="setGraphType($event.value)">
-      <mat-option *ngFor="let type of graphTypes" [value]="type">
-        {{type}}
+      <mat-option *ngFor="let gtype of graphTypes" [value]="gtype.type">
+        {{gtype.label | translate}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>{{'MAP.REPORT-TYPE' | translate}}</mat-label>
     <mat-select [(value)]="sensorsService.selReportType" (selectionChange)="setReportType($event.value)">
-      <mat-option *ngFor="let rtype of reportTypes" [value]="rtype">
-        {{rtype}}
+      <mat-option *ngFor="let rtype of reportTypes" [value]="rtype.type">
+        {{rtype.label | translate}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field appearance="fill">
+    <mat-label>{{'MAP.COMPARE-SENSORS' | translate}}</mat-label>
+    <mat-select multiple (selectionChange)="setComparingSensors($event.value)" formControlName="graphCompareSelector">
+      <mat-option  *ngFor="let sensr of getCompareSensors()" [value]="sensr" [disabled]="isDisabled(sensr)">
+        {{sensr.get('label')}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
   
 </div>
+</form>
 <div class="row">
   <canvas #graphCanvas style="max-height:45vh !important; height:45vh !important;" ></canvas>
   <hr color="primary">
 </div>
+<div *ngIf="sensorsService.graphLoaded === false" class="loader" >
+  <mat-spinner color="primary" diameter="70" mode="indeterminate" ></mat-spinner>
+</div>
+</ng-container>

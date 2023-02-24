@@ -151,6 +151,8 @@ $con = NULL;
 // ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=#walkability@2022,port=3306" C:\\workdir\\smart_city_docs\\data\\sample_lines_3857.shp -nln da_pedestrian_ways -update -overwrite 
 // ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=#walkability@2022,port=3306" C:\\workdir\\smart_city_docs\\data\\sensor_points.shp -nln sensor_points -update -overwrite 
 // ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=#walkability@2022,port=3306" C:\\workdir\\smart_city_docs\\data\\quest_dim_koin_3857.shp -nln quest_dim_koin -update -overwrite 
+// ogr2ogr -f MySQL MYSQL:"info212790_walkability,host=185.138.42.100,user=info212790_walkability,password=#walkability@2022,port=3306" C:\\workdir\\smartcity\\src\\assets\\geodata\\mpl_sequences_s1.geojson -nln mpl_sequences_sim -update -overwrite 
+
 
 // sql scripts
 // create table mapillary_features_detail_20220314 as  SELECT * FROM `mapillary_features_detail` WHERE image_id in
