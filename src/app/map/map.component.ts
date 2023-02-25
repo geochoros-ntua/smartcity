@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { MapService } from './Services/map.service';
 import { MapBrowserEvent } from 'ol';
 import { MapMode } from './api/map.enums';
+import { SensorsService } from './Services/map.sensors.service';
+import { unByKey } from 'ol/Observable.js';
 
 
 @Component({
@@ -20,7 +22,7 @@ export class MapComponent implements OnInit {
 
   constructor(
     private mapService: MapService, 
-    public mapLayersService: MapLayersService) {
+    public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
 
   }
 
@@ -32,6 +34,11 @@ export class MapComponent implements OnInit {
       this.resetMapType(mode);
     })
     
+  }
+
+  ngOnDestroy(){
+    this.mapSensorsService.stopReportAutoLoad();
+    this.mapService.stopFlashIntervals();
   }
 
   private resetMapType(mode:MapMode): void{
@@ -59,4 +66,5 @@ export class MapComponent implements OnInit {
       thisP.mapService.smartCityMap.getViewport().style.cursor = hit ? 'pointer' : '';
     });
   }
+
 }

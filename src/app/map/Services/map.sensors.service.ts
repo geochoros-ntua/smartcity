@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Feature } from 'ol';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, finalize, Observable } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import Geometry from 'ol/geom/Geometry';
 import { HttpClient } from '@angular/common/http';
@@ -37,6 +37,7 @@ export class SensorsService {
     public selReportType: string = 'day';
     public currentViewLiveReport: any = [];
     public graphLoaded: boolean;
+    public sensorReportLoaded: boolean;
     
     
     constructor(
@@ -97,17 +98,25 @@ export class SensorsService {
       
       
     public showReportGraph(measureId: number, liveReportId: number, imageid: string){
+      console.log('this.sensorReportLoaded', this.sensorReportLoaded)
+      if (this.sensorReportLoaded === false) return;
+      this.sensorReportLoaded = false;
       this.mapLayersService.dataLoaded = false;
       this.selMeasureId = measureId;
-      this.dialogRef?.close();
+      
 
       const historyReport$ = this.getHistoryReport(measureId);
       const liveReport$ = this.getLiveReport(liveReportId);
-      combineLatest([liveReport$, historyReport$]).subscribe(([liveResp, histResp]) =>{
+      combineLatest([liveReport$, historyReport$]).pipe(
+        finalize(() => {
+          this.sensorReportLoaded = true;
+          this.mapLayersService.dataLoaded = true;
+        })
+      ).subscribe(([liveResp, histResp]) =>{
+        this.dialogRef?.close();
         this.currentViewLiveReport = liveResp.map((rp: any) => {
           return {...rp, when: new Date()}
         }); 
-        this.mapLayersService.dataLoaded = true;
         this.dialogRef = this.dialog.open(SensorsTabLayoutComponent, {
             maxWidth: '80vw',
             maxHeight: '80vh',

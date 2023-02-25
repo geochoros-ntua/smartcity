@@ -121,7 +121,7 @@ export class MapStyleService {
     
     style =  new Style({
       image: new Circle({
-        radius: (val > 30) ? 30 : (val<10) ? 10 : val,
+        radius: (val > intLimits[1]) ? 40 : (val < intLimits[0]) ? 20 : 30,
         fill: val< intLimits[0] ? new Fill({ color: [0, 255, 0, 0.7] }) : 
         (val> intLimits[1]) ? new Fill({ color: [255, 0, 0, 0.7] }) : new Fill({ color: [255, 165, 0, 0.7] }) ,
         stroke: new Stroke({
@@ -131,7 +131,7 @@ export class MapStyleService {
       text: new Text({
         text: val + '\n' + (val< intLimits[0] ? 'Χαμηλή ένταση' : (val> intLimits[1]) ? 'Υψηλή ένταση' : 'Μέτρια ένταση'),
         fill: new Fill({ color: 'white' }),
-        font: '18px Calibri,sans-serif',
+        font: '14px Calibri,sans-serif',
         stroke: new Stroke({ color: 'black', width: 4 })
       })
     });
