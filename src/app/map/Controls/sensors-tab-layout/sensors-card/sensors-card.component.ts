@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CameraControls, TransitionMode, Viewer } from 'mapillary-js';
+import MapUtils from 'src/app/map/map.helper';
 import { MapMapillaryService } from 'src/app/map/Services/map.mapillary.service';
 import { SensorsService } from 'src/app/map/Services/map.sensors.service';
 import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
+import { TranslateService } from 'src/app/shared/translate/translate.service';
 
 @Component({
   selector: 'app-sensors-card',
@@ -17,10 +19,10 @@ export class SensorsCardComponent implements OnInit {
 
   @Input()
   imageid: string;
-  private viewer: Viewer;
+  private mplViewer: Viewer;
   
   constructor(private mapMapillaryService: MapMapillaryService, public sensorsService: SensorsService, 
-    public darkThemeService: DarkThemeService) { }
+    public darkThemeService: DarkThemeService, public translateService: TranslateService) { }
 
   ngOnInit(): void {
   }
@@ -30,7 +32,14 @@ export class SensorsCardComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.viewer.remove(); 
+    this.mplViewer.remove(); 
+  }
+
+  public dateRepresentation(date: Date): string {
+    return MapUtils.formatDateTime(
+      date, 
+      this.translateService.getLang() === 'en' ? 'en-US' : 'el-GR'
+      );
   }
 
 
@@ -63,7 +72,7 @@ export class SensorsCardComponent implements OnInit {
       transitionMode: TransitionMode.Instantaneous,
     };
   
-    this.viewer = new Viewer(viewerOptions);
+    this.mplViewer = new Viewer(viewerOptions);
   }
 
 

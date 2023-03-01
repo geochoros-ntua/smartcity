@@ -124,11 +124,13 @@ export class MapLayersService {
 
     this.initCartoDarkLayer(true);
     this.initCartoLightLayer(true);
-
     this.initOSMLayer(false);
     this.initGOSMLayer(false);
     // ktimatologio
     this.initKtimaLayer(false);
+    // vectors
+    // outline cosmetic layer
+    this.initMaskLayer();
     // mplr vector layers
     this.initMapillarySequences(true);
     this.initMapillaryImages(true);
@@ -143,8 +145,7 @@ export class MapLayersService {
     this.initSensorLayer(false);
     // scrap layer
     this.initSelectionLayer(true);
-    // outline cosmetic layer
-    this.initMaskLayer();
+    
   }
 
  
@@ -236,7 +237,7 @@ export class MapLayersService {
 
       this.ATHENS_MASK = new VectorImage({
         source: new VectorSource({
-          url:'./assets/geodata/athens_mask.geojson',
+          url:'./assets/geodata/athens_mask.json',
           format: new GeoJSON({
             dataProjection: 'EPSG:4326',
             featureProjection: 'EPSG:3857'
@@ -251,7 +252,7 @@ export class MapLayersService {
               width: 1.25
             }),
             fill: new Fill({
-              color: 'rgba(0, 0, 0, 0.7)'
+              color: 'rgba(255, 255, 255, 0.7)'
             })
           })
         },

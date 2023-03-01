@@ -59,7 +59,7 @@ import { TeamComponent } from './team/team.component';
 
 export function setupTranslateFactory(
   service: TranslateService): Function {
-  return () => service.use('en');
+  return () => service.use('gr');
 }
 
 @NgModule({

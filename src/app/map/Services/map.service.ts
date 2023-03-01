@@ -40,6 +40,7 @@ export class MapService {
   public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
+  public flashIntervals: any[] =[];
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -67,7 +68,6 @@ export class MapService {
       } else {
         this.smartCityMap.getOverlayById('popupoverlay')?.setPosition(undefined);
       }
-      console.log('mode',mode)
       this.onModeChange(mode);
     });
   }
@@ -82,6 +82,7 @@ export class MapService {
         this.mapLayersService.GosmLayer,
         this.mapLayersService.OsmLayer,
         this.mapLayersService.KtimaLayer,
+        this.mapLayersService.MaskLayer,
         this.mapLayersService.MlSequencesLayer,
         this.mapLayersService.MlImagesLayer,
         this.mapLayersService.MlPointsLayer,
@@ -90,25 +91,26 @@ export class MapService {
         this.mapLayersService.FactorsGeitLayer,
         this.mapLayersService.FacorsPdstrLayer,
         this.mapLayersService.SensorsLayer,
-        this.mapLayersService.SelectionLayer,
-        this.mapLayersService.MaskLayer
+        this.mapLayersService.SelectionLayer
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
       view: new View({
         center: olProj.transform(this.smartCityMapConfig.center, 'EPSG:4326', 'EPSG:3857'),
         projection: 'EPSG:3857',
-        extent: [2622261, 4568699, 2662125, 4586458],
+        extent: [2622261, 4569699, 2662125, 4587458],
         zoom: this.smartCityMapConfig.zoomLevel
       })
     });
 
     this.mapLayersService.SensorsLayer.getSource().on('addfeature', (e) => {
-      setInterval(() => {
+      const flashInterval = setInterval(() => {
         this.flashFeature(e.feature);
         this.smartCityMap.render();
       }, 2000);
-
+      this.flashIntervals.push(flashInterval);
     });
+
+
 
   }
 
@@ -119,6 +121,8 @@ export class MapService {
   public get smartCityMap(): Map {
     return this.map;
   }
+
+  
 
   public flashFeature(feature: FeatureLike): void {
     const featVal = parseInt(feature.get('value'));
@@ -137,8 +141,7 @@ export class MapService {
       const vectorContext = getVectorContext(event);
       const elapsedRatio = elapsed / duration;
       
-      
-      const radius = easeOut(elapsedRatio) * (featVal< intLimits[0] ?  15 : (featVal< intLimits[1] &&  featVal> intLimits[0]) ? 25 : 35) + 5;
+      const radius = easeOut(elapsedRatio) * (featVal< intLimits[0] ?  20 : (featVal< intLimits[1] &&  featVal> intLimits[0]) ? 30 : 40);
       const opacity = easeOut(1 - elapsedRatio);
 
       const style = new Style({
@@ -157,11 +160,15 @@ export class MapService {
     });
     
   }
+
+  public stopFlashIntervals(){
+    this.flashIntervals.forEach(int => clearInterval(int));
+  }
   
 
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
     this.map.forEachFeatureAtPixel(event.pixel, feature => {
-      console.log('feature',feature)
+
       if (feature.get('layer')) {
         switch (feature.get('layer')) {
           case VectorLayerNames.seq: {
@@ -212,7 +219,7 @@ export class MapService {
       // breaking the iteration. get the first feature found. Forget the rest
       return true;
     }, {
-      hitTolerance: 1
+      hitTolerance: 2
     });
   }
 

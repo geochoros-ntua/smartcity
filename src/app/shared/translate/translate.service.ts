@@ -8,7 +8,7 @@ import { catchError, of, Subject } from "rxjs";
 })
 export class TranslateService {
   data: any = {};
-  lang: string = 'en';
+  lang: string = 'gr';
 
   private language = new Subject<string>();
   lang$ = this.language.asObservable();
