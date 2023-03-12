@@ -7,7 +7,7 @@
     <div class="color-accent" *ngIf="innerWidth > 760">{{'MENU.OBSERVATORY' | translate}}</div>
     <span class="example-spacer"></span>
 
-    <div class="menu-whole" *ngIf="innerWidth > 1470">
+    <div class="menu-whole" *ngIf="innerWidth > 1624">
       <div class="menu-div" routerLink="/home" [routerLinkActive]="['is-active']"
         [routerLinkActiveOptions]="{exact: true}">
         {{'MENU.HOME' | translate}}
@@ -30,7 +30,7 @@
         {{'MENU.CONTACT' | translate}}
       </div>
     </div>
-    <button mat-icon-button [matMenuTriggerFor]="menuParent" *ngIf="innerWidth <= 1470">
+    <button mat-icon-button [matMenuTriggerFor]="menuParent" *ngIf="innerWidth <= 1624">
       <mat-icon>menu</mat-icon>
       <mat-menu #menuParent="matMenu">
         <button class="menu-button" mat-menu-item routerLink="/home" [routerLinkActive]="['is-active']"

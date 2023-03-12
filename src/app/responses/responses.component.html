@@ -23,14 +23,18 @@
 
             <mat-form-field *ngIf="selectedFilterVariable" appearance="fill" class="select-filter-variable">
                 <mat-label>{{ "RESPONSES.FILTER_VALUES" | translate }}</mat-label>
-                <mat-select [(ngModel)]="selectedFilterValues" (selectionChange)="filterResponses()" multiple>
+                <mat-select #selectValues [(ngModel)]="selectedFilterValues" (selectionChange)="filterResponses()" multiple>
+                    <div class="select-all">
+                        <mat-checkbox class="select-all-values" [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
+                            (change)="selectAllValues()">{{"RESPONSES.ALL" | translate}}</mat-checkbox>
+                    </div>
                     <mat-option *ngFor="let value of filterVariableValues" [value]="value">{{
                         value}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-            <div class="filters-container">
+        <div class="filters-container">
             <mat-form-field appearance="fill" class="select-filter-variable">
                 <mat-label>{{ "RESPONSES.CHART_TYPE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedChartType" (selectionChange)="filterResponses()">
@@ -41,13 +45,24 @@
             </mat-form-field>
 
             <!-- <div class="spacer"></div> -->
-            <button mat-icon-button (click)="resetFilters()">
-                <mat-icon>clear_all</mat-icon>
-            </button>
+            <div class="filter-button" *ngIf="selectedChartType !== 1 && selectedFilterValues.length > 1">
+                <mat-slide-toggle [(ngModel)]="stackedBar" (change)="filterResponses()">{{ "RESPONSES.STACKED" |
+                    translate
+                    }}</mat-slide-toggle>
+            </div>
+            <div class="filter-button"> <button mat-icon-button (click)="resetFilters()"
+                    matTooltip="{{ 'RESPONSES.CLEAR' | translate }}" matTooltipClass="tooltip">
+                    <mat-icon>clear_all</mat-icon>
+                </button></div>
+            <div class="spacer"></div>
+            <div class="filter-button">
+                <a mat-raised-button download href="assets/other/responses.csv">{{ "RESPONSES.DOWNLOAD" | translate
+                    }}</a>
+            </div>
         </div>
 
         <div class="row">
-            <canvas #graphCanvas style="max-height:45vh !important; height:45vh !important;"></canvas>
+            <canvas #graphCanvas style="max-height: calc(100vh - 327px) !important;"></canvas>
             <hr color="primary">
         </div>
 

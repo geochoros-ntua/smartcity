@@ -45,10 +45,14 @@
       "VARIABLE" : "Variable",
       "FILTER_VARIABLE" : "Filter variable",
       "fILTER_VALUES" : "Filter values",
-      "CHART_TYPE" : "Chart type"
-    },
-    "HOME": {
-        "INFO" : "INFO",
-        "MAPS" : "MAPS"
-    }
+      "CHART_TYPE" : "Chart type",
+      "STACKED" : "Stacked",
+      "DOWNLOAD" : "Download data (.csv)",
+      "ALL" : "Select all",
+      "CLEAR": "Clear"
+  },
+  "HOME": {
+      "INFO" : "INFO",
+      "MAPS" : "MAPS"
+  }
 }

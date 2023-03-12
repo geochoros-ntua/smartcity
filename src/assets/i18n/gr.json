@@ -1,14 +1,14 @@
 {
     "TITLE": "Πρότυπο Γεωχωρικό Παρατηρητήριο Δήμου Αθηναίων",
     "MENU": {
-        "HOME": "ΑΡΧΙΚΗ",
-        "ABOUT": "ΣΧΕΤΙΚΑ",
-        "MAP": "ΧΑΡΤΕΣ",
-        "TEAM" : "ΟΜΑΔΑ",
-        "QUESTIONNAIRE" : "ΕΡΩΤΗΜΑΤΟΛΟΓΙΟ",
-        "CONTACT" : "ΕΠΙΚΟΙΝΩΝΙΑ",
-        "DIGITAL" : "ΨΗΦΙΑΚΟ",
-        "OBSERVATORY" : "ΠΑΡΑΤΗΡΗΤΗΡΙΟ"
+        "HOME": "HOME",
+        "ABOUT": "ABOUT",
+        "MAP": "GEOSPATIAL DATA",
+        "TEAM" : "TEAM",
+        "QUESTIONNAIRE" : "WALKING SURVEY",
+        "CONTACT" : "CONTACT",
+        "DIGITAL" : "DIGITAL",
+        "OBSERVATORY" : "OBSERVATORY"
       },
     "MAP" : {
         "TILE-SELECTOR": "Επιλογή υποβάθρου",
@@ -42,10 +42,14 @@
         "DAY": "Ημέρα"
     },
     "RESPONSES" : {
-        "VARIABLE" : "Variable",
-        "FILTER_VARIABLE" : "Filter variable",
-        "fILTER_VALUES" : "Filter values",
-        "CHART_TYPE" : "Chart type"
+        "VARIABLE" : "Μεταβλητή",
+        "FILTER_VARIABLE" : "Μεταβλητή φίλτρο",
+        "fILTER_VALUES" : "Τιμή φίλτρου",
+        "CHART_TYPE" : "Είδος γραφήματος",
+        "STACKED" : "Stacked",
+        "DOWNLOAD" : "Κατέβασε τα δεδομένα (.csv)",
+        "ALL" : "Επιλογή όλων",
+        "CLEAR": "Καθαρισμός"
     },
     "HOME": {
         "INFO" : "ΠΛΗΡΟΦΟΡΙΕΣ",
