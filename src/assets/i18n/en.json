@@ -3,9 +3,9 @@
     "MENU": {
       "HOME": "HOME",
       "ABOUT": "ABOUT",
-      "MAP": "MAPS",
+      "MAP": "GEOSPATIAL DATA",
       "TEAM" : "TEAM",
-      "QUESTIONNAIRE" : "QUESTIONNAIRE",
+      "QUESTIONNAIRE" : "WALKING SURVEY",
       "CONTACT" : "CONTACT",
       "DIGITAL" : "DIGITAL",
       "OBSERVATORY" : "OBSERVATORY"
@@ -36,7 +36,7 @@
         "SENSORS-SUM":"Summary"      
     },
     "GRAPH" :{
-      "LINE": "Line",
+      "LINE": "Line", 
       "BAR": "Bar",
       "HOUR": "Hour",
       "DAY": "Day"
