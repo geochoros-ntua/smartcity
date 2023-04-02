@@ -19,8 +19,15 @@ export class ResponsesComponent implements OnInit {
 
   @ViewChild('selectValues') selectValues: MatSelect;
 
-  responses: any[] = [];
-  variables: any[] = [];
+  responses_residents: any[] = [];
+  responses_students: any[] = [];
+  variables_residents: any[] = [];
+  variables_students: any[] = [];
+
+  respondents: any[] = [
+    { id: 1, name_en: 'residents', name_gr: 'κάτοικοι' },
+    { id: 2, name_en: 'students', name_gr: 'μαθητές' },
+  ]
 
   chartTypeValues: any[] = [
     { id: 0, value: 'bar', name_en: 'bar', name_gr: 'μπάρα' },
@@ -29,11 +36,13 @@ export class ResponsesComponent implements OnInit {
   ]
 
 
-  filterVariables: any[] = [];
+  filterVariables_residents: any[] = [];
+  filterVariables_students: any[] = [];
+
   filterVariableValues: any[] = [];
 
-
-  selectedVariable: number = 62;
+  selectedRespondents: number = 1;
+  selectedVariable: number = 61;
   selectedFilterVariable: string = '';
   selectedFilterValues: string[] = [];
   allSelected: boolean = false;
@@ -59,46 +68,62 @@ export class ResponsesComponent implements OnInit {
     Chart.register(...registerables);
     Chart.register(ChartDataLabels);
 
-    this.graphTitle = this.variables[this.selectedVariable]
+    // this.graphTitle = this.variables[this.selectedVariable]
 
 
 
-    this.httpClient.get('assets/other/responses.csv', { responseType: 'text' }).subscribe(data => {
-      // console.log(data)
+    this.httpClient.get('assets/other/responses_students.csv', { responseType: 'text' }).subscribe(data => {
       const rows = data.split("\n");
       const headers = rows[0].split(';');
-      // console.log(headers)
-      for (let index = 2; index < headers.length; index++) {
+      for (let index = 1; index < headers.length; index++) {
         const element = headers[index];
-
         const obj = {
           id: index - 1,
           name: element
         }
-        this.variables.push(obj);
-        // console.log(element)
+        this.variables_students.push(obj);
         if (element.startsWith('Ποιος είναι ο κύριος τρόπος μετακίνησής σας') || element.startsWith('Φύλο') || element.startsWith('Σε ποιο Δημοτικό Διαμέρισμα')) {
-          this.filterVariables.push(element);
+          this.filterVariables_students.push(element);
         }
-
-
       }
-
       for (let index = 1; index < rows.length - 1; index++) {
         const element = rows[index];
         const response: any = {};
         const properties = element.split(';')
-
         for (let j in headers) {
           response[headers[j]] = properties[j]
         }
-        this.responses.push(response);
+        this.responses_students.push(response);
       }
+      // this.filterResponses()
+    });
 
-      // console.log(this.responses)
 
+    this.httpClient.get('assets/other/responses_residents.csv', { responseType: 'text' }).subscribe(data => {
+      const rows = data.split("\n");
+      const headers = rows[0].split(';');
+      for (let index = 1; index < headers.length; index++) {
+        const element = headers[index];
+        const obj = {
+          id: index - 1,
+          name: element
+        }
+        this.variables_residents.push(obj);
+        if (element.startsWith('Ποιος είναι ο κύριος τρόπος μετακίνησής σας') || element.startsWith('Φύλο') || element.startsWith('Σε ποιο Δημοτικό Διαμέρισμα')) {
+          this.filterVariables_residents.push(element);
+        }
+      }
+      for (let index = 1; index < rows.length - 1; index++) {
+        const element = rows[index];
+        const response: any = {};
+        const properties = element.split(';')
+        for (let j in headers) {
+          response[headers[j]] = properties[j]
+        }
+        this.responses_residents.push(response);
+      }
       this.filterResponses()
-    })
+    });
 
 
 
@@ -126,15 +151,29 @@ export class ResponsesComponent implements OnInit {
     }
 
 
+    let responses = [];
+    let variables = [];
+    if (this.selectedRespondents === 2) {
+      this.graphTitle = this.variables_students[this.selectedVariable]
+      responses = this.responses_students;
+      variables = this.variables_students;
+    }
+    else {
+      this.graphTitle = this.variables_residents[this.selectedVariable]
+      responses = this.responses_residents;
+      variables = this.variables_residents;
+    }
+
+
     if (this.selectedFilterValues.length !== 0 && this.stackedBar === false) {
-      this.responses.filter((item: any) => {
+      responses.filter((item: any) => {
         if (this.selectedFilterValues.includes(item[this.selectedFilterVariable])) {
           filteredData.push(item)
         }
       })
     }
     else {
-      filteredData = this.responses;
+      filteredData = responses;
     }
 
 
@@ -146,14 +185,14 @@ export class ResponsesComponent implements OnInit {
         for (let indexS = 0; indexS < stackedRawData.length; indexS++) {
           const elementS = stackedRawData[indexS];
           if (elementS.label === element[this.selectedFilterVariable]) {
-            elementS.data.push(element[this.variables[this.selectedVariable - 1].name])
+            elementS.data.push(element[variables[this.selectedVariable].name])
           }
         }
 
       }
-      rawData.push(element[this.variables[this.selectedVariable - 1].name])
+      rawData.push(element[variables[this.selectedVariable].name])
     }
-
+    // console.log(rawData)
     labels = Array.from(new Set<string>(rawData));
     labels.sort();
     labels = labels.filter((str) => str !== '');
@@ -217,7 +256,7 @@ export class ResponsesComponent implements OnInit {
       }, {});
 
     const frequencyForPie = Object.values(sortedFrequency)
-    // console.log(stackedFrequency)
+    // console.log(sortedFrequency)
     if (this.selectedChartType === 1) {
       this.initChart(labels, frequencyForPie);
 
@@ -491,12 +530,25 @@ export class ResponsesComponent implements OnInit {
   }
 
   getFilterValues(filter: any) {
-    this.filterVariableValues = [...new Set(this.responses.map(item => item[filter]))];
+    let responses = [];
+    if (this.selectedRespondents === 2) {
+      responses = this.responses_students;
+    }
+    else {
+      responses = this.responses_residents;
+    }
+    this.filterVariableValues = [...new Set(responses.map(item => item[filter]))];
     this.filterVariableValues = this.filterVariableValues.filter((str) => str !== '');
 
   }
 
   resetFilters() {
+    if (this.selectedRespondents === 2) {
+      this.selectedVariable = 58;
+    }
+    else {
+      this.selectedVariable = 61;
+    }
     this.selectedFilterValues = [];
     this.selectedFilterVariable = '';
     this.selectedChartType = 0;

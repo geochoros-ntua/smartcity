@@ -26,22 +26,15 @@
         "MPLR-POPUP-CLOSE":"Κλείσε",  
         "MPLR-POPUP-FULL":"Πλήρης έκταση οθόνης", 
         "MPLR-POPUP-ALL":"Ολα τα αντικείμενα",
-        "SENS-REPORT":"Αριθμός πεζών (ανα ",
-        "DATE-RANGE":"Εύρος ημερ/νιων",
+        "SENS-REPORT":"Αριθμός πεζών",
+        "DATE-RANGE":"Έυρος ημερ/νιων",
         "GRAPH-TYPE": "Τύπος γραφήματος",
         "REPORT-TYPE": "Τύπος αναφοράς",
-        "COMPARE-SENSORS": "Σύγκριση με αισθητήρα",
         "SENSORS-LIVE":"Live δεδομένα",
-        "SENSORS-GRAPHS":"Γραφήματα δεδομένων (ιστορικό)",
-        "SENSORS-SUM":"Σύνολο"                        
-    },
-    "GRAPH" :{
-        "LINE": "Γραμμή ",
-        "BAR": "Μπάρα",
-        "HOUR": "Ώρα", 
-        "DAY": "Ημέρα"
+        "SENSORS-GRAPHS":"Γραφήματα δεδομένων (ιστορικό)"                  
     },
     "RESPONSES" : {
+        "RESPONDENTS" : "Ερωτώμενοι",
         "VARIABLE" : "Μεταβλητή",
         "FILTER_VARIABLE" : "Μεταβλητή φίλτρο",
         "fILTER_VALUES" : "Τιμή φίλτρου",

@@ -129,6 +129,14 @@ body {
 $custom-typography: mat.define-typography-config(
   $font-family: "'Roboto Mono', monospace",
 );
+
+.logo-font {
+  font-family: "Rajdhani";
+  font-size: 26px;
+  align-self: center;
+  line-height: 66px;
+  height: 64px;
+}
 // $font-family: "Rajdhani, sans-serif",
 // $headline: mat-typography-level(32px, 48px, 700),
 // $body-1: mat-typography-level(16px, 24px, 500),

@@ -15,6 +15,7 @@ import { slideInAnimation } from './animations';
 export class AppComponent implements OnInit {
 
   innerWidth = window.innerWidth;
+  isDarkTheme: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -22,13 +23,17 @@ export class AppComponent implements OnInit {
   }
 
 
-  constructor(public darkThemeService: DarkThemeService) { }
+  constructor(public darkThemeService: DarkThemeService) { 
+    this.darkThemeService.isDarkTheme$.subscribe(status => {
+      this.isDarkTheme = status;
+    })
+  }
 
   ngOnInit(): void {
     if (localStorage.getItem('isDarkTheme')) {
       const isDarkTheme = JSON.parse(localStorage.getItem('isDarkTheme'));
       this.darkThemeService.isDarkTheme$.next(isDarkTheme);
-
+      this.isDarkTheme = isDarkTheme;
     }
   }
 

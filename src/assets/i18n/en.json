@@ -26,22 +26,15 @@
         "MPLR-POPUP-CLOSE":"Close",  
         "MPLR-POPUP-FULL":"Full screen", 
         "MPLR-POPUP-ALL":"Draw all detections",
-        "SENS-REPORT":"Pedestrians passed (per ",
+        "SENS-REPORT":"Pedestrians passed",
         "DATE-RANGE":"Date range",
         "GRAPH-TYPE": "Graph type",
         "REPORT-TYPE": "Report type",
-        "COMPARE-SENSORS": "Compare with sensor",
         "SENSORS-LIVE":"Live data",
-        "SENSORS-GRAPHS":"Data Graphs (historic)", 
-        "SENSORS-SUM":"Summary"      
-    },
-    "GRAPH" :{
-      "LINE": "Line", 
-      "BAR": "Bar",
-      "HOUR": "Hour",
-      "DAY": "Day"
+        "SENSORS-GRAPHS":"Data Graphs (historic)"    
     },
     "RESPONSES" : {
+      "RESPONDENTS" : "Respondents",
       "VARIABLE" : "Variable",
       "FILTER_VARIABLE" : "Filter variable",
       "fILTER_VALUES" : "Filter values",

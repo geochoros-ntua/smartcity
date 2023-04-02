@@ -1,9 +1,10 @@
 <div class="example-container main-parent mat-typography mat-app-background"
   [class.athens-dark-theme]="darkThemeService.isDarkTheme$ | async">
   <mat-toolbar>
-    <img src="assets/icons/logo.png" style="height: 7vh;">
-
-    <div style="margin-right: 8px" class="color-primary" *ngIf="innerWidth > 760">{{'MENU.DIGITAL' | translate}}</div>
+    <!-- <img *ngIf="isDarkTheme" src="assets/icons/walkable_athens_logo_dark.png" style="max-height: calc(7vh - 8px); padding: 4px;">
+    <img *ngIf="!isDarkTheme" src="assets/icons/walkable_athens_logo_light.png" style="max-height: calc(7vh - 8px); padding: 4px;"> -->
+    <div class="logo-font"><span style="font-weight: bold; color: #002673">WALKABLE </span><span style="color: #57B229">ATHENS</span></div>
+    <div style="margin-left: 16px; margin-right: 8px;" class="color-primary" *ngIf="innerWidth > 760">{{'MENU.DIGITAL' | translate}}</div>
     <div class="color-accent" *ngIf="innerWidth > 760">{{'MENU.OBSERVATORY' | translate}}</div>
     <span class="example-spacer"></span>
 

@@ -2,20 +2,51 @@
     <div class="responses-container">
         <div class="variables-container">
             <mat-form-field appearance="fill" class="select-variable">
+                <mat-label>{{ "RESPONSES.RESPONDENTS" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedRespondents" (selectionChange)="resetFilters()">
+                    <mat-option *ngFor="let respondent of respondents" [value]="respondent.id">{{ respondent.id + '. ' +
+                        (lang === 'gr' ? respondent.name_gr : respondent.name_en) }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div *ngIf="selectedRespondents === 1" class="variables-container">
+            <mat-form-field appearance="fill" class="select-variable">
                 <mat-label>{{ "RESPONSES.VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedVariable" (selectionChange)="filterResponses()">
-                    <mat-option *ngFor="let variable of variables" [value]="variable.id">{{ variable.id + '. ' +
+                    <mat-option *ngFor="let variable of variables_residents" [value]="variable.id">{{ variable.id + '. '
+                        +
+                        variable.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div *ngIf="selectedRespondents === 2" class="variables-container">
+            <mat-form-field appearance="fill" class="select-variable">
+                <mat-label>{{ "RESPONSES.VARIABLE" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedVariable" (selectionChange)="filterResponses()">
+                    <mat-option *ngFor="let variable of variables_students" [value]="variable.id">{{ variable.id + '. '
+                        +
                         variable.name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
         <div class="filters-container">
-            <mat-form-field appearance="fill" class="select-filter-variable">
+            <mat-form-field *ngIf="selectedRespondents === 1" appearance="fill" class="select-filter-variable">
                 <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedFilterVariable"
                     (selectionChange)="getFilterValues(selectedFilterVariable)">
-                    <mat-option *ngFor="let filterVariable of filterVariables" [value]="filterVariable">{{
+                    <mat-option *ngFor="let filterVariable of filterVariables_residents" [value]="filterVariable">{{
+                        filterVariable}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="selectedRespondents === 2" appearance="fill" class="select-filter-variable">
+                <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
+                <mat-select [(ngModel)]="selectedFilterVariable"
+                    (selectionChange)="getFilterValues(selectedFilterVariable)">
+                    <mat-option *ngFor="let filterVariable of filterVariables_students" [value]="filterVariable">{{
                         filterVariable}}
                     </mat-option>
                 </mat-select>
@@ -23,10 +54,12 @@
 
             <mat-form-field *ngIf="selectedFilterVariable" appearance="fill" class="select-filter-variable">
                 <mat-label>{{ "RESPONSES.FILTER_VALUES" | translate }}</mat-label>
-                <mat-select #selectValues [(ngModel)]="selectedFilterValues" (selectionChange)="filterResponses()" multiple>
+                <mat-select #selectValues [(ngModel)]="selectedFilterValues" (selectionChange)="filterResponses()"
+                    multiple>
                     <div class="select-all">
-                        <mat-checkbox class="select-all-values" [(ngModel)]="allSelected" [ngModelOptions]="{standalone: true}"
-                            (change)="selectAllValues()">{{"RESPONSES.ALL" | translate}}</mat-checkbox>
+                        <mat-checkbox class="select-all-values" [(ngModel)]="allSelected"
+                            [ngModelOptions]="{standalone: true}" (change)="selectAllValues()">{{"RESPONSES.ALL" |
+                            translate}}</mat-checkbox>
                     </div>
                     <mat-option *ngFor="let value of filterVariableValues" [value]="value">{{
                         value}}
@@ -56,13 +89,17 @@
                 </button></div>
             <div class="spacer"></div>
             <div class="filter-button">
-                <a mat-raised-button download href="assets/other/responses.csv">{{ "RESPONSES.DOWNLOAD" | translate
+                <a *ngIf="selectedRespondents === 1" mat-raised-button download
+                    href="assets/other/responses_residents.csv">{{ "RESPONSES.DOWNLOAD" | translate
+                    }}</a>
+                <a *ngIf="selectedRespondents === 2" mat-raised-button download
+                    href="assets/other/responses_students.csv">{{ "RESPONSES.DOWNLOAD" | translate
                     }}</a>
             </div>
         </div>
 
         <div class="row">
-            <canvas #graphCanvas style="max-height: calc(100vh - 327px) !important;"></canvas>
+            <canvas #graphCanvas style="max-height: calc(100vh - 396px) !important;"></canvas>
             <hr color="primary">
         </div>
 
