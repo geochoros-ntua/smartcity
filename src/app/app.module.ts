@@ -36,7 +36,6 @@ import { MapillaryDataComponent } from './map/Controls/mapillary-data/mapillary-
 import { MapillaryDataModalComponent } from './map/Controls/mapillary-data-modal/mapillary-data-modal.component';
 import { MapModeComponent } from './map/Controls/map-mode/map-mode.component';
 import { OpacitySliderComponent } from './map/Controls/opacity-slider/opacity-slider.component';
-import { MapStatsModeComponent } from './map/Controls/map-stats-mode/map-stats-mode.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ZoominoutComponent } from './map/Controls/zoominout/zoominout.component';
 import { PopupComponent } from './map/Controls/popup/popup.component';
@@ -55,6 +54,8 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ResponsesComponent } from './responses/responses.component';
 import { TeamComponent } from './team/team.component';
+import { MapStatsDataComponent } from './map/Controls/map-stats-data/map-stats-data.component';
+import { MapStatsDataModalComponent } from './map/Controls/map-stats-data-modal/map-stats-data-modal.component';
 
 
 export function setupTranslateFactory(
@@ -72,7 +73,6 @@ export function setupTranslateFactory(
     MapillaryDataModalComponent,
     MapModeComponent,
     OpacitySliderComponent,
-    MapStatsModeComponent,
     ZoominoutComponent,
     PopupComponent,
     TranslateComponent,
@@ -85,7 +85,9 @@ export function setupTranslateFactory(
     AboutComponent,
     ResponsesComponent,
     TeamComponent,
-    ContactComponent
+    ContactComponent,
+    MapStatsDataComponent,
+    MapStatsDataModalComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

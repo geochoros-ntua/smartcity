@@ -13,16 +13,22 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
-import { LoadingMethodObject } from '../api/map.api';
-import { VectorLayerNames } from '../api/map.enums';
+import { StatsIndeces, LoadingMethodObject, IndeceClass } from '../api/map.api';
+import { StatLayers, VectorLayerNames } from '../api/map.enums';
 import { FEATURE_GROUPS } from '../api/map.datamaps';
 import Polygon from 'ol/geom/Polygon';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
 import TileWMS from 'ol/source/TileWMS';
 import MapUtils from '../map.helper';
-import { VectorImage } from 'ol/layer';
+import { VectorImage, WebGLPoints } from 'ol/layer';
 import { Fill, Stroke, Style } from 'ol/style';
+import { WebGLLayer } from '../api/WebGLLayer';
+import { StatsService } from './map.stats.service';
+import WebGLPointsLayer from 'ol/layer/WebGLPoints';
+import { DUMMY_STYLES } from '../api/map.default.styles';
+import { FeatureLike } from 'ol/Feature';
+
 
 /**
  * Author: p.tsagkis
@@ -54,50 +60,31 @@ export class MapLayersService {
   private mplPntSource!: VectorSource<Point>;
   private MPL_POINTS!: VectorLayer<VectorSource<Point>>;
 
-  private questDKSource!: VectorSource<Polygon | MultiPolygon>;
-  private QUEST_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
-
-  private factorsDKSource!: VectorSource<Polygon | MultiPolygon>;
-  private FACTORS_DK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
-
-  private factorsGeitSource!: VectorSource<Polygon | MultiPolygon>;
-  private FACTORS_GEIT!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
-
-  private factorsPedWaysSource!: VectorSource<Polygon | MultiPolygon>;
-  private FACTORS_PEDESTRN!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
-
-  private ATHENS_MASK!: VectorLayer<VectorSource<Polygon | MultiPolygon>>;
-
+  private ATHENS_MASK!: VectorImage<VectorSource<Polygon | MultiPolygon>>;
   private SENSORS!: VectorLayer<VectorSource<Point>>;
 
+  public webGlStatsSource!: VectorSource<Point>;
+  private WEBGL_STATS!: WebGLLayer | WebGLPointsLayer<VectorSource<Point>>;
 
   private mplFormat: GeoJSON;
 
-  private statsLayersFormat: GeoJSON;
-
   private selectionLayer!: VectorLayer<VectorSource<Geometry>>;
 
+  private dummySelectLayer!: VectorLayer<VectorSource<Geometry>>;
+
   public selectedFeatureGroups!: string[];
-
   public selectedFeatureGroups$: BehaviorSubject<string[]> = new BehaviorSubject(Array.from( [...FEATURE_GROUPS.keys(), '0']));
-
   public checkedSeq = true;
   public checkedImg = true;
+  public dataLoaded: boolean;
 
-  public dataLoaded:boolean;
-
-
-  constructor(private http: HttpClient, private mapStyleService: MapStyleService) {
+  constructor(private http: HttpClient, private mapStatsService: StatsService, private mapStyleService: MapStyleService) {
     // format to read the mpl 4326 layers response
     this.mplFormat = new GeoJSON({
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     });
-    // format to read the stats 3857 layers response
-    this.statsLayersFormat = new GeoJSON({
-      dataProjection: 'EPSG:3857',
-      featureProjection: 'EPSG:3857'
-    });
+ 
     // if less than six groups selected 
     // then set a lower zoom level
     // give to the user some more point to view
@@ -111,7 +98,6 @@ export class MapLayersService {
           }
     });
   }
-
 
   /**
    * intitilaise all the layers
@@ -135,20 +121,15 @@ export class MapLayersService {
     this.initMapillarySequences(true);
     this.initMapillaryImages(true);
     this.initMapillaryPoints(true);
-    // questoniarry layer
-    this.initQuestDKLayer(false);
     // factors layers
-    this.initFactorsDKLayer(false);
-    this.initFactorsGeitLayer(false);
-    this.initFacorsPdstrLayer(false);
+    this.initWebGlStatsLayer(false);
     // sensors layer
     this.initSensorLayer(false);
-    // scrap layer
+    // mapillary select layer
     this.initSelectionLayer(true);
-    
+    // scrap layer
+    this.initDummySelectLayer(true);
   }
-
- 
 
   public get GosmLayer(): TileLayer<OSM> {
     return this.GOSMLayer;
@@ -158,7 +139,7 @@ export class MapLayersService {
     return this.OSMLayer;
   }
 
-  public get KtimaLayer(): TileLayer<OSM> {
+  public get KtimaLayer(): TileLayer<TileWMS> {
     return this.KTIMALayer;
   }
 
@@ -182,22 +163,6 @@ export class MapLayersService {
     return this.MPL_POINTS;
   }
 
-  public get FactorsDKLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
-    return this.FACTORS_DK;
-  }
-
-  public get QuestDKLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
-    return this.QUEST_DK;
-  }
-
-  public get FactorsGeitLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
-    return this.FACTORS_GEIT;
-  }
-
-  public get FacorsPdstrLayer(): VectorLayer<VectorSource<Polygon | MultiPolygon>> {
-    return this.FACTORS_PEDESTRN;
-  }
-
   public get SensorsLayer(): VectorLayer<VectorSource<Point>> {
     return this.SENSORS;
   }
@@ -206,10 +171,17 @@ export class MapLayersService {
     return this.selectionLayer;
   }
 
-  public get MaskLayer(): VectorLayer<VectorSource<Geometry>> {
+  public get DummySelectLayer(): VectorLayer<VectorSource<Geometry>> {
+    return this.dummySelectLayer;
+  }
+
+  public get MaskLayer(): VectorImage<VectorSource<Geometry>> {
     return this.ATHENS_MASK;
   }
 
+  public get WebGlStatsLayer(): WebGLLayer | WebGLPointsLayer<VectorSource<Point>>{
+    return this.WEBGL_STATS;
+  }
 
 
   /**
@@ -221,20 +193,41 @@ export class MapLayersService {
       this.MPL_IMAGES.setOpacity(value);
       this.MPL_SEQUENCES.setOpacity(value);
       this.MPL_POINTS.setOpacity(value);
-      this.FACTORS_DK.setOpacity(value);
-      this.FACTORS_GEIT.setOpacity(value);
-      this.FACTORS_PEDESTRN.setOpacity(value);
-      this.QUEST_DK.setOpacity(value);
       this.SENSORS.setOpacity(value);
+      this.WEBGL_STATS.setOpacity(value);
   }
 
 
   /**
    * PRIVATES
    */
+  public initWebGlStatsLayer(visible: boolean){
+    const url = this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines ? 
+    './assets/geodata/audit_lines.json' : 
+    './assets/geodata/bus_stops.json';
+    this.webGlStatsSource = new VectorSource({
+      url: url,
+      format: new GeoJSON({
+        dataProjection: 'EPSG:3857',
+        featureProjection: 'EPSG:3857'
+      })
+    });
+    if (this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines ){
+      this.WEBGL_STATS = new WebGLLayer(this.mapStatsService,{
+        source: this.webGlStatsSource,
+        visible
+      });
+    } else {
+      this.WEBGL_STATS = new WebGLPointsLayer({
+        source: this.webGlStatsSource,
+        visible,
+        style: this.mapStatsService.getStyleForWebGlPointLayer()
+      });
+    }
+  }
+
 
   private initMaskLayer(){
-
       this.ATHENS_MASK = new VectorImage({
         source: new VectorSource({
           url:'./assets/geodata/athens_mask.json',
@@ -260,11 +253,24 @@ export class MapLayersService {
       this.ATHENS_MASK.set('name', 'athens_outline')
   }
 
+  
   private initSelectionLayer = (visible: boolean): void => {
     this.selectionLayer = new VectorLayer({
       source: new VectorSource<Geometry>(),
       visible,
       style: this.mapStyleService.mplImagePointsStyle
+    });
+  };
+
+
+  private initDummySelectLayer = (visible: boolean): void => {
+    this.dummySelectLayer = new VectorLayer({
+      source: new VectorSource<Geometry>(),
+      visible,
+      zIndex: 9999,
+      style: (f:FeatureLike) => {
+        return this.mapStyleService.dummyStyleFn(f, DUMMY_STYLES);
+      }
     });
   };
 
@@ -344,7 +350,6 @@ export class MapLayersService {
   };
 
 
-
   private initMapillaryImages = (visible: boolean): void => {
 
     this.mplImgource = new VectorSource({
@@ -401,114 +406,6 @@ export class MapLayersService {
     });
   };
 
-  private initFactorsDKLayer = (visible: boolean): void => {
-    this.factorsDKSource = new VectorSource({
-      format: this.statsLayersFormat,
-      strategy: bboxStrategy,
-      loader: (extent, resolution, projection) => {
-        this.loadingFn({
-          extent,
-          resolution,
-          projection,
-          format: this.statsLayersFormat,
-          dbprojection: olProj.get('EPSG:3857'),
-          layerName: VectorLayerNames.factors_dk,
-          source: this.factorsDKSource
-        });
-      }
-    });
-
-    this.FACTORS_DK = new VectorLayer({
-      visible,
-      opacity: 0.7,
-      minZoom: 10,
-      maxZoom: 15,
-      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
-      source: this.factorsDKSource
-    });
-  };
-
-  private initFactorsGeitLayer = (visible: boolean): void => {
-    this.factorsGeitSource = new VectorSource({
-      format: this.statsLayersFormat,
-      strategy: bboxStrategy,
-      loader: (extent, resolution, projection) => {
-        this.loadingFn({
-          extent,
-          resolution,
-          projection,
-          format: this.statsLayersFormat,
-          dbprojection: olProj.get('EPSG:3857'),
-          layerName: VectorLayerNames.factors_geit,
-          source: this.factorsGeitSource
-        });
-      }
-    });
-
-    this.FACTORS_GEIT = new VectorLayer({
-      visible,
-      opacity: 0.7,
-      minZoom: 15,
-      maxZoom: 17,
-      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
-      source: this.factorsGeitSource
-    });
-  };
-
-
-  private initFacorsPdstrLayer = (visible: boolean): void => {
-    this.factorsPedWaysSource = new VectorSource({
-      format: this.statsLayersFormat,
-      strategy: bboxStrategy,
-      loader: (extent, resolution, projection) => {
-        this.loadingFn({
-          extent,
-          resolution,
-          projection,
-          format: this.statsLayersFormat,
-          dbprojection: olProj.get('EPSG:3857'),
-          layerName: VectorLayerNames.factors_pdstr,
-          source: this.factorsPedWaysSource
-        });
-      }
-    });
-
-    this.FACTORS_PEDESTRN = new VectorLayer({
-      visible,
-      opacity: 0.7,
-      minZoom: 17,
-      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
-      source: this.factorsPedWaysSource
-    });
-  };
-
-  private initQuestDKLayer = (visible: boolean): void => {
-    this.questDKSource = new VectorSource({
-      format: this.statsLayersFormat,
-      strategy: bboxStrategy,
-      loader: (extent, resolution, projection) => {
-        this.loadingFn({
-          extent,
-          resolution,
-          projection,
-          format: this.statsLayersFormat,
-          dbprojection: olProj.get('EPSG:3857'),
-          layerName: VectorLayerNames.quest_dk,
-          source: this.questDKSource
-        });
-      }
-    });
-
-    this.QUEST_DK = new VectorLayer({
-      visible,
-      opacity: 0.7,
-      minZoom: 10,
-      style: (feature) => this.mapStyleService.dummyStyleFn(feature),
-      source: this.questDKSource
-    });
-  };
-
-
   private initSensorLayer = (visible: boolean): void => {
 
     this.SENSORS = new VectorLayer({
@@ -525,10 +422,7 @@ export class MapLayersService {
           wrapX:false
       })
     });
-
-   
   }
-
 
   /**
    * This is a common loading method for all layers maintained within the DB
@@ -567,6 +461,5 @@ export class MapLayersService {
         loadingMethodObject.source.addFeatures(loadingMethodObject.format.readFeatures(data));
       });
   }
-
 
 }

@@ -5,8 +5,8 @@ import { defaults as defaultControls } from 'ol/control';
 import * as olProj from 'ol/proj';
 import { SmartCityMapillaryConfig, SmartCityMapConfig, FeatureClickedWithPos } from '../api/map.api';
 import { MapMapillaryService } from './map.mapillary.service';
-import { MapBrowserEvent } from 'ol';
-import { VectorLayerNames, MapMode } from '../api/map.enums';
+import { MapBrowserEvent, Overlay } from 'ol';
+import { VectorLayerNames, MapMode, StatTypes } from '../api/map.enums';
 import { Subject } from 'rxjs';
 import { MapLayersService } from './map.layers.service';
 import { AppMessagesService } from 'src/app/shared/messages.service';
@@ -14,15 +14,15 @@ import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
 import { SensorsService } from './map.sensors.service';
 
-import  olMap from 'ol/Map';
 import  { FeatureLike } from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import {Circle,  Stroke, Style} from 'ol/style';
 import {easeOut} from 'ol/easing.js';
 import {getVectorContext} from 'ol/render.js';
 import {unByKey} from 'ol/Observable.js';
-
-
+import { StatsService } from './map.stats.service';
+import { LineString } from 'ol/geom';
+import { getCenter } from 'ol/extent';
 
 /**
  * Author: p.tsagkis
@@ -37,10 +37,12 @@ export class MapService {
 
   public mapMode$: Subject<MapMode> = new Subject<MapMode>();
   public mapMode: MapMode = MapMode.sens;
-  public subFactorsMode: MapMode = MapMode.stats_i;
   public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
   public flashIntervals: any[] =[];
+
+  private tooltip: HTMLElement;
+  private overlay: Overlay;
 
   private smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
@@ -53,6 +55,7 @@ export class MapService {
     private mapMapillaryService: MapMapillaryService, 
     private mapLayersService: MapLayersService, 
     private sensorsService: SensorsService,
+    private mapStatsService: StatsService,
     private mapMessagesService: AppMessagesService,
     private translateService: TranslateService
     ) {
@@ -63,13 +66,19 @@ export class MapService {
     // so it is a good idea to keep it sharable
     this.mapMode$.subscribe((mode: MapMode) => {
       this.mapMode = mode;
-      if (this.mapMode === MapMode.stats_i || this.mapMode === MapMode.stats_q ){
-        this.subFactorsMode = this.mapMode;
-      } else {
+      if (this.mapMode !== MapMode.stats ){
         this.smartCityMap.getOverlayById('popupoverlay')?.setPosition(undefined);
-      }
+      } 
       this.onModeChange(mode);
     });
+  }
+
+  public get smartCityConfig(): SmartCityMapConfig{
+    return this.smartCityMapConfig;
+  }
+
+  public get smartCityMap(): Map {
+    return this.map;
   }
 
   public initMap(): void {
@@ -86,12 +95,11 @@ export class MapService {
         this.mapLayersService.MlSequencesLayer,
         this.mapLayersService.MlImagesLayer,
         this.mapLayersService.MlPointsLayer,
-        this.mapLayersService.QuestDKLayer,
-        this.mapLayersService.FactorsDKLayer,
-        this.mapLayersService.FactorsGeitLayer,
-        this.mapLayersService.FacorsPdstrLayer,
         this.mapLayersService.SensorsLayer,
-        this.mapLayersService.SelectionLayer
+        this.mapLayersService.WebGlStatsLayer,
+        this.mapLayersService.SelectionLayer,
+        this.mapLayersService.DummySelectLayer,
+        
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
       view: new View({
@@ -110,18 +118,14 @@ export class MapService {
       this.flashIntervals.push(flashInterval);
     });
 
-
-
+    this.tooltip = document.getElementById('tooltip');
+    this.overlay = new Overlay({
+      element: this.tooltip,
+      offset: [10, 0],
+      positioning: 'bottom-left'
+    });
+    this.smartCityMap.addOverlay(this.overlay);
   }
-
-  public get smartCityConfig(): SmartCityMapConfig{
-    return this.smartCityMapConfig;
-  }
-
-  public get smartCityMap(): Map {
-    return this.map;
-  }
-
   
 
   public flashFeature(feature: FeatureLike): void {
@@ -161,66 +165,76 @@ export class MapService {
     
   }
 
-  public stopFlashIntervals(){
+  public stopFlashIntervals(): void{
     this.flashIntervals.forEach(int => clearInterval(int));
   }
   
 
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
-    this.map.forEachFeatureAtPixel(event.pixel, feature => {
+    this.mapLayersService.DummySelectLayer.getSource().clear();
+    this.overlay.setPosition(undefined);
+    if (this.mapMode === MapMode.stats){
+      const feature = this.mapLayersService.webGlStatsSource.getClosestFeatureToCoordinate(event.coordinate);
 
-      if (feature.get('layer')) {
-        switch (feature.get('layer')) {
-          case VectorLayerNames.seq: {
-            const mapillaryViewerConfig: SmartCityMapillaryConfig = {
-              imageId: feature.get('image_id'),
-              mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
-              map: this.smartCityMap
-            };
-            this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
-            break;
-          }
-          case VectorLayerNames.img: {
-            const mapillaryViewerConfig: SmartCityMapillaryConfig = {
-              imageId: feature.get('id'),
-              mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
-              map: this.smartCityMap
-            };
-            this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
-            break;
-          }
-          case VectorLayerNames.point: {
-            const mapillaryViewerConfig: SmartCityMapillaryConfig = {
-              imageId: '',
-              mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
-              map: this.smartCityMap
-            };
-            this.mapMapillaryService.showFeatureOnImage(mapillaryViewerConfig, feature);
-            break;
-          }
-          case VectorLayerNames.factors_dk: {
-            this.smartCityMap.getOverlayById('popupoverlay').setPosition(undefined);
-            this.featureClickedWithPos$.next({
-              feat:feature,
-              coord:event.coordinate
-            });
-            break;
-          }
-          case VectorLayerNames.sens: {
-            this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
-            break;
-          }
-          default: {
-            console.error('No such layer');
-            break;
+      const featCenter = feature.getGeometry().getClosestPoint(event.coordinate);
+      const dist  = new LineString([event.coordinate, featCenter]).getLength();
+      if (feature && dist < 20 && this.mapStatsService.selectedStatsIndex) {
+        this.overlay.setPosition(getCenter(feature.getGeometry().getExtent()));
+
+        this.tooltip.innerHTML = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
+        parseInt(feature.get(this.mapStatsService.selectedStatsIndex.code))-1 + '' :
+        this.mapStatsService.selectedStatsIndex.classes
+        .find((cls) => feature.get(this.mapStatsService.selectedStatsIndex.code) === cls.value)?.label;
+        
+        this.mapLayersService.DummySelectLayer.getSource().addFeature(feature);
+      }
+    } else {
+       this.map.forEachFeatureAtPixel(event.pixel, feature => {
+        if (feature.get('layer')) {
+          switch (feature.get('layer')) {
+            case VectorLayerNames.seq: {
+              const mapillaryViewerConfig: SmartCityMapillaryConfig = {
+                imageId: feature.get('image_id'),
+                mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
+                map: this.smartCityMap
+              };
+              this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
+              break;
+            }
+            case VectorLayerNames.img: {
+              const mapillaryViewerConfig: SmartCityMapillaryConfig = {
+                imageId: feature.get('id'),
+                mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
+                map: this.smartCityMap
+              };
+              this.mapMapillaryService.showMapillaryViewer(mapillaryViewerConfig);
+              break;
+            }
+            case VectorLayerNames.point: {
+              const mapillaryViewerConfig: SmartCityMapillaryConfig = {
+                imageId: '',
+                mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
+                map: this.smartCityMap
+              };
+              this.mapMapillaryService.showFeatureOnImage(mapillaryViewerConfig, feature);
+              break;
+            }
+            case VectorLayerNames.sens: {
+              this.sensorsService.showReportGraph(Number(feature.getId()), Number(feature.get('live_report_id')), feature.get('mpl_imageid'));
+              break;
+            }
+            default: {
+              console.error('No such layer');
+              break;
+            }
           }
         }
-      }
-      // breaking the iteration. get the first feature found. Forget the rest
-      return true;
-    }, {
-      hitTolerance: 2
-    });
+        // breaking the iteration. get the first feature found. Forget the rest
+        return true;
+      }, {
+        hitTolerance: 2
+      });
+    }
   }
 
 
@@ -228,8 +242,8 @@ export class MapService {
     const msg = 
     (mode === 'street') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-MPLR')}) : 
     (mode === 'sens') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-SENSORS')}) : 
-    (mode === 'stats_q') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.SUBJECTIVE-FACTORS')}) : 
-    this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.OBJECTIVE-FACTORS')});
+    (mode === 'stats') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.SUBJECTIVE-FACTORS')}) : 
+    "Error: no such mode";
 
     this.mapMessagesService.showMapMessage({
       message: msg ,
@@ -245,43 +259,23 @@ export class MapService {
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
          this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg);
          this.mapLayersService.MlPointsLayer.setVisible(true);
-         this.mapLayersService.FactorsDKLayer.setVisible(false);
-         this.mapLayersService.FactorsGeitLayer.setVisible(false);
-         this.mapLayersService.FacorsPdstrLayer.setVisible(false);
-         this.mapLayersService.QuestDKLayer.setVisible(false);
+         this.mapLayersService.WebGlStatsLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
          break; 
       } 
-      case MapMode.stats_i: { 
+      case MapMode.stats: { 
          this.mapLayersService.MlSequencesLayer.setVisible(false);
          this.mapLayersService.MlImagesLayer.setVisible(false);
          this.mapLayersService.MlPointsLayer.setVisible(false);
-         this.mapLayersService.FactorsDKLayer.setVisible(true);
-         this.mapLayersService.FactorsGeitLayer.setVisible(true);
-         this.mapLayersService.FacorsPdstrLayer.setVisible(true);
-         this.mapLayersService.QuestDKLayer.setVisible(false);
+         this.mapLayersService.WebGlStatsLayer.setVisible(true);
          this.mapLayersService.SensorsLayer.setVisible(false);
          break; 
       } 
-      case MapMode.stats_q: { 
-        this.mapLayersService.MlSequencesLayer.setVisible(false);
-        this.mapLayersService.MlImagesLayer.setVisible(false);
-        this.mapLayersService.MlPointsLayer.setVisible(false);
-        this.mapLayersService.FactorsDKLayer.setVisible(false);
-        this.mapLayersService.FactorsGeitLayer.setVisible(false);
-        this.mapLayersService.FacorsPdstrLayer.setVisible(false);
-        this.mapLayersService.QuestDKLayer.setVisible(true);
-        this.mapLayersService.SensorsLayer.setVisible(false);
-        break; 
-     } 
       case MapMode.sens: { 
         this.mapLayersService.MlSequencesLayer.setVisible(false);
         this.mapLayersService.MlImagesLayer.setVisible(false);
         this.mapLayersService.MlPointsLayer.setVisible(false);
-        this.mapLayersService.FactorsDKLayer.setVisible(false);
-        this.mapLayersService.FactorsGeitLayer.setVisible(false);
-        this.mapLayersService.FacorsPdstrLayer.setVisible(false);
-        this.mapLayersService.QuestDKLayer.setVisible(false);
+        this.mapLayersService.WebGlStatsLayer.setVisible(false);
         this.mapLayersService.SensorsLayer.setVisible(true);
         this.sensorsService.initSensors();        
         break; 
