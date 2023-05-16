@@ -1,5 +1,24 @@
 <div class="tileSelectorCntrl" >
-    <mat-form-field>
+
+  <button  matTooltip="{{'MAP.TILE-SELECTOR' | translate: {x:3} }}" color="primary" mat-mini-fab [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <mat-icon>map</mat-icon>
+  </button>
+  <mat-menu class="tilemenu" #menu="matMenu">
+    <button [ngClass]="selectedTile === tileTypes.cartoDarkLayer ? 'active':'inActive'"  mat-menu-item (click)="setTileLayer(tileTypes.cartoDarkLayer)">
+      <span>Carto Light/Dark</span>
+    </button>
+    <button [ngClass]="selectedTile === tileTypes.OsmLayer ? 'active':'inActive'" mat-menu-item (click)="setTileLayer(tileTypes.OsmLayer)">
+      <span>OSM</span>
+    </button>
+    <button [ngClass]="selectedTile === tileTypes.GosmLayer ? 'active':'inActive'" mat-menu-item (click)="setTileLayer(tileTypes.GosmLayer)">
+      <span>GOSM</span>
+    </button>
+    <button [ngClass]="selectedTile === tileTypes.ktimaNetLayer ? 'active':'inActive'" mat-menu-item (click)="setTileLayer(tileTypes.ktimaNetLayer)">
+      <span>Κτηματολόγιο</span>
+    </button>
+  </mat-menu>
+  
+    <!-- <mat-form-field>
       <mat-label>  {{'MAP.TILE-SELECTOR' | translate: {x:3} }}</mat-label>
       <mat-select color="primary" value = "CARTODARK" (selectionChange)="setTileLayer($event.value)">
         <mat-option value="NONE">None</mat-option>
@@ -8,6 +27,6 @@
         <mat-option value="GOSM">Google Sat</mat-option>
         <mat-option value="KTBASEMAP">Κτηματολόγιο</mat-option>
       </mat-select>  
-    </mat-form-field>
+    </mat-form-field> -->
 </div> 
 
