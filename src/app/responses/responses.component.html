@@ -68,7 +68,8 @@
             </mat-form-field>
         </div>
         <div class="filters-container">
-            <mat-form-field appearance="fill" class="select-filter-variable">
+
+            <mat-form-field [hidden]="showStudentsWishes" appearance="fill" class="select-filter-variable">
                 <mat-label>{{ "RESPONSES.CHART_TYPE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedChartType" (selectionChange)="filterResponses()">
                     <mat-option *ngFor="let value of chartTypeValues" [value]="value.id">{{ lang === 'en' ?
@@ -99,9 +100,15 @@
         </div>
 
         <div class="row">
-            <canvas #graphCanvas style="max-height: calc(100vh - 396px) !important;"></canvas>
-            <hr color="primary">
+            <div [hidden]="showStudentsWishes">
+                <canvas #graphCanvas class="chart-canvas"></canvas>
+                <hr color="primary">
+            </div>
+            <div *ngIf="showStudentsWishes" class="students-wishes-container">
+                        <mat-card class="student-wish" *ngFor="let wish of studentsWishes">
+                            <mat-card-content>{{ wish }}</mat-card-content>
+                        </mat-card>
+            </div>
         </div>
-
     </div>
 </section>

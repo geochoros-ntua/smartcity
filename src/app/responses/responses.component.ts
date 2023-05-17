@@ -47,9 +47,12 @@ export class ResponsesComponent implements OnInit {
   selectedFilterValues: string[] = [];
   allSelected: boolean = false;
 
+  showStudentsWishes: boolean = false;
+  studentsWishes: any[] = [];
+
   selectedChartType: number = 0;
 
-  graphTitle: string = '';
+  graphTitle: any = null;
 
   responsesChart: any;
 
@@ -192,10 +195,19 @@ export class ResponsesComponent implements OnInit {
       }
       rawData.push(element[variables[this.selectedVariable].name])
     }
-    // console.log(rawData)
-    labels = Array.from(new Set<string>(rawData));
-    labels.sort();
-    labels = labels.filter((str) => str !== '');
+
+    if (this.graphTitle.name.startsWith('Σημαντικότητα')) {
+      labels = ['1 (Καθόλου σημαντικό)', '2', '3', '4', '5 (Πάρα πολύ σημαντικό)']
+    }
+    else if (this.graphTitle.name.startsWith('Πως επηρεάζει ο παράγοντας')) {
+      labels = ['1 (Καθόλου)', '2', '3', '4', '5 (Πάρα πολύ)']
+    }
+    else {
+      labels = Array.from(new Set<string>(rawData));
+      labels.sort();
+      labels = labels.filter((str) => str !== '');
+    }
+
 
     const stackedFrequency: any[] = [];
 
@@ -217,16 +229,15 @@ export class ResponsesComponent implements OnInit {
           }
         }
       }
-      const sortedNewData = Object.keys(newData)
-        .sort()
-        .reduce((accumulator: any, key) => {
-          accumulator[key] = newData[key];
 
-          return accumulator;
-        }, {});
 
-      let labelsStacked = Object.keys(sortedNewData);
-      var valuesStacked = labelsStacked.map((v) => { return sortedNewData[v]; });
+      let labelsStacked = Object.keys(newData).sort();
+      const valuesStacked: any[] = [];
+      for (let index = 0; index < labelsStacked.length; index++) {
+        const element = labelsStacked[index];
+        valuesStacked.push(newData[element])
+      }
+
       let color = this.random_rgb();
       let backgroundColor = 'rgba(' + color + ', 0.5)';
       let borderColor = 'rgba(' + color + ', 1)';
@@ -240,23 +251,47 @@ export class ResponsesComponent implements OnInit {
       })
     }
 
+  
 
     const frequency = rawData.reduce((prev, cur) => {
       prev[cur] = (prev[cur] || 0) + 1;
       return prev;
     }, {});
     delete frequency[""];
+    const sortedFrequency: any[] = [];
 
-    const sortedFrequency = Object.keys(frequency)
-      .sort()
-      .reduce((accumulator: any, key) => {
-        accumulator[key] = frequency[key];
+    if (this.graphTitle.name.startsWith('Σημαντικότητα')) {
+      const labelsForSort = [1,2,3,4,5]
+      for (let index = 0; index < labelsForSort.length; index++) {
+        const element = labelsForSort[index];
+        sortedFrequency.push(frequency[element])
+      }
+    }
+    else if (this.graphTitle.name.startsWith('Πως επηρεάζει ο παράγοντας')) {
+      const labelsForSort = [1,2,3,4,5]
+      for (let index = 0; index < labelsForSort.length; index++) {
+        const element = labelsForSort[index];
+        sortedFrequency.push(frequency[element])
+      }
+    }
+    else {
+      for (let index = 0; index < labels.length; index++) {
+        const element = labels[index];
+        sortedFrequency.push(frequency[element])
+      }
+    }
 
-        return accumulator;
-      }, {});
 
-    const frequencyForPie = Object.values(sortedFrequency)
-    // console.log(sortedFrequency)
+
+    const frequencyForPie = sortedFrequency;
+    if (this.selectedRespondents === 2 && this.selectedVariable === 58) {
+      this.showStudentsWishes = true;
+      this.studentsWishes = [];
+      this.studentsWishes = this.shuffle(labels);
+    }
+    else {
+      this.showStudentsWishes = false;
+    }
     if (this.selectedChartType === 1) {
       this.initChart(labels, frequencyForPie);
 
@@ -330,6 +365,7 @@ export class ResponsesComponent implements OnInit {
       plugins: [ChartDataLabels],
       type: this.selectedChartType === 2 ? 'radar' : this.selectedChartType === 1 ? 'pie' : 'bar',
       options: {
+        maintainAspectRatio: false,
         // interaction: {
         //   mode: 'index'
         // },
@@ -544,7 +580,7 @@ export class ResponsesComponent implements OnInit {
 
   resetFilters() {
     if (this.selectedRespondents === 2) {
-      this.selectedVariable = 58;
+      this.selectedVariable = 59;
     }
     else {
       this.selectedVariable = 61;
@@ -559,6 +595,24 @@ export class ResponsesComponent implements OnInit {
   random_rgb() {
     var o = Math.round, r = Math.random, s = 255;
     return o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s);
+  }
+
+  shuffle(array: any) {
+    let currentIndex = array.length, randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
   }
 
 

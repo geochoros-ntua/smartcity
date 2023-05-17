@@ -8,6 +8,7 @@
 
 .filters-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .select-filter-variable {
@@ -22,4 +23,39 @@
 
 .select-all-values {
   padding: 16px;
+}
+
+.students-wishes-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap-reverse;
+}
+
+.student-wish {
+    margin: 16px;
+    max-width: 400px;
+    word-break: break-word;
+}
+
+.chart-canvas {
+  max-height: calc(100vh - 396px) !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .select-filter-variable {
+    margin-right: 16px;
+    min-width: 100%;
+  }
+}
+
+@media only screen and (max-width: 1063px) {
+  .chart-canvas {
+    max-height: calc(100vh - 458px) !important;
+  }
+}
+
+@media only screen and (max-width: 660px) {
+  .chart-canvas {
+    max-height: calc(100vh - 488px) !important;
+  }
 }
