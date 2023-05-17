@@ -1,7 +1,6 @@
 export enum MapMode {
     street = 'street',
-    stats_q = 'stats_q',
-    stats_i = 'stats_i',
+    stats = 'stats',
     sens = 'sens'
 }
 
@@ -17,11 +16,16 @@ export enum VectorLayerNames {
     seq = 'mapillary_sequences',
     img = 'mapillary_images',
     point = 'mapillary_points',
-    traffic_signs = 'mpl_traffic_signs',
-    factors_dk ='da_dim_koin',
-    factors_geit ='da_geitonies',
-    factors_pdstr ='da_pedestrian_ways',
-    quest_dk ='quest_dim_koin',
     sens='sensors'
 }
 
+export enum StatTypes {
+    number = 'number',
+    class = 'class'
+}
+
+export enum StatLayers{
+    audit_lines = 'Γραμμές πεζοδρομίων',
+    center_lines = 'Γραμμές δρόμων',
+    bus_stops = 'Στάσεις Λεωφορείων'
+}

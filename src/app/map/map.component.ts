@@ -2,10 +2,11 @@ import { MapLayersService } from './Services/map.layers.service';
 import { DarkThemeService } from './../shared/dark-theme/dark-theme.service';
 import { Component, OnInit } from '@angular/core';
 import { MapService } from './Services/map.service';
-import { MapBrowserEvent } from 'ol';
+import { MapBrowserEvent, Overlay } from 'ol';
 import { MapMode } from './api/map.enums';
 import { SensorsService } from './Services/map.sensors.service';
 import { unByKey } from 'ol/Observable.js';
+import { StatsService } from './Services/map.stats.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class MapComponent implements OnInit {
   isStats: boolean; 
 
   constructor(
-    private mapService: MapService, 
+    private mapService: MapService, private mapStatsService: StatsService,
     public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
 
   }
@@ -43,7 +44,7 @@ export class MapComponent implements OnInit {
 
   private resetMapType(mode:MapMode): void{
     this.isStreet = (mode === MapMode.street);
-    this.isStats = (mode === MapMode.stats_i || mode === MapMode.stats_q);
+    this.isStats = (mode === MapMode.stats);
   }
 
 
@@ -54,7 +55,7 @@ export class MapComponent implements OnInit {
       thisP.mapService.smartCityMap.updateSize();
     });
 
-    // click on map event
+     // click on map event
     this.mapService.smartCityMap.on('click', (event: MapBrowserEvent<UIEvent>) => {
       this.mapService.onMapClicked(event);
     });

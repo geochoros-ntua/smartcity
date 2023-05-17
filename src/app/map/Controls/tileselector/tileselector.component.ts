@@ -10,6 +10,8 @@ import { MapLayersService } from '../../Services/map.layers.service';
   styleUrls: ['./tileselector.component.scss']
 })
 export class TileselectorComponent implements OnInit {
+  public tileTypes = TileLayerNames;
+  public selectedTile: TileLayerNames;
 
   constructor(private mapLayersService: MapLayersService, private dDarkThemeService: DarkThemeService) { 
 
@@ -20,6 +22,7 @@ export class TileselectorComponent implements OnInit {
   }
 
   public setTileLayer(val: TileLayerNames): void  {
+    this.selectedTile = val;
     switch (val) {
       case TileLayerNames.OsmLayer: {
         this.mapLayersService.KtimaLayer.setVisible(false);

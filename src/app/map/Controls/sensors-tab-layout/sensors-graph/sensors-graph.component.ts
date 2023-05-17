@@ -176,8 +176,8 @@ export class SensorsGraphComponent implements OnInit {
   }
 
   private getStyleForGraph(index: number): any{
-    const backgroundColors = ['rgba(255,0,0,0.6)', 'rgba(0,255,0,0.6)', 'rgba(255,255,0,0.6)', 'rgba(255,255,0,0.6)'];
-    const borderColors = ['rgba(255,0,0,1)', 'rgba(0,255,0,1)', 'rgba(255,255,0,1)', 'rgba(255,255,0,1)'];
+    const backgroundColors = ['rgba(255,0,0,0.6)', 'rgba(0,255,0,0.6)', 'rgba(255,255,0,0.6)', 'rgba(0,255,255,0.6)'];
+    const borderColors = ['rgba(255,0,0,1)', 'rgba(0,255,0,1)', 'rgba(255,255,0,1)', 'rgba(0,255,0,1)'];
     return {
       backgroundColor: backgroundColors[index],
       borderColor: borderColors[index],

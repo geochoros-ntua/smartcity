@@ -1,0 +1,36 @@
+<div style="width: 350px">
+<div class="row">
+    <mat-form-field >
+        <mat-label>Επίπεδο</mat-label>
+            <mat-select color="primary" [(value)]="mapStatsService.selectedStatsLayer" (selectionChange)="setActiveLayer($event.value)" >
+                <mat-option *ngFor="let group of getStatLayerTypes()" [value]="group">{{group}}
+                </mat-option>
+            </mat-select>
+    </mat-form-field>
+</div>
+<div class="row">
+    <mat-form-field >
+        <mat-label>Δείκτης</mat-label>
+            <mat-select color="primary" [(value)]="mapStatsService.selectedStatsIndex" (selectionChange)="setIndice($event.value)" >
+                <mat-option matTooltip="{{idx.label}}" *ngFor="let idx of getIndecesForLayer()" [value]="idx">{{idx.label}}
+                </mat-option>
+            </mat-select>
+    </mat-form-field>
+</div>
+<div *ngIf="mapStatsService.selectedStatsIndex?.type === statTypeNum" class="row">
+    <table>
+        <tr *ngFor="let row of mapStatsService.numericClasses;let i = index;">
+        <td>({{row[0]}} - {{(i !== mapStatsService.numericClasses.length-1) ? row[1] : '>'}})</td>
+        <td [width]="100" [style.background-color]="mapStatsService.classColors[i]"></td>
+        </tr>
+    </table>
+</div>
+<div *ngIf="mapStatsService.selectedStatsIndex?.type === statTypeClass" class="row">
+    <table>
+        <tr *ngFor="let row of mapStatsService.selectedStatsIndex?.classes;let i = index;">
+        <td>{{row.label}}</td>
+        <td [width]="100" [style.background-color]="mapStatsService.classColors[i]"></td>
+        </tr>
+    </table>
+</div>
+</div>

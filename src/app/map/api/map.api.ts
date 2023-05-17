@@ -7,7 +7,8 @@ import Olmap from 'ol/Map';
 import * as olProj from 'ol/proj';
 import RenderFeature from 'ol/render/Feature';
 import VectorSource from 'ol/source/Vector';
-import { VectorLayerNames } from './map.enums';
+import { StatLayers, StatTypes, VectorLayerNames } from './map.enums';
+import { Style } from 'ol/style';
 
 
 export interface SmartCityMapConfig {
@@ -66,5 +67,46 @@ export interface GraphReport {
     date: string, 
     value: string, 
 }
+
+export interface StatsIndeces {
+    code: string,
+    label: string,
+    type: StatTypes,
+    layer: StatLayers,
+    min?: number,
+    max?: number,
+    classes?: IndeceClass[]
+}
+
+export interface IndeceClass{
+    value: number,
+    label: string
+}
+
+export interface WebGlPointSymbol{ 
+    symbol: { 
+        symbolType: string;
+         size: number;  
+         color: string | number[]; 
+         offset: number[]; 
+         opacity: number; 
+    } 
+}
+
+
+export interface DummyStyle{
+    Point: Style;
+    LineString: Style;
+    LinearRing: Style;
+    MultiLineString: Style;
+    MultiPoint: Style;
+    MultiPolygon: Style;
+    Polygon: Style;
+    GeometryCollection: Style;
+    Circle: Style;
+}
+
+
+
 
 

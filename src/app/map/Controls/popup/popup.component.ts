@@ -23,10 +23,11 @@ export class PopupComponent implements OnInit {
     this.overlayPopup = new Overlay({
       id: 'popupoverlay',
       element: document.getElementById('popup')!,
-      autoPan: true,
-      autoPanAnimation: {
-        duration: 250,
-      }
+      autoPan: {
+        animation: {
+          duration: 250,
+        },
+      },
     });
     this.mapService.smartCityMap.addOverlay(this.overlayPopup);
 

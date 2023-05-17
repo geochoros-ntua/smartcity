@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
 import { Fill, Icon, Stroke, Style, Circle, Text } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,6 @@ import { Fill, Icon, Stroke, Style, Circle, Text } from 'ol/style';
 export class MapStyleService {
 
   private mplPointStyleCache: Map<string, Style>;
-
 
   constructor() {
     this.mplPointStyleCache = new Map();
@@ -81,26 +81,11 @@ export class MapStyleService {
   }
 
 
-  public dummyStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
-    const polyStyleConfig: Style = new Style({
-      stroke: new Stroke({
-        color: [255, 0, 0, 1],
-        width: 2
-      }),
-      fill: new Fill({
-        color: [0, 100, 255, 1]
-      }),
-      text: new Text({
-        text: feature.get('name'),
-        fill: new Fill({ color: 'white' }),
-        font: '20px Calibri,sans-serif',
-        stroke: new Stroke({ color: 'black', width: 4 })
-      })
-    });
-    return [polyStyleConfig];
+  public dummyStyleFn(feature: Feature<Geometry> | RenderFeature, dmStyles: any): Style[] {
+    return [dmStyles[feature.getGeometry().getType()]];
   }
 
-  public dummyPointStyleFn(feature: Feature<Geometry> | RenderFeature): Style[] {
+  public dummyPointStyleFn(feature: Feature<Geometry> | RenderFeature, ): Style[] {
     const val = feature.get('value');
     const style =  new Style({
       image: new Circle({
