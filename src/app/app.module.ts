@@ -56,6 +56,7 @@ import { ResponsesComponent } from './responses/responses.component';
 import { TeamComponent } from './team/team.component';
 import { MapStatsDataComponent } from './map/Controls/map-stats-data/map-stats-data.component';
 import { MapStatsDataModalComponent } from './map/Controls/map-stats-data-modal/map-stats-data-modal.component';
+import { MapStatsDataFiltersComponent } from './map/Controls/map-stats-data-filters/map-stats-data-filters.component';
 
 
 export function setupTranslateFactory(
@@ -87,7 +88,8 @@ export function setupTranslateFactory(
     TeamComponent,
     ContactComponent,
     MapStatsDataComponent,
-    MapStatsDataModalComponent
+    MapStatsDataModalComponent,
+    MapStatsDataFiltersComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

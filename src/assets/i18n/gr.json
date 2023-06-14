@@ -1,59 +1,76 @@
 {
-    "TITLE": "Πρότυπο Γεωχωρικό Παρατηρητήριο Δήμου Αθηναίων",
-    "MENU": {
-        "HOME": "ΑΡΧΙΚΗ",
-        "ABOUT": "ΣΧΕΤΙΚΑ",
-        "MAP": "ΓΕΩΧΩΡΙΚΑ ΔΕΔΟΜΕΝΑ",
-        "TEAM" : "ΟΜΑΔΑ",
-        "QUESTIONNAIRE" : "ΕΡΕΥΝΑ ΕΡΩΤΗΜΑΤΟΛΟΓΙΟΥ",
-        "CONTACT" : "ΕΠΙΚΟΙΝΩΝΙΑ",
-        "DIGITAL" : "ΨΗΦΙΑΚΟ",
-        "OBSERVATORY" : "ΠΑΡΑΤΗΡΗΤΗΡΙΟ"
-      },
-    "MAP" : {
-        "TILE-SELECTOR": "Επιλογή υποβάθρου",
-        "MODE-MPLR": "AthensEye",
-        "MODE-FACTORS": "Δείκτες",
-        "MODE-SENSORS": "Αισθητήρες",
-        "MAP-MODE":"Χάρτης: {{msg}}",
-        "OBJECTIVE-FACTORS": "Αντικειμενικοί δείκτες",
-        "SUBJECTIVE-FACTORS": "Υποκειμενικοί Δείκτες",
-        "FEAT_DETECTIONS": "Βρέθηκαν {{x}} αντικείμενα",
-        "MPLR-DATA":"Δεδομένα AthensEye",
-        "LAYER-PATHS":"Εμφάνιση/Απόκρυψη διαδρομών",
-        "LAYER-POINTS":"Εμφάνιση/Απόκρυψη σημείων",
-        "LAYER-DETECTIONS":"Αντικείμενα Ανίχνευσης",
-        "MPLR-POPUP-CLOSE":"Κλείσε",  
-        "MPLR-POPUP-FULL":"Πλήρης έκταση οθόνης", 
-        "MPLR-POPUP-ALL":"Ολα τα αντικείμενα",
-        "SENS-REPORT":"Αριθμός πεζών (ανα ",
-        "DATE-RANGE":"Εύρος ημερ/νιων",
-        "GRAPH-TYPE": "Τύπος γραφήματος",
-        "REPORT-TYPE": "Τύπος αναφοράς",
-        "COMPARE-SENSORS": "Σύγκριση με αισθητήρα",
-        "SENSORS-LIVE":"Live δεδομένα",
-        "SENSORS-GRAPHS":"Γραφήματα δεδομένων (ιστορικό)",
-        "SENSORS-SUM":"Σύνολο"            
-    },
-    "GRAPH" :{
-        "LINE": "Γραμμή ",
-        "BAR": "Μπάρα",
-        "HOUR": "Ώρα", 
-        "DAY": "Ημέρα"              
-    },
-    "RESPONSES" : {
-        "RESPONDENTS" : "Ερωτώμενοι",
-        "VARIABLE" : "Μεταβλητή",
-        "FILTER_VARIABLE" : "Μεταβλητή φίλτρο",
-        "fILTER_VALUES" : "Τιμή φίλτρου",
-        "CHART_TYPE" : "Είδος γραφήματος",
-        "STACKED" : "Stacked",
-        "DOWNLOAD" : "Κατέβασε τα δεδομένα (.csv)",
-        "ALL" : "Επιλογή όλων",
-        "CLEAR": "Καθαρισμός"
-    },
-    "HOME": {
-        "INFO" : "ΠΛΗΡΟΦΟΡΙΕΣ",
-        "MAPS" : "ΧΑΡΤΕΣ"
-    }
+  "TITLE": "Πρότυπο Γεωχωρικό Παρατηρητήριο Δήμου Αθηναίων",
+  "MENU": {
+    "HOME": "ΑΡΧΙΚΗ",
+    "ABOUT": "ΣΧΕΤΙΚΑ",
+    "MAP": "ΓΕΩΧΩΡΙΚΑ ΔΕΔΟΜΕΝΑ",
+    "TEAM": "ΟΜΑΔΑ",
+    "QUESTIONNAIRE": "ΕΡΕΥΝΑ ΕΡΩΤΗΜΑΤΟΛΟΓΙΟΥ",
+    "CONTACT": "ΕΠΙΚΟΙΝΩΝΙΑ",
+    "DIGITAL": "ΨΗΦΙΑΚΟ",
+    "OBSERVATORY": "ΠΑΡΑΤΗΡΗΤΗΡΙΟ"
+  },
+  "MAP": {
+    "TILE-SELECTOR": "Επιλογή υποβάθρου",
+    "MODE-MPLR": "AthensEye",
+    "MODE-FACTORS": "Δείκτες",
+    "MODE-SENSORS": "Αισθητήρες",
+    "MAP-MODE": "Χάρτης: {{msg}}",
+    "OBJECTIVE-FACTORS": "Αντικειμενικοί δείκτες",
+    "SUBJECTIVE-FACTORS": "Υποκειμενικοί Δείκτες",
+    "FEAT_DETECTIONS": "Βρέθηκαν {{x}} αντικείμενα",
+    "MPLR-DATA": "Δεδομένα AthensEye",
+    "LAYER-PATHS": "Εμφάνιση/Απόκρυψη διαδρομών",
+    "LAYER-POINTS": "Εμφάνιση/Απόκρυψη σημείων",
+    "LAYER-DETECTIONS": "Αντικείμενα Ανίχνευσης",
+    "MPLR-POPUP-CLOSE": "Κλείσε",
+    "MPLR-POPUP-FULL": "Πλήρης έκταση οθόνης",
+    "MPLR-POPUP-ALL": "Ολα τα αντικείμενα",
+    "SENS-REPORT": "Αριθμός πεζών (ανα ",
+    "DATE-RANGE": "Εύρος ημερ/νιων",
+    "GRAPH-TYPE": "Τύπος γραφήματος",
+    "REPORT-TYPE": "Τύπος αναφοράς",
+    "COMPARE-SENSORS": "Σύγκριση με αισθητήρα",
+    "SENSORS-LIVE": "Live δεδομένα",
+    "SENSORS-GRAPHS": "Γραφήματα δεδομένων (ιστορικό)",
+    "SENSORS-SUM": "Σύνολο"
+  },
+  "MAP_FILTERS": {
+    "LAYER": "Επίπεδο",
+    "STAT": "δείκτης",
+    "FILTER_A": "φίλτρο 1",
+    "FILTER_B": "φίλτρο 2",
+    "FILTER_C": "φίλτρο 3",
+    "FILTER_VALUE_A": "Τιμή φίλτρου 1",
+    "FILTER_VALUE_B": "Τιμή φίλτρου 2",
+    "FILTER_VALUE_C": "Τιμή φίλτρου 3",
+    "APPLY": "ΕΦΑΡΜΟΓΗ",
+    "CLEAR": "ΚΑΘΑΡΙΣΜΟΣ",
+    "TOTAL": "Συνολικά στοιχεία",
+    "FILTERED": "Επιλεγμένα στοιχεία",
+    "SPATIAL_FILTER": "Χωρικό φίλτρο",
+    "SPATIAL_DRAW": "Σχεδίαση",
+    "SPATIAL_CLEAR": "Καθαρισμός"
+  },
+  "GRAPH": {
+    "LINE": "Γραμμή ",
+    "BAR": "Μπάρα",
+    "HOUR": "Ώρα",
+    "DAY": "Ημέρα"
+  },
+  "RESPONSES": {
+    "RESPONDENTS": "Ερωτώμενοι",
+    "VARIABLE": "Μεταβλητή",
+    "FILTER_VARIABLE": "Μεταβλητή φίλτρο",
+    "fILTER_VALUES": "Τιμή φίλτρου",
+    "CHART_TYPE": "Είδος γραφήματος",
+    "STACKED": "Stacked",
+    "DOWNLOAD": "Κατέβασε τα δεδομένα (.csv)",
+    "ALL": "Επιλογή όλων",
+    "CLEAR": "Καθαρισμός"
+  },
+  "HOME": {
+    "INFO": "ΠΛΗΡΟΦΟΡΙΕΣ",
+    "MAPS": "ΧΑΡΤΕΣ"
+  }
 }

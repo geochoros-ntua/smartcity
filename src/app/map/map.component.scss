@@ -27,3 +27,10 @@
     white-space: nowrap;
     font: 10pt sans-serif;
   }
+
+  .stats-and-filters {
+    position: absolute;
+    right: 48px;
+    bottom: 16px;
+    z-index: 10;
+  }

@@ -1,3 +1,4 @@
+import { MapFiltersService } from './Services/map.filters.service';
 import { MapLayersService } from './Services/map.layers.service';
 import { DarkThemeService } from './../shared/dark-theme/dark-theme.service';
 import { Component, OnInit } from '@angular/core';
@@ -20,10 +21,16 @@ import { StatsService } from './Services/map.stats.service';
 export class MapComponent implements OnInit {
   isStreet: boolean; 
   isStats: boolean; 
+  showStatsAndFilters: boolean = false;
 
   constructor(
-    private mapService: MapService, private mapStatsService: StatsService,
+    private mapService: MapService, private mapStatsService: StatsService, private mapFiltersService:MapFiltersService,
     public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
+
+
+      this.mapFiltersService.toggleStatsAndFiltersPanel$.subscribe(status=> {
+        this.showStatsAndFilters = status;
+      })
 
   }
 

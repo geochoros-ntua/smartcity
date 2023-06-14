@@ -17,6 +17,9 @@
             </mat-select>
     </mat-form-field>
 </div>
+<div>
+    <app-map-stats-data-filters></app-map-stats-data-filters>
+</div>
 <div *ngIf="mapStatsService.selectedStatsIndex?.type === statTypeNum" class="row">
     <table>
         <tr *ngFor="let row of mapStatsService.numericClasses;let i = index;">

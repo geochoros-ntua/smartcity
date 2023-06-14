@@ -33,7 +33,24 @@
         "COMPARE-SENSORS": "Compare with sensor",
         "SENSORS-LIVE":"Live data",
         "SENSORS-GRAPHS":"Data Graphs (historic)", 
-        "SENSORS-SUM":"Summary"      
+        "SENSORS-SUM":"Summary"     
+    },
+    "MAP_FILTERS" : {
+      "LAYER": "Layer",
+      "STAT": "Stat",
+      "FILTER_A" : "Filter 1",
+      "FILTER_B" : "Filter 2",
+      "FILTER_C" : "Filter 3",
+      "FILTER_VALUE_A" : "Filter value 1",
+      "FILTER_VALUE_B" : "Filter value 2",
+      "FILTER_VALUE_C" : "Filter value 3",
+      "APPLY" : "APPLY",
+      "CLEAR" : "CLEAR",
+      "TOTAL" : "Total features",
+      "FILTERED" : "Filtered features",
+      "SPATIAL_FILTER": "Spatial filter",
+      "SPATIAL_DRAW": "Draw",
+      "SPATIAL_CLEAR": "Clear"
     },
     "GRAPH" :{
       "LINE": "Line", 

@@ -12,6 +12,12 @@
   <app-opacity-slider></app-opacity-slider>
   <app-zoominout></app-zoominout>
   <app-map-stats-data *ngIf="isStats"></app-map-stats-data>
+  <!-- new stats and filters -->
+  <div class="stats-and-filters" *ngIf="isStats && showStatsAndFilters">
+    <mat-card>
+      <app-map-stats-data-filters></app-map-stats-data-filters>
+    </mat-card>
+  </div>
 
   <app-popup></app-popup>
 

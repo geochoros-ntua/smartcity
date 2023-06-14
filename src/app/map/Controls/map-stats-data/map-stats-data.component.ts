@@ -1,3 +1,4 @@
+import { MapFiltersService } from './../../Services/map.filters.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MapStatsDataModalComponent } from '../map-stats-data-modal/map-stats-data-modal.component';
@@ -9,9 +10,15 @@ import { MapStatsDataModalComponent } from '../map-stats-data-modal/map-stats-da
 })
 export class MapStatsDataComponent {
 
+  showStatsAndFiltersPanel: boolean = false;
 
-  constructor(public dialog: MatDialog) { 
+  constructor(public dialog: MatDialog, private mapFiltersService:MapFiltersService) { 
     
+  }
+
+  openStatsAndFiltersPanel(): void {
+    this.showStatsAndFiltersPanel = !this.showStatsAndFiltersPanel;
+    this.mapFiltersService.announceStatsAndFiltersPanel(this.showStatsAndFiltersPanel);
   }
 
   public openStatsDialog(): void {

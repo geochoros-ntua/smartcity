@@ -229,7 +229,7 @@ export class ResponsesComponent implements OnInit {
           }
         }
       }
-
+ 
 
       let labelsStacked = Object.keys(newData).sort();
       const valuesStacked: any[] = [];

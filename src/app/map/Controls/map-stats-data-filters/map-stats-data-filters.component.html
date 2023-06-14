@@ -1,0 +1,123 @@
+<div class="row">
+    <mat-form-field>
+        <mat-label>{{ "MAP_FILTERS.LAYER" | translate }}</mat-label>
+        <mat-select color="primary" [(ngModel)]="selectedLayer" (selectionChange)="selectLayer($event.value)">
+            <mat-option *ngFor="let layer of layers" [value]="layer.id">{{layer.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div class="row">
+    <mat-form-field>
+        <mat-label>{{ "MAP_FILTERS.STAT" | translate }}</mat-label>
+        <mat-select color="primary" [(ngModel)]="selectedStat" (selectionChange)="selectStat($event.value)">
+            <mat-option *ngFor="let stat of stats" [value]="stat">{{stat.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="row">
+    <mat-form-field>
+        <mat-label>{{ "MAP_FILTERS.FILTER_A" | translate }}</mat-label>
+        <mat-select color="primary" [(ngModel)]="selectedFilterA" (selectionChange)="filterASelect($event.value)">
+            <mat-option *ngFor="let filter of filtersA" [value]="filter">{{filter.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedFilterA">
+        <mat-label>{{ "MAP_FILTERS.FILTER_VALUE_A" | translate }}</mat-label>
+        <mat-select #selectedValuesA color="primary" [(ngModel)]="selectedFilterValuesA" multiple>
+            <div class="select-all">
+                <mat-checkbox class="select-all-values" [(ngModel)]="allSelectedA" [ngModelOptions]="{standalone: true}"
+                    (change)="selectAllValuesA()">{{"RESPONSES.ALL" |
+                    translate}}</mat-checkbox>
+            </div>
+            <mat-option *ngFor="let filterValue of filterValuesA" [value]="filterValue">{{filterValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="row" *ngIf="selectedFilterValuesA.length > 0">
+    <mat-form-field>
+        <mat-label>{{ "MAP_FILTERS.FILTER_B" | translate }}</mat-label>
+        <mat-select color="primary" [(ngModel)]="selectedFilterB" (selectionChange)="filterBSelect($event.value)">
+            <mat-option *ngFor="let filter of filtersB" [value]="filter">{{filter.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedFilterB">
+        <mat-label>{{ "MAP_FILTERS.FILTER_VALUE_B" | translate }}</mat-label>
+        <mat-select #selectedValuesB color="primary" [(ngModel)]="selectedFilterValuesB" multiple>
+            <div class="select-all">
+                <mat-checkbox class="select-all-values" [(ngModel)]="allSelectedB" [ngModelOptions]="{standalone: true}"
+                    (change)="selectAllValuesB()">{{"RESPONSES.ALL" |
+                    translate}}</mat-checkbox>
+            </div>
+            <mat-option *ngFor="let filterValue of filterValuesB" [value]="filterValue">{{filterValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="row" *ngIf="selectedFilterValuesB.length > 0">
+    <mat-form-field>
+        <mat-label>{{ "MAP_FILTERS.FILTER_C" | translate }}</mat-label>
+        <mat-select color="primary" [(ngModel)]="selectedFilterC" (selectionChange)="filterCSelect($event.value)">
+            <mat-option *ngFor="let filter of filtersC" [value]="filter">{{filter.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedFilterC">
+        <mat-label>{{ "MAP_FILTERS.FILTER_VALUE_C" | translate }}</mat-label>
+        <mat-select #selectedValuesC color="primary" [(ngModel)]="selectedFilterValuesC" multiple>
+            <div class="select-all">
+                <mat-checkbox class="select-all-values" [(ngModel)]="allSelectedC" [ngModelOptions]="{standalone: true}"
+                    (change)="selectAllValuesC()">{{"RESPONSES.ALL" |
+                    translate}}</mat-checkbox>
+            </div>
+            <mat-option *ngFor="let filterValue of filterValuesC" [value]="filterValue">{{filterValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div class="row">
+    <p>{{"MAP_FILTERS.SPATIAL_FILTER" | translate}}</p>
+    <button mat-raised-button color="primary" class="draw-button" (click)="draw()">
+        {{ "MAP_FILTERS.SPATIAL_DRAW" | translate }}
+    </button>
+    <button mat-raised-button color="primary" class="draw-button" style="margin-left: 8px;" (click)="clearSpatial()">
+        {{ "MAP_FILTERS.SPATIAL_CLEAR" | translate }}
+    </button>
+</div>
+
+<div class="row"
+    *ngIf="selectedFilterValuesA.length > 0 || selectedFilterValuesB.length > 0 || selectedFilterValuesC.length > 0 || filterSource.getFeatures().length > 0">
+    <button mat-raised-button (click)="applyFilters()">{{ "MAP_FILTERS.APPLY" | translate }}</button>
+    <button mat-button (click)="clearFilters()">{{ "MAP_FILTERS.CLEAR" | translate }}</button>
+</div>
+
+<div class="filter-results" *ngIf="filteredData !== 0">
+    <div>{{ "MAP_FILTERS.TOTAL" | translate }}: <span>{{ allData }}</span></div>
+    <div>{{ "MAP_FILTERS.FILTERED" | translate }}: <span>{{ filteredData }}</span><span>({{ filteredDataPer }}%)</span>
+    </div>
+</div>
+
+<div class="row" *ngIf="statType === 1">
+    <table>
+        <tr *ngFor="let row of numericClasses;let i = index;">
+            <td>({{row[0]}} - {{(i !== numericClasses.length-1) ? row[1] : '>'}})</td>
+            <td [width]="100" [style.background-color]="classColors[i]"></td>
+        </tr>
+    </table>
+</div>
+<div class="row" *ngIf="statType === 2">
+    <table>
+        <tr *ngFor="let row of classes;let i = index;">
+            <td>{{row}}</td>
+            <td [width]="100" [style.background-color]="classColors[i]"></td>
+        </tr>
+    </table>
+</div>

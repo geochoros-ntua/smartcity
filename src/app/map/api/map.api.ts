@@ -84,12 +84,13 @@ export interface IndeceClass{
 }
 
 export interface WebGlPointSymbol{ 
+    filter?: any
     symbol: { 
         symbolType: string;
          size: number;  
-         color: string | number[]; 
+         color: any; 
          offset: number[]; 
-         opacity: number; 
+         opacity: any; 
     } 
 }
 
