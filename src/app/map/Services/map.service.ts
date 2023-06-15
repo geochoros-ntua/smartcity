@@ -23,6 +23,8 @@ import {unByKey} from 'ol/Observable.js';
 import { StatsService } from './map.stats.service';
 import { LineString } from 'ol/geom';
 import { getCenter } from 'ol/extent';
+import Draw, { createBox } from 'ol/interaction/Draw';
+import VectorSource from 'ol/source/Vector';
 
 /**
  * Author: p.tsagkis
@@ -37,9 +39,10 @@ export class MapService {
 
   public mapMode$: Subject<MapMode> = new Subject<MapMode>();
   public mapMode: MapMode = MapMode.sens;
-  public featureClickedWithPos$ = new Subject<FeatureClickedWithPos>();
+  public featureClickedWithPos$: Subject<FeatureClickedWithPos>  = new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;
-  public flashIntervals: any[] =[];
+  public flashIntervals: any[] = [];
+  public drawInt: Draw;
 
   private tooltip: HTMLElement;
   private overlay: Overlay;
@@ -83,6 +86,7 @@ export class MapService {
 
   public initMap(): void {
     this.mapLayersService.initLayers();
+
     this.map = new Map({
       target: this.smartCityMapConfig.mapDivId,
       layers: [
@@ -97,8 +101,9 @@ export class MapService {
         this.mapLayersService.MlPointsLayer,
         this.mapLayersService.SensorsLayer,
         this.mapLayersService.WebGlStatsLayer,
-        this.mapLayersService.SelectionLayer,
+        this.mapLayersService.MplNaviLayer,
         this.mapLayersService.DummySelectLayer,
+        this.mapLayersService.DrawRectangleSelectLayer,
         
       ],
       controls: defaultControls({ zoom: false, attribution: false }).extend([]),
@@ -125,6 +130,15 @@ export class MapService {
       positioning: 'bottom-left'
     });
     this.smartCityMap.addOverlay(this.overlay);
+
+    this.drawInt = new Draw({
+      source: new VectorSource({}),
+      type: 'Circle',
+      geometryFunction: createBox(),
+    });
+    this.smartCityMap.addInteraction(this.drawInt);
+    this.drawInt.setActive(false);
+  
   }
   
 
@@ -171,10 +185,12 @@ export class MapService {
   
 
   public onMapClicked(event: MapBrowserEvent<UIEvent>): void {
+    if (this.drawInt.getActive() === true) return; 
     this.mapLayersService.DummySelectLayer.getSource().clear();
     this.overlay.setPosition(undefined);
     if (this.mapMode === MapMode.stats){
       const feature = this.mapLayersService.webGlStatsSource.getClosestFeatureToCoordinate(event.coordinate);
+      if (!feature || this.mapStatsService.getFeatureVisiblity(feature) === 0) return;
 
       const featCenter = feature.getGeometry().getClosestPoint(event.coordinate);
       const dist  = new LineString([event.coordinate, featCenter]).getLength();
@@ -239,6 +255,10 @@ export class MapService {
 
 
   private onModeChange(mode: MapMode): void{
+
+    this.mapStatsService.statDialogRef?.close();
+    this.mapMapillaryService.mplDataDialogRef?.close();
+
     const msg = 
     (mode === 'street') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-MPLR')}) : 
     (mode === 'sens') ? this.translatePipe.transform('MAP.MAP-MODE', {msg:this.translatePipe.transform('MAP.MODE-SENSORS')}) : 
@@ -254,6 +274,8 @@ export class MapService {
       styleClass: 'map-snackbar'
     });
     this.sensorsService.stopReportAutoLoad();
+    
+
     switch(mode) { 
       case MapMode.street: { 
          this.mapLayersService.MlSequencesLayer.setVisible(this.mapLayersService.checkedSeq);
@@ -261,6 +283,7 @@ export class MapService {
          this.mapLayersService.MlPointsLayer.setVisible(true);
          this.mapLayersService.WebGlStatsLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
+         this.mapLayersService.DrawRectangleSelectLayer.setVisible(false);
          break; 
       } 
       case MapMode.stats: { 
@@ -269,6 +292,7 @@ export class MapService {
          this.mapLayersService.MlPointsLayer.setVisible(false);
          this.mapLayersService.WebGlStatsLayer.setVisible(true);
          this.mapLayersService.SensorsLayer.setVisible(false);
+         this.mapLayersService.DrawRectangleSelectLayer.setVisible(true);
          break; 
       } 
       case MapMode.sens: { 
@@ -277,6 +301,7 @@ export class MapService {
         this.mapLayersService.MlPointsLayer.setVisible(false);
         this.mapLayersService.WebGlStatsLayer.setVisible(false);
         this.mapLayersService.SensorsLayer.setVisible(true);
+        this.mapLayersService.DrawRectangleSelectLayer.setVisible(false);
         this.sensorsService.initSensors();        
         break; 
       } 

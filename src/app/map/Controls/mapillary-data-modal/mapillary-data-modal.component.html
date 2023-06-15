@@ -1,6 +1,20 @@
+<h3 mat-dialog-title 
+cdkDrag
+cdkDragRootElement=".cdk-overlay-pane" 
+cdkDragHandle>
+ <mat-toolbar color="primary" role="toolbar" class="tbar-header">
+         <span>{{'MAP.MPLR-DATA' | translate }}</span>
+         <span class="tbar-spacer"></span>
+         
+         <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+             <mat-icon class="close-icon" >close</mat-icon>
+         </button>
+ </mat-toolbar>
+ 
+ </h3>
+ <mat-dialog-content>
 <form fxFlex autocomplete="off" style="margin: 10px" [class.athens-dark-theme]="darkThemeService.isDarkTheme$ | async">
-    
-    <h3>{{'MAP.MPLR-DATA' | translate}}</h3>
+
     
     <div [class]= "(darkThemeService.isDarkTheme$ | async) ? 'row filterSelectCntrlDark' : 'row filterSelectCntrlLight' " >
         
@@ -40,3 +54,4 @@
 
 
 </form>
+</mat-dialog-content>
