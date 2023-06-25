@@ -9,6 +9,7 @@ import RenderFeature from 'ol/render/Feature';
 import VectorSource from 'ol/source/Vector';
 import { StatLayers, StatTypes, VectorLayerNames } from './map.enums';
 import { Style } from 'ol/style';
+import { ExpressionValue } from 'ol/style/expressions';
 
 
 export interface SmartCityMapConfig {
@@ -68,45 +69,54 @@ export interface GraphReport {
     value: string, 
 }
 
-export interface StatsIndeces {
+export interface StatsIndices {
     code: string,
     label: string,
     type: StatTypes,
     layer: StatLayers,
     min?: number,
     max?: number,
-    classes?: IndeceClass[]
+    classes?: IndiceClass[]
 }
 
-export interface IndeceClass{
-    value: number,
+export interface IndiceClass {
     label: string
+    value?: number,
+    min?: number,
+    max?: number
+   
 }
 
 export interface WebGlPointSymbol{ 
+    filter: ExpressionValue,
     symbol: { 
-        symbolType: string;
-         size: number;  
-         color: string | number[]; 
-         offset: number[]; 
-         opacity: number; 
+        symbolType: string,
+         size: number,  
+         color: string | number[], 
+         offset: number[], 
+         opacity: number, 
     } 
 }
 
 
 export interface DummyStyle{
-    Point: Style;
-    LineString: Style;
-    LinearRing: Style;
-    MultiLineString: Style;
-    MultiPoint: Style;
-    MultiPolygon: Style;
-    Polygon: Style;
-    GeometryCollection: Style;
-    Circle: Style;
+    Point: Style,
+    LineString: Style,
+    LinearRing: Style,
+    MultiLineString: Style,
+    MultiPoint: Style,
+    MultiPolygon: Style,
+    Polygon: Style,
+    GeometryCollection: Style,
+    Circle: Style
 }
 
 
+export interface IndexFilter{
+    sindex: StatsIndices,
+    values: IndiceClass[],
+    classes: IndiceClass[]
+}
 
 
 

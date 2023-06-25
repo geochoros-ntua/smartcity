@@ -1,7 +1,9 @@
 import { DarkThemeService } from './shared/dark-theme/dark-theme.service';
 import { Component, HostListener, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { slideInAnimation } from './animations';
+import { StatsService } from './map/Services/map.stats.service';
+import { MapMapillaryService } from './map/Services/map.mapillary.service';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +25,24 @@ export class AppComponent implements OnInit {
   }
 
 
-  constructor(public darkThemeService: DarkThemeService) { 
+  constructor(
+    public darkThemeService: DarkThemeService, 
+    private router: Router, 
+    private mapStatsService: StatsService,
+    private mapillaryService: MapMapillaryService
+    ) { 
     this.darkThemeService.isDarkTheme$.subscribe(status => {
       this.isDarkTheme = status;
     })
+
+    
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd){
+        this.mapillaryService.mapillaryDialogRef?.close();
+        this.mapStatsService.statDialogRef?.close();
+        this.mapillaryService.mplDataDialogRef?.close();
+      }
+  });
   }
 
   ngOnInit(): void {

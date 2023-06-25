@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MapStatsDataModalComponent } from '../map-stats-data-modal/map-stats-data-modal.component';
+import { StatsService } from '../../Services/map.stats.service';
 
 @Component({
   selector: 'app-map-stats-data',
@@ -8,17 +9,19 @@ import { MapStatsDataModalComponent } from '../map-stats-data-modal/map-stats-da
   styleUrls: ['./map-stats-data.component.scss']
 })
 export class MapStatsDataComponent {
+  // private dialogRef: MatDialogRef<MapStatsDataModalComponent, any>;
 
-
-  constructor(public dialog: MatDialog) { 
+  constructor(public mapStatsService: StatsService,public dialog: MatDialog) { 
     
   }
 
   public openStatsDialog(): void {
-    this.dialog.open(MapStatsDataModalComponent,{
-      position: {
-        top: '10.0em',
-        right: '5.5em',
-      }});
+    this.mapStatsService.statDialogRef?.close();
+    this.mapStatsService.statDialogRef = this.dialog.open(MapStatsDataModalComponent,{
+      maxWidth: '80vw',
+      width: '25%',
+      hasBackdrop: false,
+      disableClose : true,
+    });
   }
 }

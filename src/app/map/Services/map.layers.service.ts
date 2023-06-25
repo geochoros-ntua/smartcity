@@ -13,7 +13,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
-import { StatsIndeces, LoadingMethodObject, IndeceClass } from '../api/map.api';
+import { LoadingMethodObject } from '../api/map.api';
 import { StatLayers, VectorLayerNames } from '../api/map.enums';
 import { FEATURE_GROUPS } from '../api/map.datamaps';
 import Polygon from 'ol/geom/Polygon';
@@ -21,7 +21,7 @@ import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
 import TileWMS from 'ol/source/TileWMS';
 import MapUtils from '../map.helper';
-import { VectorImage, WebGLPoints } from 'ol/layer';
+import { VectorImage } from 'ol/layer';
 import { Fill, Stroke, Style } from 'ol/style';
 import { WebGLLayer } from '../api/WebGLLayer';
 import { StatsService } from './map.stats.service';
@@ -68,9 +68,11 @@ export class MapLayersService {
 
   private mplFormat: GeoJSON;
 
-  private selectionLayer!: VectorLayer<VectorSource<Geometry>>;
+  private mplNaviPointLayer!: VectorLayer<VectorSource<Geometry>>;
 
   private dummySelectLayer!: VectorLayer<VectorSource<Geometry>>;
+
+  private drawRectangleSelectLayer!: VectorLayer<VectorSource<Geometry>>;
 
   public selectedFeatureGroups!: string[];
   public selectedFeatureGroups$: BehaviorSubject<string[]> = new BehaviorSubject(Array.from( [...FEATURE_GROUPS.keys(), '0']));
@@ -91,10 +93,10 @@ export class MapLayersService {
 
     this.selectedFeatureGroups$.subscribe( (groups: string[]) => {
           this.selectedFeatureGroups = groups;
-          if (groups.length > 6){
+          if (groups.length > 3){
             this.MPL_POINTS?.setMinZoom(18);
           } else {
-            this.MPL_POINTS?.setMinZoom(15);
+            this.MPL_POINTS?.setMinZoom(5);
           }
     });
   }
@@ -129,6 +131,8 @@ export class MapLayersService {
     this.initSelectionLayer(true);
     // scrap layer
     this.initDummySelectLayer(true);
+    // draw bbox select
+    this.initDrawRectLayer(true);
   }
 
   public get GosmLayer(): TileLayer<OSM> {
@@ -167,12 +171,16 @@ export class MapLayersService {
     return this.SENSORS;
   }
 
-  public get SelectionLayer(): VectorLayer<VectorSource<Geometry>> {
-    return this.selectionLayer;
+  public get MplNaviLayer(): VectorLayer<VectorSource<Geometry>> {
+    return this.mplNaviPointLayer;
   }
 
   public get DummySelectLayer(): VectorLayer<VectorSource<Geometry>> {
     return this.dummySelectLayer;
+  }
+
+  public get DrawRectangleSelectLayer(): VectorLayer<VectorSource<Geometry>> {
+    return this.drawRectangleSelectLayer;
   }
 
   public get MaskLayer(): VectorImage<VectorSource<Geometry>> {
@@ -202,17 +210,19 @@ export class MapLayersService {
    * PRIVATES
    */
   public initWebGlStatsLayer(visible: boolean){
-    const url = this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines ? 
-    './assets/geodata/audit_lines.json' : 
-    './assets/geodata/bus_stops.json';
+
+    const myurl = './assets/geodata/'+Object.keys(StatLayers).find(
+      key => StatLayers[key as keyof typeof StatLayers] === this.mapStatsService.selectedStatsLayer
+      ) +'.json';
+    
     this.webGlStatsSource = new VectorSource({
-      url: url,
+      url: myurl,
       format: new GeoJSON({
         dataProjection: 'EPSG:3857',
         featureProjection: 'EPSG:3857'
       })
     });
-    if (this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines ){
+    if (this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines || this.mapStatsService.selectedStatsLayer === StatLayers.street_lines){
       this.WEBGL_STATS = new WebGLLayer(this.mapStatsService,{
         source: this.webGlStatsSource,
         visible
@@ -255,10 +265,18 @@ export class MapLayersService {
 
   
   private initSelectionLayer = (visible: boolean): void => {
-    this.selectionLayer = new VectorLayer({
+    this.mplNaviPointLayer = new VectorLayer({
       source: new VectorSource<Geometry>(),
       visible,
       style: this.mapStyleService.mplImagePointsStyle
+    });
+  };
+
+  private initDrawRectLayer = (visible: boolean): void => {
+    this.drawRectangleSelectLayer = new VectorLayer({
+      source: new VectorSource<Geometry>(),
+      visible,
+      style: this.mapStyleService.drawRectangleStyle
     });
   };
 

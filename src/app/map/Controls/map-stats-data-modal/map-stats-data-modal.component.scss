@@ -3,3 +3,16 @@ td , th {
     word-wrap: break-word;
     max-width: 250px;
 }
+
+
+.close-button{
+    float: right;
+  }
+
+  .tbar-header{
+    cursor: move;
+  }
+  
+  .tbar-spacer {
+    flex: 1 1 auto;
+  }

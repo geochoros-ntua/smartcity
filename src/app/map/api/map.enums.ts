@@ -26,6 +26,6 @@ export enum StatTypes {
 
 export enum StatLayers{
     audit_lines = 'Γραμμές πεζοδρομίων',
-    center_lines = 'Γραμμές δρόμων',
+    street_lines = 'Γραμμές δρόμων',
     bus_stops = 'Στάσεις Λεωφορείων'
 }

@@ -30,17 +30,21 @@ export class WebGLLayer extends Layer {
       stroke: {
         attributes: {
           color: (feature: FeatureLike) => {
-            return feature.get(this.mapStatsService.selectedStatsIndex?.code) ? this.mapStatsService.getColorForLineWbgl(
-              this.mapStatsService.selectedStatsIndex,
-              feature.get(this.mapStatsService.selectedStatsIndex?.code)
-              ) : packColor('gray'); //just gray for no data 
+            // return feature.get(this.mapStatsService.selectedStatsIndex?.code) ? this.mapStatsService.getColorForLineWbgl(
+              // this.mapStatsService.selectedStatsIndex,
+              // feature.get(this.mapStatsService.selectedStatsIndex?.code)
+              // ) : packColor('gray'); //just gray for no data 
+              return this.mapStatsService.getColorForLineWbgl(
+                this.mapStatsService.selectedStatsIndex,
+                feature.get(this.mapStatsService.selectedStatsIndex?.code)
+                )
           },
           width:  (f: FeatureLike) => {
             return 1.5;
           },
           opacity:  (f: FeatureLike) => {
             // we may place a method here to use for filtering
-            return 1;
+            return this.mapStatsService.getFeatureVisiblity(f);
           },
         },
       },

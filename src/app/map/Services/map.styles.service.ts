@@ -36,6 +36,14 @@ export class MapStyleService {
   });
 
 
+  public drawRectangleStyle: Style = new Style({
+    stroke: new Stroke({
+      color: 'blue',
+      width: 2
+    })
+  });
+
+
   public mplPointStyle = (feature: Feature<Geometry> | RenderFeature): Style => {
     const value = feature.get('value');
     let cStyle = this.mplPointStyleCache.get(value);

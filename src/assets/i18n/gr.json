@@ -33,7 +33,19 @@
         "COMPARE-SENSORS": "Σύγκριση με αισθητήρα",
         "SENSORS-LIVE":"Live δεδομένα",
         "SENSORS-GRAPHS":"Γραφήματα δεδομένων (ιστορικό)",
-        "SENSORS-SUM":"Σύνολο"            
+        "SENSORS-SUM":"Σύνολο",
+        "STATS-LAYER": "Επίπεδο", 
+        "STATS-INDEX": "Δείκτης", 
+        "STATS-STYLE": "Στύλ Δείκτη", 
+        "STATS-FILTER": "Φίλτρα Δείκτη",
+        "STATS-VALUES": "Τιμές",
+        "STATS-FILTER-ADD":"Προσθήκη φίλτρου",
+        "STATS-FILTER-DELETE":"Αφαίρεση φίλτρου",
+        "STATS-DHMKOIN-FILTER":"Ανά Δ.Κ.",
+        "STATS-SPATIAL-DHMKOIN":"Δημοτικές κοινότητες",
+        "STATS-SPATIAL-AREA":"Επιλογή περιοχής στον χάρτη",
+        "STATS-SPATIAL-AREA-REMOVE":"Καθαρισμός περιοχής απο τον χάρτη",
+        "STATS-SPATIAL-FILTER":"Χωρικό φίλτρο"                      
     },
     "GRAPH" :{
         "LINE": "Γραμμή ",

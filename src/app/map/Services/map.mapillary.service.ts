@@ -18,6 +18,7 @@ import { Alignment, Popup } from 'mapillary-js';
 import { TranslateService } from 'src/app/shared/translate/translate.service';
 import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
 import MapUtils from '../map.helper';
+import { MapillaryDataModalComponent } from '../Controls/mapillary-data-modal/mapillary-data-modal.component';
 
 
 
@@ -43,6 +44,8 @@ export class MapMapillaryService {
     public mplConfig!: SmartCityMapillaryConfig;
     public mplPopupClass = 'mapillaryViewer';
     private translatePipe: TranslatePipe;
+
+    public mplDataDialogRef: MatDialogRef<MapillaryDataModalComponent, any>;
 
 
 
@@ -172,7 +175,7 @@ export class MapMapillaryService {
 
     public removeMapillaryViewer(): void {
         this.mapillaryViewer?.remove();
-        this.mapLayersService.SelectionLayer.getSource().clear();
+        this.mapLayersService.MplNaviLayer.getSource().clear();
     }
 
     /**
@@ -204,8 +207,8 @@ export class MapMapillaryService {
                 compass_angle: this.viewerBearing ? this.viewerBearing : event.image.compassAngle,
                 geometry: new Point(coord)
             });
-            this.mapLayersService.SelectionLayer.getSource().clear();
-            this.mapLayersService.SelectionLayer.getSource().addFeature(this.selFeature);
+            this.mapLayersService.MplNaviLayer.getSource().clear();
+            this.mapLayersService.MplNaviLayer.getSource().addFeature(this.selFeature);
             if (this.removeDetection){
                 this.tagComponent.removeAll();
             }

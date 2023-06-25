@@ -33,7 +33,19 @@
         "COMPARE-SENSORS": "Compare with sensor",
         "SENSORS-LIVE":"Live data",
         "SENSORS-GRAPHS":"Data Graphs (historic)", 
-        "SENSORS-SUM":"Summary"      
+        "SENSORS-SUM":"Summary",
+        "STATS-LAYER": "Layer", 
+        "STATS-INDEX": "Factor", 
+        "STATS-STYLE": "Style", 
+        "STATS-FILTER": "Filters",
+        "STATS-VALUES": "Values",
+        "STATS-FILTER-ADD":"Add filter",
+        "STATS-FILTER-DELETE":"Delete filter",
+        "STATS-DHMKOIN-FILTER":"Per municipality area",
+        "STATS-SPATIAL-DHMKOIN":"Municipality Areas",
+        "STATS-SPATIAL-AREA":"Select area on map",
+        "STATS-SPATIAL-AREA-REMOVE":"Clear map area",
+        "STATS-SPATIAL-FILTER":"Spatial filter"                                   
     },
     "GRAPH" :{
       "LINE": "Line", 
