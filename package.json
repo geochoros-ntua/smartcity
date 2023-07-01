@@ -29,6 +29,7 @@
     "chroma-js": "^2.4.2",
     "font-awesome": "^4.7.0",
     "mapillary-js": "^4.1.0",
+    "ngx-colors": "~3.0.5",
     "ol": "7.3.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",

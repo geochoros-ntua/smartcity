@@ -42,10 +42,14 @@
         "STATS-FILTER-ADD":"Προσθήκη φίλτρου",
         "STATS-FILTER-DELETE":"Αφαίρεση φίλτρου",
         "STATS-DHMKOIN-FILTER":"Ανά Δ.Κ.",
+        "STATS-GEITONIES-FILTER":"Ανά γειτονιές",
+        "STATS-SPATIAL-TYPES":"Διοικητικά όρια",
         "STATS-SPATIAL-DHMKOIN":"Δημοτικές κοινότητες",
+        "STATS-SPATIAL-GEITONIES":"Γειτονιές",
         "STATS-SPATIAL-AREA":"Επιλογή περιοχής στον χάρτη",
         "STATS-SPATIAL-AREA-REMOVE":"Καθαρισμός περιοχής απο τον χάρτη",
-        "STATS-SPATIAL-FILTER":"Χωρικό φίλτρο"                      
+        "STATS-SPATIAL-FILTER":"Χωρικό φίλτρο",
+        "STATS-FILTER-CLEAR-ALL":"Καθαρισμός όλων των φίλτρων"                     
     },
     "GRAPH" :{
         "LINE": "Γραμμή ",

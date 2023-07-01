@@ -20,16 +20,30 @@
     <div *ngIf="mapStatsService.selectedStatsIndex?.type === statTypeNum" class="row">
         <table>
             <tr *ngFor="let row of mapStatsService.numericClasses;let i = index;">
-            <td>({{row.min}} - {{(i !== mapStatsService.numericClasses.length-1) ? row.max : '>'}})</td>
-            <td [width]="100" [style.background-color]="mapStatsService.classColors[i]"></td>
+            <td style="max-width:200px;">({{row.min}} - {{(i !== mapStatsService.numericClasses.length-1) ? row.max : '>'}})</td>
+            <td>
+                <ngx-colors (change)="setColorForClass(i)" ngx-colors-trigger [(ngModel)]="mapStatsService.classColors[i]"></ngx-colors>
+            </td>
+            <td>
+                {{mapStatsService.numericClasses[i].counter}}
+                ({{(100*(mapStatsService.numericClasses[i].counter/
+                    (mapStatsService.countFiltered === 0 ? mapStatsService.countAll : mapStatsService.countFiltered))).toFixed(2)}}%)
+            </td>
             </tr>
         </table>
     </div>
     <div *ngIf="mapStatsService.selectedStatsIndex?.type === statTypeClass" class="row">
         <table>
             <tr *ngFor="let row of mapStatsService.selectedStatsIndex?.classes;let i = index;">
-            <td>{{row.label}}</td>
-            <td [width]="100" [style.background-color]="mapStatsService.classColors[i]"></td>
+            <td style="max-width:200px;">{{row.label}}</td>
+            <td>
+                <ngx-colors (change)="setColorForClass(i)" ngx-colors-trigger [(ngModel)]="mapStatsService.classColors[i]"></ngx-colors>
+            </td>
+            <td>
+                {{mapStatsService.selectedStatsIndex.classes[i].counter}}
+                ({{(100*(mapStatsService.selectedStatsIndex.classes[i].counter/
+                    (mapStatsService.countFiltered === 0 ? mapStatsService.countAll : mapStatsService.countFiltered))).toFixed(2)}}%)
+            </td>
             </tr>
         </table>
     </div>

@@ -123,6 +123,8 @@ export class MapLayersService {
     this.initMapillarySequences(true);
     this.initMapillaryImages(true);
     this.initMapillaryPoints(true);
+     // draw bbox select
+     this.initDrawRectLayer(true);
     // factors layers
     this.initWebGlStatsLayer(false);
     // sensors layer
@@ -131,8 +133,7 @@ export class MapLayersService {
     this.initSelectionLayer(true);
     // scrap layer
     this.initDummySelectLayer(true);
-    // draw bbox select
-    this.initDrawRectLayer(true);
+   
   }
 
   public get GosmLayer(): TileLayer<OSM> {
@@ -234,6 +235,7 @@ export class MapLayersService {
         style: this.mapStatsService.getStyleForWebGlPointLayer()
       });
     }
+    this.WEBGL_STATS.set('name', 'webgl_stats_layer');
   }
 
 
@@ -278,6 +280,7 @@ export class MapLayersService {
       visible,
       style: this.mapStyleService.drawRectangleStyle
     });
+    this.drawRectangleSelectLayer.set('name', 'draw_rectangle_layer');
   };
 
 

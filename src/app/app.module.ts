@@ -58,6 +58,7 @@ import { MapStatsDataComponent } from './map/Controls/map-stats-data/map-stats-d
 import { MapStatsDataModalComponent } from './map/Controls/map-stats-data-modal/map-stats-data-modal.component';
 import { MapStatsThemmaticComponent } from './map/Controls/map-stats-data-modal/map-stats-themmatic/map-stats-themmatic.component';
 import { MapStatsFiltersComponent } from './map/Controls/map-stats-data-modal/map-stats-filters/map-stats-filters.component';
+import { NgxColorsModule } from 'ngx-colors';
 
 
 export function setupTranslateFactory(
@@ -100,7 +101,7 @@ export function setupTranslateFactory(
     MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule,
-    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule
+    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule, NgxColorsModule
   ],
   providers: [
     TranslateService,

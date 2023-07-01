@@ -1,12 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import Draw, { createBox } from 'ol/interaction/Draw';
 import VectorSource from 'ol/source/Vector';
 import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 import { MapService } from 'src/app/map/Services/map.service';
 import { StatsService } from 'src/app/map/Services/map.stats.service';
 import { IndiceClass, IndexFilter, StatsIndices } from 'src/app/map/api/map.api';
-import { DEFAULT_FILTER, DHM_KOINOTHTES } from 'src/app/map/api/map.datamaps';
+import { DEFAULT_FILTER, DHM_GEITONIES, DHM_KOINOTHTES } from 'src/app/map/api/map.datamaps';
 import { StatTypes } from 'src/app/map/api/map.enums';
+import { TranslatePipe } from 'src/app/shared/translate/translate.pipe';
+import { TranslateService } from 'src/app/shared/translate/translate.service';
 
 @Component({
   selector: 'app-map-stats-filters',
@@ -17,15 +20,32 @@ export class MapStatsFiltersComponent implements OnInit {
 
 
   @Output() redrawWebGlLayer$ = new EventEmitter();
+  private translatePipe: TranslatePipe;
+  public spatialUnitOptions: {id:number, value:string}[];
+  public adminAreaNames: string[];
+  filtersForm: FormGroup;
 
   constructor(
     public mapStatsService: StatsService,
     public mapLayersService: MapLayersService,
-    public mapService: MapService) { }
+    private translateService: TranslateService,
+    public mapService: MapService) { 
+      this.translatePipe = new TranslatePipe(this.translateService);
+      
+    }
 
   ngOnInit(): void {
+    this.spatialUnitOptions = [
+      {id:1, value: this.translatePipe.transform('MAP.STATS-DHMKOIN-FILTER')}, 
+      {id:2, value: this.translatePipe.transform('MAP.STATS-GEITONIES-FILTER')}
+    ];
+    const selVal = this.spatialUnitOptions.find(su=> su.id === this.mapStatsService.spatialAdminType?.id);
+    this.adminAreaNames = selVal?.id === 1 ? DHM_KOINOTHTES : DHM_GEITONIES;
+    this.filtersForm = new FormGroup({
+      spatialUnitSelector: new FormControl(selVal),
+      spatialAdminSelector: new FormControl(this.mapStatsService.dkFilter)
+    });
   }
-
 
   public cleanRefreshWebGlLayer(): void {
     this.redrawWebGlLayer$.emit();
@@ -82,7 +102,6 @@ export class MapStatsFiltersComponent implements OnInit {
     return sindex ? sindex : -1;
   }
 
-
   public setDkFilter(value: string[]): void{
     this.mapStatsService.dkFilter = value;
   }
@@ -92,12 +111,11 @@ export class MapStatsFiltersComponent implements OnInit {
     this.applyFilters(false);
   }
 
-
   public getDhmKoin(): string[]{
     return DHM_KOINOTHTES;
   }
 
-  public enableDraw(){
+  public enableDraw(): void{
     this.mapService.drawInt.setActive(true);
     this.mapService.drawInt.on('drawend', (e1) =>{
       this.mapLayersService.DrawRectangleSelectLayer.getSource().clear();
@@ -107,10 +125,32 @@ export class MapStatsFiltersComponent implements OnInit {
     });
   }
 
-  public disableDraw(){
+  public disableDraw(): void{
     this.mapService.drawInt.setActive(false);
     this.mapLayersService.DrawRectangleSelectLayer.getSource().clear();
     this.applyFilters(false);
   }
 
+  public isExisted(idx: StatsIndices): boolean{
+   return this.mapStatsService.filters.map(fl => fl.sindex?.code).includes(idx.code);
+  }
+
+  public clearAllFilters(): void{
+    this.mapStatsService.filters = [];
+    this.mapStatsService.dkFilter = [];
+    this.disableDraw();
+  }
+
+
+
+  public setOptionsForType(type: {id:number, value:string}){ 
+    this.mapStatsService.spatialAdminType = type;
+    this.adminAreaNames = type.id === 1 ? DHM_KOINOTHTES : DHM_GEITONIES;
+    if (this.mapStatsService.dkFilter.length > 0){
+      this.mapStatsService.dkFilter = [];
+      this.applyFilters(false);
+    }
+    
+    
+  }
 }
