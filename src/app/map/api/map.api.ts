@@ -80,10 +80,11 @@ export interface StatsIndices {
 }
 
 export interface IndiceClass {
-    label: string
+    label: string,
     value?: number,
     min?: number,
-    max?: number
+    max?: number,
+    counter?: number
    
 }
 

@@ -69,5 +69,10 @@ export class MapStatsThemmaticComponent implements OnInit {
   }
 
 
+  public setColorForClass(i: number){
+    this.cleanRefreshWebGlLayer();
+  }
+
+
   
 }

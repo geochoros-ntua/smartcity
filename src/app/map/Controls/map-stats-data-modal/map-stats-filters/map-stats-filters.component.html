@@ -1,5 +1,5 @@
 <div class="filters">
-    
+    <form [formGroup]="filtersForm">
     <div id="filter-info">{{mapStatsService.countFiltered}} ({{mapStatsService.countAll}})</div>
         <div>
             <div>
@@ -10,12 +10,22 @@
                 <button mat-icon-button color="primary" class="draw-button" (click)="disableDraw()">
                     <mat-icon matTooltip="{{'MAP.STATS-SPATIAL-AREA-REMOVE' | translate }}" >border_clear</mat-icon>
                 </button>
+                <button mat-icon-button color="primary" class="draw-button" (click)="clearAllFilters()">
+                    <mat-icon matTooltip="{{'MAP.STATS-FILTER-CLEAR-ALL' | translate }}" >clear</mat-icon>
+                </button>
             </div>
-            <label>{{'MAP.STATS-DHMKOIN-FILTER' | translate }}: </label>
+            <!-- <label>{{'MAP.STATS-DHMKOIN-FILTER' | translate }}: </label> -->
             <mat-form-field >
-                <mat-label>{{'MAP.STATS-SPATIAL-DHMKOIN' | translate }}</mat-label>
-                    <mat-select color="primary" [value]="mapStatsService.dkFilter" (openedChange)="applyDkFilter($event)" (selectionChange)="setDkFilter($event.value)"  multiple>
-                        <mat-option matTooltip="{{dk}}" *ngFor="let dk of getDhmKoin()" [value]="dk">{{dk}}
+                <mat-label>{{'MAP.STATS-SPATIAL-TYPES' | translate }}</mat-label>
+                    <mat-select color="primary" formControlName="spatialUnitSelector"  (selectionChange)="setOptionsForType($event.value)">
+                        <mat-option *ngFor="let opt of spatialUnitOptions" [value]="opt">{{opt.value}}
+                        </mat-option>
+                    </mat-select>
+            </mat-form-field>
+            <mat-form-field >
+                <mat-label>{{mapStatsService.spatialAdminType?.id === 1 ? ('MAP.STATS-SPATIAL-DHMKOIN' | translate) :  ('MAP.STATS-SPATIAL-GEITONIES' | translate)}}</mat-label>
+                    <mat-select color="primary" formControlName="spatialAdminSelector" (openedChange)="applyDkFilter($event)" (selectionChange)="setDkFilter($event.value)"  multiple>
+                        <mat-option matTooltip="{{dk}}" *ngFor="let dk of adminAreaNames" [value]="dk">{{dk}}
                         </mat-option>
                     </mat-select>
             </mat-form-field>
@@ -31,7 +41,7 @@
                         <mat-form-field >
                             <mat-label>{{'MAP.STATS-INDEX' | translate }}</mat-label>
                                 <mat-select color="primary" [value]="normaliseValue(filter.sindex)" (selectionChange)="changeFilterIndex($event.value, i)" >
-                                    <mat-option matTooltip="{{idx.label}}" *ngFor="let idx of mapStatsService.getIndecesForLayer(mapStatsService.selectedStatsLayer)" [value]="idx">{{idx.label}}
+                                    <mat-option [disabled]="isExisted(idx)" matTooltip="{{idx.label}}" *ngFor="let idx of mapStatsService.getIndecesForLayer(mapStatsService.selectedStatsLayer)" [value]="idx">{{idx.label}}
                                     </mat-option>
                                 </mat-select>
                         </mat-form-field>
@@ -50,5 +60,5 @@
                     </td>
                 </tr>
             </table>
-            
+        </form>     
     </div>

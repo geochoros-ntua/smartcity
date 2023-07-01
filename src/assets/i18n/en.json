@@ -42,10 +42,14 @@
         "STATS-FILTER-ADD":"Add filter",
         "STATS-FILTER-DELETE":"Delete filter",
         "STATS-DHMKOIN-FILTER":"Per municipality area",
+        "STATS-GEITONIES-FILTER":"Per Neighborhoods",
+        "STATS-SPATIAL-TYPES":"Administrative areas",
         "STATS-SPATIAL-DHMKOIN":"Municipality Areas",
+        "STATS-SPATIAL-GEITONIES":"Neighborhoods",
         "STATS-SPATIAL-AREA":"Select area on map",
         "STATS-SPATIAL-AREA-REMOVE":"Clear map area",
-        "STATS-SPATIAL-FILTER":"Spatial filter"                                   
+        "STATS-SPATIAL-FILTER":"Spatial filter",
+        "STATS-FILTER-CLEAR-ALL":"Clear all filters"                                       
     },
     "GRAPH" :{
       "LINE": "Line", 

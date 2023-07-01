@@ -22,16 +22,18 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
 
     public filters: IndexFilter[] = [DEFAULT_FILTER];
     public dkFilter: string[] = [];
+    public spatialAdminType:{id:number, value:string}
     public statDialogRef: MatDialogRef<MapStatsDataModalComponent, any>;
 
     public countFiltered: number = 0;
     public countAll: number = 0;
+    
 
     constructor(){}
 
     public getIndecesForLayer(lyr: StatLayers): StatsIndices[]{
         return STATS_INDECES.filter(idc => idc.layer === lyr)
-      }
+    }
     
     public generateClassColors(): void{
         this.classColors = this.selectedStatsIndex.type === StatTypes.number ? 
@@ -51,7 +53,8 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
             classes.push({
                 label: (min -limit) + " - " + min,
                 min: min -limit,
-                max: min
+                max: min,
+                counter: 0
             });
         }
         return classes;
@@ -95,8 +98,8 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
         });
         // dk filter expressions
         const dkFilterExpressions = this.dkFilter.length === 0 ?
-        [] :  this.dkFilter.length === 1 ? ['==', ['get', 'dk_name'], this.dkFilter[0]] :
-        ['any', ...this.dkFilter.map(item => ['==', ['get', 'dk_name'], item])];  
+        [] :  this.dkFilter.length === 1 ? ['==', ['get', this.spatialAdminType.id === 1 ? 'dk_name' : 'geitonia'], this.dkFilter[0]] :
+        ['any', ...this.dkFilter.map(item => ['==', ['get', this.spatialAdminType.id === 1 ? 'dk_name' : 'geitonia'], item])];  
         // all filter expressions
         const allFilterExpressions = dkFilterExpressions.length === 0 ?  [...filterExpressions] : [...filterExpressions, dkFilterExpressions];
 
@@ -131,7 +134,7 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
             }
 
         });
-        const dkFilterResult = this.dkFilter.length > 0 ? this.dkFilter.includes(f.get("dk_name")) : true;
+        const dkFilterResult = this.dkFilter.length > 0 ? this.dkFilter.includes(this.spatialAdminType.id === 1 ? f.get("dk_name") : f.get("geitonia")) : true;
         return [...filterResults, dkFilterResult].includes(false) ? 0 : 1;
     }
 

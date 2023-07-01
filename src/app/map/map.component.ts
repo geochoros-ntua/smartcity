@@ -1,12 +1,9 @@
 import { MapLayersService } from './Services/map.layers.service';
-import { DarkThemeService } from './../shared/dark-theme/dark-theme.service';
 import { Component, OnInit } from '@angular/core';
 import { MapService } from './Services/map.service';
-import { MapBrowserEvent, Overlay } from 'ol';
+import { MapBrowserEvent } from 'ol';
 import { MapMode } from './api/map.enums';
 import { SensorsService } from './Services/map.sensors.service';
-import { unByKey } from 'ol/Observable.js';
-import { StatsService } from './Services/map.stats.service';
 
 
 @Component({
@@ -22,8 +19,7 @@ export class MapComponent implements OnInit {
   isStats: boolean; 
 
   constructor(
-    private mapService: MapService, private mapStatsService: StatsService,
-    public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
+    private mapService: MapService, public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
 
   }
 
@@ -34,6 +30,7 @@ export class MapComponent implements OnInit {
     this.mapService.mapMode$.subscribe( mode =>{
       this.resetMapType(mode);
     })
+    
     
   }
 
@@ -63,7 +60,11 @@ export class MapComponent implements OnInit {
     // pointer on feature hover
     this.mapService.smartCityMap.on('pointermove', (event: MapBrowserEvent<UIEvent>) => {
       const pixel = thisP.mapService.smartCityMap.getEventPixel(event.originalEvent);
-      const hit = thisP.mapService.smartCityMap.hasFeatureAtPixel(pixel);
+      const hit = thisP.mapService.smartCityMap.hasFeatureAtPixel(pixel,{ 
+          layerFilter: (layer) => { //some ol bug is complaining sometimes 
+            return layer !== null;
+          }
+      });
       thisP.mapService.smartCityMap.getViewport().style.cursor = hit ? 'pointer' : '';
     });
   }
