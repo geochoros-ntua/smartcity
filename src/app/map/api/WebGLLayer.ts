@@ -30,10 +30,6 @@ export class WebGLLayer extends Layer {
       stroke: {
         attributes: {
           color: (feature: FeatureLike) => {
-            // return feature.get(this.mapStatsService.selectedStatsIndex?.code) ? this.mapStatsService.getColorForLineWbgl(
-              // this.mapStatsService.selectedStatsIndex,
-              // feature.get(this.mapStatsService.selectedStatsIndex?.code)
-              // ) : packColor('gray'); //just gray for no data 
               return this.mapStatsService.getColorForLineWbgl(
                 this.mapStatsService.selectedStatsIndex,
                 feature.get(this.mapStatsService.selectedStatsIndex?.code)
