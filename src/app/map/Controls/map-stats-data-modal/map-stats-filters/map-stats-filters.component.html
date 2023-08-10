@@ -13,6 +13,7 @@
                 <button mat-icon-button color="primary" class="draw-button" (click)="clearAllFilters()">
                     <mat-icon matTooltip="{{'MAP.STATS-FILTER-CLEAR-ALL' | translate }}" >clear</mat-icon>
                 </button>
+                <mat-slide-toggle color="primary" [checked]="mapStatsService.heatEnable" (change)="toggleHeat($event.checked)" >Show Heatmap</mat-slide-toggle>
             </div>
             <!-- <label>{{'MAP.STATS-DHMKOIN-FILTER' | translate }}: </label> -->
             <mat-form-field >

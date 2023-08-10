@@ -27,6 +27,8 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
 
     public countFiltered: number = 0;
     public countAll: number = 0;
+
+    public heatEnable: boolean = false;
     
 
     constructor(){}

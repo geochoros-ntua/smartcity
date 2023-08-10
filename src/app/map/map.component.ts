@@ -57,14 +57,28 @@ export class MapComponent implements OnInit {
       this.mapService.onMapClicked(event);
     });
 
+
+     // click on zoom level change
+    this.mapService.smartCityMap.getView().on('change:resolution', (event) => {
+      const curZoom = this.mapService.smartCityMap.getView().getZoom();
+      this.mapLayersService.heatBlur = curZoom > 14 ? 40 : 30;
+      this.mapLayersService.heatRadius = curZoom > 14 ? 25 : 15;
+      this.mapLayersService.HeatMapLayer.setBlur(this.mapLayersService.heatBlur);
+      this.mapLayersService.HeatMapLayer.setRadius(this.mapLayersService.heatRadius);
+    });
+
+
     // pointer on feature hover
     this.mapService.smartCityMap.on('pointermove', (event: MapBrowserEvent<UIEvent>) => {
       const pixel = thisP.mapService.smartCityMap.getEventPixel(event.originalEvent);
-      const hit = thisP.mapService.smartCityMap.hasFeatureAtPixel(pixel,{ 
-          layerFilter: (layer) => { //some ol bug is complaining sometimes 
-            return layer !== null;
-          }
-      });
+      const hit = thisP.mapService.smartCityMap.forEachFeatureAtPixel(pixel, (f, l) => {
+        return (f && l);
+      }); 
+      // const hit = thisP.mapService.smartCityMap.hasFeatureAtPixel(pixel,{ 
+      //     layerFilter: (layer) => { //some ol bug is complaining sometimes 
+      //       return layer !== null;
+      //     }
+      // });
       thisP.mapService.smartCityMap.getViewport().style.cursor = hit ? 'pointer' : '';
     });
   }

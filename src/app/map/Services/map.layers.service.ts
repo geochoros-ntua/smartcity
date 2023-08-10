@@ -27,7 +27,11 @@ import { WebGLLayer } from '../api/WebGLLayer';
 import { StatsService } from './map.stats.service';
 import WebGLPointsLayer from 'ol/layer/WebGLPoints';
 import { DUMMY_STYLES } from '../api/map.default.styles';
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
+import { Heatmap } from 'ol/layer';
+
+import {getCenter} from 'ol/extent'
+import { Coordinate } from 'ol/coordinate';
 
 
 /**
@@ -66,6 +70,10 @@ export class MapLayersService {
   public webGlStatsSource!: VectorSource<Point>;
   private WEBGL_STATS!: WebGLLayer | WebGLPointsLayer<VectorSource<Point>>;
 
+  public heatMapSource!: VectorSource<Point>;
+  private HEATMAP_LAYER!: Heatmap;
+
+
   private mplFormat: GeoJSON;
 
   private mplNaviPointLayer!: VectorLayer<VectorSource<Geometry>>;
@@ -79,6 +87,8 @@ export class MapLayersService {
   public checkedSeq = true;
   public checkedImg = true;
   public dataLoaded: boolean;
+  public heatBlur: number = 35;
+  public heatRadius: number = 15;
 
   constructor(private http: HttpClient, private mapStatsService: StatsService, private mapStyleService: MapStyleService) {
     // format to read the mpl 4326 layers response
@@ -127,6 +137,7 @@ export class MapLayersService {
      this.initDrawRectLayer(true);
     // factors layers
     this.initWebGlStatsLayer(false);
+    this.initHeatmapLayer(false);
     // sensors layer
     this.initSensorLayer(false);
     // mapillary select layer
@@ -192,6 +203,10 @@ export class MapLayersService {
     return this.WEBGL_STATS;
   }
 
+  public get HeatMapLayer(): Heatmap {
+    return this.HEATMAP_LAYER;
+  }
+
 
   /**
    * set for all vectors the opacity
@@ -207,9 +222,6 @@ export class MapLayersService {
   }
 
 
-  /**
-   * PRIVATES
-   */
   public initWebGlStatsLayer(visible: boolean){
 
     const myurl = './assets/geodata/'+Object.keys(StatLayers).find(
@@ -238,6 +250,41 @@ export class MapLayersService {
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
   }
 
+
+  public initHeatmapLayer(visible: boolean){
+    const lineGeom = this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines || this.mapStatsService.selectedStatsLayer === StatLayers.street_lines;
+    const allVals: any = this.webGlStatsSource.getFeatures()
+    .filter(ff=> this.mapStatsService.getFeatureVisiblity(ff) === 1)
+    .map(f => f.getGeometry())
+    .map((g:any) => {
+      return {length: lineGeom ? g.getLineString().getLength() : 1, center: lineGeom ? getCenter(g.getLineString().getExtent()) : g.getCoordinates()};
+    });
+    const maxLength = Math.max(...allVals.map((val: string | any[]) => val.length));
+    const pointFeats = allVals.map((val: any) => {
+      return new Feature({
+        length: val.length,
+        geometry: new Point(val.center)
+      });
+    })
+    this.heatMapSource = new VectorSource<Point>();
+    this.heatMapSource.addFeatures(pointFeats);
+    this.HEATMAP_LAYER = new Heatmap({
+      source: this.heatMapSource,
+      blur: this.heatBlur,
+      radius: this.heatRadius,
+      visible,
+      weight:  (ff: any) => {
+        // const weight = ff.getGeometry().getLength()/maxLength;
+        // console.log('ff',ff);
+        return ff.get('length')/maxLength;
+      },
+    });
+
+  }
+
+  /**
+   * PRIVATES
+   */
 
   private initMaskLayer(){
       this.ATHENS_MASK = new VectorImage({

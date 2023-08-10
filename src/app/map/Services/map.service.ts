@@ -101,6 +101,7 @@ export class MapService {
         this.mapLayersService.MlPointsLayer,
         this.mapLayersService.SensorsLayer,
         this.mapLayersService.WebGlStatsLayer,
+        this.mapLayersService.HeatMapLayer,
         this.mapLayersService.MplNaviLayer,
         this.mapLayersService.DummySelectLayer,
         this.mapLayersService.DrawRectangleSelectLayer,

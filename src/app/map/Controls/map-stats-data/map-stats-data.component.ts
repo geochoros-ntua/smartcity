@@ -19,7 +19,7 @@ export class MapStatsDataComponent {
     this.mapStatsService.statDialogRef?.close();
     this.mapStatsService.statDialogRef = this.dialog.open(MapStatsDataModalComponent,{
       maxWidth: '80vw',
-      width: '25%',
+      // width: '25%',
       hasBackdrop: false,
       disableClose : true,
     });

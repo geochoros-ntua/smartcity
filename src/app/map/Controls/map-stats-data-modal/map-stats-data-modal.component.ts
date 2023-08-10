@@ -32,7 +32,7 @@ export class MapStatsDataModalComponent implements OnInit {
     this.mapService.smartCityMap.addLayer(this.mapLayersService.WebGlStatsLayer);
 
 
-    this.mapLayersService.webGlStatsSource.once('featuresloadend', (e)=>{
+    this.mapLayersService.webGlStatsSource.once('featuresloadend', (e) => {
       this.mapStatsService.countAll = this.mapLayersService.webGlStatsSource.getFeatures().length;
       this.resetCountersForClasses();
     
@@ -43,6 +43,18 @@ export class MapStatsDataModalComponent implements OnInit {
         this.mapLayersService.webGlStatsSource.clear();
         this.mapLayersService.webGlStatsSource.addFeatures(newFeats);
       }
+
+      // update the heatmap if enabled
+      if (this.mapStatsService.heatEnable){
+        if (this.mapLayersService.HeatMapLayer){
+          this.mapService.smartCityMap.removeLayer(this.mapLayersService.HeatMapLayer);
+          this.mapLayersService.HeatMapLayer.dispose();
+        }
+        this.mapLayersService.initHeatmapLayer(true);
+        this.mapService.smartCityMap.addLayer(this.mapLayersService.HeatMapLayer);
+      }
+
+      
       // calculate the counters
       this.mapStatsService.countFiltered = 0;
       

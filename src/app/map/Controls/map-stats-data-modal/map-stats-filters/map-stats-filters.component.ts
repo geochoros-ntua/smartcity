@@ -22,29 +22,32 @@ export class MapStatsFiltersComponent implements OnInit {
   @Output() redrawWebGlLayer$ = new EventEmitter();
   private translatePipe: TranslatePipe;
   public spatialUnitOptions: {id:number, value:string}[];
+  public selectedUnit:{id:number, value:string};
   public adminAreaNames: string[];
-  filtersForm: FormGroup;
+  public filtersForm: FormGroup;
 
   constructor(
     public mapStatsService: StatsService,
     public mapLayersService: MapLayersService,
     private translateService: TranslateService,
     public mapService: MapService) { 
+
       this.translatePipe = new TranslatePipe(this.translateService);
-      
+      this.spatialUnitOptions = [
+        {id:1, value: this.translatePipe.transform('MAP.STATS-DHMKOIN-FILTER')}, 
+        {id:2, value: this.translatePipe.transform('MAP.STATS-GEITONIES-FILTER')}
+      ];
+
     }
 
-  ngOnInit(): void {
-    this.spatialUnitOptions = [
-      {id:1, value: this.translatePipe.transform('MAP.STATS-DHMKOIN-FILTER')}, 
-      {id:2, value: this.translatePipe.transform('MAP.STATS-GEITONIES-FILTER')}
-    ];
-    const selVal = this.spatialUnitOptions.find(su=> su.id === this.mapStatsService.spatialAdminType?.id);
-    this.adminAreaNames = selVal?.id === 1 ? DHM_KOINOTHTES : DHM_GEITONIES;
+  public ngOnInit(): void {
+    this.selectedUnit = this.spatialUnitOptions.find(su=> su.id === this.mapStatsService.spatialAdminType?.id);
+    this.adminAreaNames = this.selectedUnit?.id === 1 ? DHM_KOINOTHTES : this.selectedUnit?.id === 2 ? DHM_GEITONIES : [];
     this.filtersForm = new FormGroup({
-      spatialUnitSelector: new FormControl(selVal),
+      spatialUnitSelector: new FormControl(this.selectedUnit),
       spatialAdminSelector: new FormControl(this.mapStatsService.dkFilter)
     });
+
   }
 
   public cleanRefreshWebGlLayer(): void {
@@ -53,6 +56,27 @@ export class MapStatsFiltersComponent implements OnInit {
 
   public isDisabled(): boolean{
     return this.mapStatsService.filters.filter(fl => !fl.sindex || fl.values.length===0).length > 0;
+  }
+
+  public toggleHeat(val: boolean){
+    this.mapStatsService.heatEnable = val;
+    if (val) {
+      this.addHeatMap();
+    } else {
+      this.removeHeatMap();
+    }
+  }
+
+  private removeHeatMap(){
+    if (this.mapLayersService.HeatMapLayer){
+      this.mapService.smartCityMap.removeLayer(this.mapLayersService.HeatMapLayer);
+      this.mapLayersService.HeatMapLayer.dispose();
+    }
+  }
+
+  private addHeatMap(){
+    this.mapLayersService.initHeatmapLayer(true);
+    this.mapService.smartCityMap.addLayer(this.mapLayersService.HeatMapLayer);
   }
 
   /**
@@ -138,6 +162,7 @@ export class MapStatsFiltersComponent implements OnInit {
   public clearAllFilters(): void{
     this.mapStatsService.filters = [];
     this.mapStatsService.dkFilter = [];
+    this.filtersForm.controls['spatialAdminSelector'].setValue(null);
     this.disableDraw();
   }
 
