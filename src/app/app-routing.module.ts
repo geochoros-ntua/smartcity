@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { MapComponent } from './map/map.component';
 import { ResponsesComponent } from './responses/responses.component';
 import { TeamComponent } from './team/team.component';
+import { NeighborhoodsComponent } from './neighborhoods/neighborhoods.component';
+import { StrategyComponent } from './strategy/strategy.component';
 
 
 const routes: Routes = [
@@ -16,7 +18,9 @@ const routes: Routes = [
   { path: 'team', component: TeamComponent },
   { path: 'map', component: MapComponent },
   { path: 'responses', component: ResponsesComponent },
-  { path: 'contact', component: ContactComponent }
+  { path: 'contact', component: ContactComponent },
+  { path: 'neighborhoods', component: NeighborhoodsComponent },
+  { path: 'strategy', component: StrategyComponent }
 ];
 
 @NgModule({

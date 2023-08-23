@@ -493,6 +493,10 @@ a {
   color: mat.get-color-from-palette($athens-warn);
 }
 
+.main-menu {
+  max-width: 350px !important;
+}
+
 @media only screen and (max-width: 700px) {
   .profile-item {
     width: 100% !important;

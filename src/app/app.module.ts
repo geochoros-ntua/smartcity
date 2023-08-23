@@ -59,6 +59,8 @@ import { MapStatsDataModalComponent } from './map/Controls/map-stats-data-modal/
 import { MapStatsThemmaticComponent } from './map/Controls/map-stats-data-modal/map-stats-themmatic/map-stats-themmatic.component';
 import { MapStatsFiltersComponent } from './map/Controls/map-stats-data-modal/map-stats-filters/map-stats-filters.component';
 import { NgxColorsModule } from 'ngx-colors';
+import { MyFilterPipe, NeighborhoodsComponent } from './neighborhoods/neighborhoods.component';
+import { StrategyComponent } from './strategy/strategy.component';
 
 
 export function setupTranslateFactory(
@@ -92,7 +94,10 @@ export function setupTranslateFactory(
     MapStatsDataComponent,
     MapStatsDataModalComponent,
     MapStatsThemmaticComponent,
-    MapStatsFiltersComponent
+    MapStatsFiltersComponent,
+    NeighborhoodsComponent,
+    MyFilterPipe,
+    StrategyComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

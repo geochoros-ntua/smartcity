@@ -1,0 +1,202 @@
+.front-teaser-parent {
+  // max-width: 1170px;
+  margin: auto;
+  padding: 32px;
+}
+
+.neighborhoods-map {
+  position: absolute;
+//   top: 290px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.neighborhoods-map-mobile {
+    position: relative;
+    width: 100%;
+    height: 400px;
+  }
+
+.front-teaser {
+  display: flex;
+  flex-flow: row wrap;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.neighborhoods-list {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+//   top: 300px;
+  // background-color: (0,0,0,0.25);
+  margin: 32px;
+  max-width: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.neighborhoods-list-mobile {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+.neighborhoods-list-dark {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.neighborhoods-list-light {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.neighborhood-card {
+  width: 250px;
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  transition: all 0.8s ease-in-out;
+}
+
+.neighborhood-image {
+  //   background-image: url("../../assets/images/neighborhoodmobility.jpg");
+  background-size: cover;
+}
+
+.cities-header {
+  max-width: 1170px;
+  margin: auto;
+}
+
+.cities-controls {
+  max-width: 1170px;
+  margin: auto;
+  text-align: start;
+  margin-bottom: 16px;
+}
+
+.gray-value {
+  color: #5e747e;
+}
+
+.cities-download {
+  vertical-align: middle;
+  margin-left: 0.83em;
+}
+
+$randomNumber: random(10);
+$randomNumber1: random(10);
+$randomNumber2: random(10);
+$randomNumber3: random(10);
+$randomNumber4: random(10);
+$randomNumber5: random(10);
+
+// .country-text {
+//   display: inline-block;
+//   animation: text-rotate $randomNumber + s 1 ease-in-out;
+//   animation-delay: $randomNumber1 + s;
+//   // transition: all .8s ease-in-out;
+// }
+
+.country-text-0 {
+  display: inline-block;
+  animation: text-rotate $randomNumber + s 1 ease-in-out;
+  animation-delay: $randomNumber + s;
+  // transition: all .8s ease-in-out;
+}
+
+.country-text-1 {
+  display: inline-block;
+  animation: text-rotate $randomNumber + s 1 ease-in-out;
+  animation-delay: $randomNumber1 + s;
+  // transition: all .8s ease-in-out;
+}
+
+.country-text-2 {
+  display: inline-block;
+  animation: text-rotate $randomNumber + s 1 ease-in-out;
+  animation-delay: $randomNumber2 + s;
+  // transition: all .8s ease-in-out;
+}
+
+.country-text-3 {
+  display: inline-block;
+  animation: text-rotate $randomNumber + s 1 ease-in-out;
+  animation-delay: $randomNumber3 + s;
+  // transition: all .8s ease-in-out;
+}
+
+.country-text-4 {
+  display: inline-block;
+  animation: text-rotate $randomNumber + s 1 ease-in-out;
+  animation-delay: $randomNumber4 + s;
+  // transition: all .8s ease-in-out;
+}
+
+.country-text-5 {
+  display: inline-block;
+  animation: text-rotate $randomNumber + s infinite ease-in-out;
+  animation-delay: $randomNumber5 + s;
+  // transition: all .8s ease-in-out;
+}
+
+.ol-zoom {
+  display: none !important;
+}
+
+.extent-button {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 10;
+}
+
+.zoom-in-button {
+  position: absolute;
+  right: 16px;
+  top: 64px;
+  z-index: 10;
+}
+
+.zoom-out-button {
+  position: absolute;
+  right: 16px;
+  top: 112px;
+  z-index: 10;
+}
+
+.legend-parent {
+  position: absolute;
+  bottom: 32px;
+  right: 16px;
+  z-index: 10;
+}
+
+.legend {
+    display: flex;
+}
+
+.legend-color {
+    width: 40px;
+    height: 20px;
+    margin: 8px;
+}
+
+.legend-arrow {
+    padding-top: 8px;
+    padding-right: 8px;
+}
+
+@keyframes text-rotate {
+  0% {
+    transform: rotateY(0);
+  }
+  50% {
+    transform: rotateY(360deg);
+  }
+  100% {
+    transform: rotateY(0);
+  }
+}

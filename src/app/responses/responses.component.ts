@@ -25,8 +25,8 @@ export class ResponsesComponent implements OnInit {
   variables_students: any[] = [];
 
   respondents: any[] = [
-    { id: 1, name_en: 'residents', name_gr: 'κάτοικοι' },
-    { id: 2, name_en: 'students', name_gr: 'μαθητές' },
+    { id: 1, name_en: "Residents' questionnaire results", name_gr: 'Αποτελέσματα ερωτηματολογίου Κατοίκων' },
+    { id: 2, name_en: "Students' questionnaire results", name_gr: 'Αποτελέσματα ερωτηματολογίου Μαθητών' },
   ]
 
   chartTypeValues: any[] = [
@@ -59,6 +59,11 @@ export class ResponsesComponent implements OnInit {
   stackedBar: boolean = false;
 
   lang: string = 'gr';
+
+  displayedColumns: string[] = ['value', 'number'];
+  additionalTableColumns: string[] = [];
+  additionalTableColumnsRefs: string[] = [];
+  tableSource: any = null;
 
   constructor(private httpClient: HttpClient, private translateService: TranslateService) {
     this.translateService.lang$.subscribe(value => {
@@ -251,7 +256,7 @@ export class ResponsesComponent implements OnInit {
       })
     }
 
-  
+   
 
     const frequency = rawData.reduce((prev, cur) => {
       prev[cur] = (prev[cur] || 0) + 1;
@@ -284,6 +289,9 @@ export class ResponsesComponent implements OnInit {
 
 
     const frequencyForPie = sortedFrequency;
+    console.log(frequencyForPie)
+    console.log(stackedFrequency)
+    console.log(labels)
     if (this.selectedRespondents === 2 && this.selectedVariable === 58) {
       this.showStudentsWishes = true;
       this.studentsWishes = [];
@@ -294,17 +302,63 @@ export class ResponsesComponent implements OnInit {
     }
     if (this.selectedChartType === 1) {
       this.initChart(labels, frequencyForPie);
-
     }
     else {
       if (this.stackedBar) {
         this.initChart(labels, stackedFrequency);
+    
       }
       else {
         this.initChart(labels, frequencyForPie);
+    
       }
 
     }
+    this.tableSource = [];
+    this.displayedColumns = ['value', 'number'];
+    this.additionalTableColumns = [];
+    this.additionalTableColumnsRefs = [];
+    if (this.stackedBar) {
+
+      for (let index = 0; index < labels.length; index++) {
+        const element = labels[index];
+        let obj = {
+          value: element,
+        }
+
+        this.tableSource.push(obj);
+      }
+
+      for (let index = 0; index < stackedFrequency.length; index++) {
+        const element = stackedFrequency[index];
+        this.additionalTableColumns.push(element.label);
+        this.displayedColumns.push(element.label);
+        this.additionalTableColumnsRefs.push('number' + index);
+
+        for (let indexN = 0; indexN < element.data.length; indexN++) {
+          const elementN = element.data[indexN];
+          this.tableSource[indexN]['number' + index] = elementN
+        }
+      }
+
+
+      console.log(this.tableSource)
+
+    }
+    else {
+      for (let index = 0; index < labels.length; index++) {
+        const element = labels[index];
+        let obj = {
+          value: element,
+          number: frequencyForPie[index]
+        }
+
+        this.tableSource.push(obj);
+      }
+
+  
+    }
+
 
   }
 

@@ -2,6 +2,12 @@
   padding: 16px;
 }
 
+.responses-intro {
+  max-width: 1170px;
+  margin: auto;
+  padding: 16px;
+}
+
 .select-variable {
   width: 100%;
 }
@@ -32,13 +38,39 @@
 }
 
 .student-wish {
-    margin: 16px;
-    max-width: 400px;
-    word-break: break-word;
+  margin: 16px;
+  max-width: 400px;
+  word-break: break-word;
 }
 
 .chart-canvas {
   max-height: calc(100vh - 396px) !important;
+}
+
+.data-table {
+  padding: 8px !important;
+}
+
+.value-header-cell {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.value-cell {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.header-cell {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: end;
+}
+
+.cell {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: end;
 }
 
 @media only screen and (max-width: 600px) {

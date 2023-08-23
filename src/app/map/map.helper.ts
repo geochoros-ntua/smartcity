@@ -2,7 +2,7 @@ import { MapMode } from "./api/map.enums";
 
 export default class MapUtils {
 
-    public static backEndBaseUrl = 'https://smartcity.fearofcrime.com/php/';
+    public static backEndBaseUrl = 'php/';
 
     /**
      * pass the enum and the value 

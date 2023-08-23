@@ -1,4 +1,9 @@
 <section>
+    <div class="responses-intro">
+        <h1>{{ "RESPONSES.TITLE" | translate }}</h1>
+        <p>{{ "RESPONSES.BODY_A" | translate }}</p>
+        <p>{{ "RESPONSES.BODY_B" | translate }}</p>
+    </div>
     <div class="responses-container">
         <div class="variables-container">
             <mat-form-field appearance="fill" class="select-variable">
@@ -86,7 +91,7 @@
             </div>
             <div class="filter-button"> <button mat-icon-button (click)="resetFilters()"
                     matTooltip="{{ 'RESPONSES.CLEAR' | translate }}" matTooltipClass="tooltip">
-                    <mat-icon>clear_all</mat-icon>
+                    <mat-icon>cleaning_services</mat-icon>
                 </button></div>
             <div class="spacer"></div>
             <div class="filter-button">
@@ -105,10 +110,34 @@
                 <hr color="primary">
             </div>
             <div *ngIf="showStudentsWishes" class="students-wishes-container">
-                        <mat-card class="student-wish" *ngFor="let wish of studentsWishes">
-                            <mat-card-content>{{ wish }}</mat-card-content>
-                        </mat-card>
+                <mat-card class="student-wish" *ngFor="let wish of studentsWishes">
+                    <mat-card-content>{{ wish }}</mat-card-content>
+                </mat-card>
             </div>
         </div>
+
+        <table mat-table [dataSource]="tableSource" class="data-table mat-elevation-z8">
+
+
+            <ng-container matColumnDef="value">
+                <th class="value-header-cell" mat-header-cell *matHeaderCellDef> Value </th>
+                <td class="value-cell" mat-cell *matCellDef="let element"> {{element.value}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="number">
+                <th class="header-cell" mat-header-cell *matHeaderCellDef><span *ngIf="!stackedBar"> N </span></th>
+                <td class="cell" mat-cell *matCellDef="let element"> {{element.number}} </td>
+            </ng-container>
+
+            <ng-container *ngFor="let additionalTableColumn of additionalTableColumns; let i = index"
+                [matColumnDef]="additionalTableColumn">
+                <th class="header-cell" mat-header-cell *matHeaderCellDef> {{ additionalTableColumn }} </th>
+                <td class="cell" mat-cell *matCellDef="let element"> {{element[additionalTableColumnsRefs[i]]}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
     </div>
 </section>

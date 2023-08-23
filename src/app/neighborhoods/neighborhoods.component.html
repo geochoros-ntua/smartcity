@@ -1,0 +1,176 @@
+<section>
+    <div #controls class="front-teaser-parent">
+        <div class="cities-header">
+            <h1>{{ "NEIGHBORHOODS.NEIGHBORHOODS_OF_ATHENS" | translate }}</h1>
+        </div>
+        <!-- <div class="cities-header">
+            <p>{{ "NEIGHBORHOODS.INTRO" | translate }}
+            </p>
+        </div> -->
+        <div class="cities-controls">
+            <mat-form-field style="width: 150px; max-width: 50%;" appearance="fill">
+                <mat-label>{{ "NEIGHBORHOODS.DK" | translate }}</mat-label>
+                <mat-select [(value)]="selectedDk" (selectionChange)="filterDk(selectedDk)">
+                    <mat-option [value]="'Όλες'">
+                        Όλες
+                    </mat-option>
+                    <mat-option *ngFor="let dk of dks" [value]="dk">
+                        {{dk}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 250px; max-width: 50%;" appearance="fill">
+                <mat-label>{{ "NEIGHBORHOODS.GENERAL_CATEGORY" | translate }}</mat-label>
+                <mat-select [(value)]="selectedVariableA">
+                    <mat-option *ngFor="let header of headersA" [value]="header">
+                        {{header.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 500px; max-width: 50%;" *ngIf="selectedVariableA" class="cities-download"
+                appearance="fill">
+                <mat-label>{{ "NEIGHBORHOODS.CATEGORY" | translate }}</mat-label>
+                <mat-select [(value)]="selectedVariableB"
+                    (selectionChange)="sortCities(selectedVariableB, reverse, true, labels)">
+                    <mat-option *ngFor="let header of headersB | myfilter:selectedVariableA" [value]="header">
+                        {{header.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-slide-toggle class="cities-download" [disabled]="selectedVariableB === null" [checked]="false"
+                [(ngModel)]="reverse" (change)="sortCities(selectedVariableB, reverse, true, labels)">
+                {{ "NEIGHBORHOODS.REVERSE_ORDER" | translate }}
+            </mat-slide-toggle>
+            <mat-slide-toggle class="cities-download" [checked]="true" [(ngModel)]="labels"
+                (change)="sortCities(selectedVariableB, reverse, true, labels)">
+                {{ "NEIGHBORHOODS.LABELS" | translate }}
+            </mat-slide-toggle>
+            <!-- <mat-slide-toggle class="cities-download" [checked]="false" [(ngModel)]="capitals"
+                (change)="sortCities(selectedVariableB, reverse, true)">
+                Capitals
+            </mat-slide-toggle> -->
+            <button title="CLear all selections" class="cities-download" mat-icon-button color="accent"
+                (click)="clear()">
+                <mat-icon>cleaning_services</mat-icon>
+            </button>
+            <a title="Download .xlsx" class="cities-download" mat-primary-button
+                href="https://data.mendeley.com/datasets/pvtwcjs365/2" target="_blank">
+                <mat-icon>download</mat-icon>
+            </a>
+        </div>
+        <div id="neighborhoods-map" [ngClass]="innerWidth > 855 ? 'neighborhoods-map' : 'neighborhoods-map-mobile'"
+            [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}">
+            <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()">
+                <mat-icon>zoom_out_map</mat-icon>
+            </button>
+
+            <button class="zoom-in-button" mat-mini-fab (click)="$event.stopPropagation(); zoomIn()">
+                <mat-icon>zoom_in</mat-icon>
+            </button>
+            <button class="zoom-out-button" mat-mini-fab (click)="$event.stopPropagation(); zoomOut()">
+                <mat-icon>zoom_out</mat-icon>
+            </button>
+            <div *ngIf="selectedVariableB" class="legend-parent"
+                [ngClass]="isDarkTheme? 'neighborhoods-list-dark' : 'neighborhoods-list-light'">
+                <div class="legend">
+                    <div class="legend-colors">
+                        <div *ngIf="!reverse" class="legend-color">High</div>
+                        <div *ngIf="reverse" class="legend-color">Low</div>
+                        <div class="legend-color"></div>
+                        <div class="legend-color"></div>
+                        <div class="legend-color"></div>
+                        <div *ngIf="!reverse" class="legend-color">Low</div>
+                        <div *ngIf="reverse" class="legend-color">High</div>
+                    </div>
+                    <div class="legend-colors">
+                        <div class="legend-color" [ngStyle]="{'background-color':legendColors[0]}"></div>
+                        <div class="legend-color" [ngStyle]="{'background-color':legendColors[1]}"></div>
+                        <div class="legend-color" [ngStyle]="{'background-color':legendColors[2]}"></div>
+                        <div class="legend-color" [ngStyle]="{'background-color':legendColors[3]}"></div>
+                        <div class="legend-color" [ngStyle]="{'background-color':legendColors[4]}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-list *ngIf="neighborhoods.length > 0"
+            [ngClass]="[innerWidth > 855 ? 'neighborhoods-list' : 'neighborhoods-list-mobile', isDarkTheme? 'neighborhoods-list-dark' : 'neighborhoods-list-light']"
+            [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}" [@listAnimationList]="suffleCards">
+            <!-- <mat-card class="neighborhood-card" *ngFor="let neighborhood of neighborhoods" [@rotatedState]='neighborhood.state'>
+                <mat-card-header>
+                    <mat-card-title>{{neighborhood.name}}<span></span></mat-card-title>
+                    <div style="flex: 1;"></div>
+                    <button mat-icon-button
+                        (click)="navigateToMap(neighborhood.code, selectedVariableB.name)">
+
+                        <mat-icon class="yellow-value" mat-card-avatar>public</mat-icon>
+                    </button>
+                    <mat-card-subtitle *ngIf="selectedVariableB">{{ "NEIGHBORHOODS.RANK" | translate }}:&nbsp;<span
+                            class="order-number">{{neighborhood.order_number}}</span>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                    <div [id]="neighborhood.code"  class="neighborhood-image" mat-card-image [style.background-image]="'url(' + neighborhood.imgURL + ')'">
+                    </div>
+                <mat-card-content>
+                    <p *ngIf="selectedVariableB">
+                        <span style="font-weight: 700;">{{selectedVariableB?.name}}:</span>&nbsp;
+                        <span *ngIf="selectedVariableB?.name === 'Μέσος όρος από Στοά (%)' || selectedVariableB?.name === 'Μέσος όρος από Παρτέρια (%)' || 
+                        selectedVariableB?.name === 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)'" class="yellow-value">{{neighborhood.selected_variable}}%</span>
+
+                        <span *ngIf="selectedVariableB?.name === 'Μέσος όρος από Δέντρα (Αριθμός)' || selectedVariableB?.name === 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'" class="yellow-value">{{neighborhood.selected_variable}}</span>
+
+                        <span *ngIf="selectedVariableB?.name !== 'Μέσος όρος από Στοά (%)' && selectedVariableB?.name !== 'Μέσος όρος από Παρτέρια (%)' &&
+                        selectedVariableB?.name !== 'Μέσος όρος από Δέντρα (Αριθμός)' && selectedVariableB?.name !== 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)' &&
+                        selectedVariableB?.name !== 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'" class="yellow-value">{{neighborhood.selected_variable * 100}}%</span>
+
+                            &nbsp;
+                    </p>
+                </mat-card-content>
+            </mat-card> -->
+            <mat-list-item class="item-list" *ngFor="let neighborhood of neighborhoods"
+                (mouseenter)="hoverStyle(neighborhood.code,  neighborhood.order_number ? neighborhood.order_number + '. ' + neighborhood.name : neighborhood.name, labels)"
+                (mouseleave)="hoverOutStyle(neighborhood.code)" [@rotatedStateList]='neighborhood.state'>
+
+                <div mat-line (click)="clickNeighborhood(neighborhood.code)" style="cursor: pointer;">
+                    {{neighborhood.name}}</div>
+                <div class="list-type" mat-line>
+                    <p *ngIf="selectedVariableB" [ngStyle]="isDarkTheme ? {'color':'#b5d88b'}: {'color':'#57B229'}">
+                        <!-- <span style="font-weight: 700;">{{selectedVariableB?.name}}:</span>&nbsp; -->
+                        <span *ngIf="selectedVariableB?.name === 'Μέσος όρος από Στοά (%)' || selectedVariableB?.name === 'Μέσος όρος από Παρτέρια (%)' || 
+                    selectedVariableB?.name === 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)'"
+                            class="yellow-value">{{neighborhood.selected_variable | number : '1.0-2'}}%</span>
+
+                        <span
+                            *ngIf="selectedVariableB?.name === 'Μέσος όρος από Δέντρα (Αριθμός)' || selectedVariableB?.name === 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'"
+                            class="yellow-value">{{neighborhood.selected_variable | number : '1.0-2'}}</span>
+
+                        <span *ngIf="selectedVariableB?.name !== 'Μέσος όρος από Στοά (%)' && selectedVariableB?.name !== 'Μέσος όρος από Παρτέρια (%)' &&
+                    selectedVariableB?.name !== 'Μέσος όρος από Δέντρα (Αριθμός)' && selectedVariableB?.name !== 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)' &&
+                    selectedVariableB?.name !== 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'"
+                            class="yellow-value">{{neighborhood.selected_variable * 100 | number : '1.0-2'}}%</span>
+
+                        &nbsp;
+                    </p>
+                </div>
+                <!-- <div class="list-short">
+                <p *ngIf="selectedVariableB">
+                    <span style="font-weight: 700;">{{selectedVariableB?.name}}:</span>&nbsp;
+                    <span *ngIf="selectedVariableB?.name === 'Μέσος όρος από Στοά (%)' || selectedVariableB?.name === 'Μέσος όρος από Παρτέρια (%)' || 
+                    selectedVariableB?.name === 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)'" class="yellow-value">{{neighborhood.selected_variable}}%</span>
+
+                    <span *ngIf="selectedVariableB?.name === 'Μέσος όρος από Δέντρα (Αριθμός)' || selectedVariableB?.name === 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'" class="yellow-value">{{neighborhood.selected_variable}}</span>
+
+                    <span *ngIf="selectedVariableB?.name !== 'Μέσος όρος από Στοά (%)' && selectedVariableB?.name !== 'Μέσος όρος από Παρτέρια (%)' &&
+                    selectedVariableB?.name !== 'Μέσος όρος από Δέντρα (Αριθμός)' && selectedVariableB?.name !== 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)' &&
+                    selectedVariableB?.name !== 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'" class="yellow-value">{{neighborhood.selected_variable * 100}}%</span>
+
+                        &nbsp;
+                </p>
+            </div> -->
+                <div class="list-thumb-list" matListAvatar>
+                    {{neighborhood.order_number}}
+                </div>
+                <mat-divider></mat-divider>
+            </mat-list-item>
+        </mat-list>
+    </div>
+</section>
