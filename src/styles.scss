@@ -497,6 +497,106 @@ a {
   max-width: 350px !important;
 }
 
+.neighborhoods-popup-background {
+  background-color: rgba(250, 250, 250, 0.75);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.neighborhoods-popup-background-dark {
+  background-color: rgba(48, 48, 48, 0.75);
+  color: white;
+}
+
+.neighborhoods-popup {
+  position: absolute;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border: solid mat.get-color-from-palette($athens-primary);
+  bottom: 12px;
+  left: -50px;
+  min-width: 200px;
+}
+
+.neighborhoods-popup-dark {
+  position: absolute;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border: solid mat.get-color-from-palette($dark-primary) !important;
+  bottom: 12px;
+  left: -50px;
+  min-width: 200px;
+}
+
+.neighborhoods-popup:after,
+.neighborhoods-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.neighborhoods-popup-dark:after,
+.neighborhoods-popup-dark:before {
+  top: 100%;
+  border: solid transparent;
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+
+.neighborhoods-popup:after {
+  content: "";
+  border-top-color: mat.get-color-from-palette($athens-primary);
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+
+.neighborhoods-popup:before {
+  content: "";
+  border-top-color: mat.get-color-from-palette($athens-primary);
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+
+.neighborhoods-popup-closer {
+  color: mat.get-color-from-palette($athens-accent);
+  text-decoration: none;
+}
+
+.neighborhoods-popup-dark:after {
+  content: "";
+  border-top-color: mat.get-color-from-palette($dark-primary) !important;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+
+.neighborhoods-popup-dark:before {
+  content: " ";
+  border-top-color: mat.get-color-from-palette($dark-primary) !important;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
+}
+
+.neighborhoods-popup-dark-closer {
+  color: mat.get-color-from-palette($dark-accent) !important;
+  text-decoration: none;
+}
+
+.popup-close-container {
+  width: 100%;
+  display: flex;
+}
+
 @media only screen and (max-width: 700px) {
   .profile-item {
     width: 100% !important;

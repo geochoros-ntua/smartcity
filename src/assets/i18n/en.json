@@ -74,8 +74,11 @@
       "CLEAR": "Clear"
     },
   "HOME": {
-      "INFO" : "INFO",
-      "MAPS" : "MAPS"
+      "INFO" : "PROJECT INFO",
+      "MAPS" : "MAPS",
+      "QUESTIONNAIRE" : "WALKING SURVEY",
+      "NEIGHBORHOODS" : "NEIGHBORHOODS OF ATHENS",
+      "STRATEGY": "WALKABILITY STRATEGY"
   },
   "NEIGHBORHOODS": {
     "NEIGHBORHOODS_OF_ATHENS": "Neighborhoods of Athens",
@@ -85,7 +88,11 @@
     "CATEGORY": "Category",
     "REVERSE_ORDER": "Reverse order",
     "RANK": "Rank",
-    "LABELS": "Labels"
+    "LABELS": "Labels",
+    "HIGH": "High",
+    "LOW": "Low",
+    "OPACITY" : "Layer opacity",
+    "ANALYTICS" : "Detailed neighborhood data"
   },
   "STRATEGY": {
     "STRATEGY": "Walkability strategy",

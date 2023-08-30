@@ -13,6 +13,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import * as chroma from 'chroma-js';
+import Overlay from 'ol/Overlay';
 
 @Component({
   selector: 'app-neighborhoods',
@@ -134,8 +135,12 @@ export class NeighborhoodsComponent implements OnInit {
     format: new GeoJSON()
   });
 
+  layerOpacity: number = 80;
+
   neighborhoodsLayer = new VectorLayer({
+    className : "neighborhoods",
     source: this.neighborhoodsSource,
+    opacity: this.layerOpacity/100,
     zIndex: 3
   });
 
@@ -188,7 +193,7 @@ export class NeighborhoodsComponent implements OnInit {
   legendColors: string[] = [];
 
   controlsHeight: string = '198px';
-
+  clickedFeatureId: string = '';
 
   constructor(private httpClient: HttpClient, private mapMapillaryService: MapMapillaryService, private darkThemeService: DarkThemeService) {
 
@@ -308,6 +313,22 @@ export class NeighborhoodsComponent implements OnInit {
 
     this.map.addControl(new Attribution());
 
+    let closer = document.getElementById('popup-closer')!;
+    let content = document.getElementById('popup-content')!;
+    let popup = new Overlay({
+      element: document.getElementById('popup')!,
+      offset: [0, 0],
+      autoPan: true
+    });
+
+    this.map.addOverlay(popup);
+
+    closer.onclick = () => {
+      popup.setPosition(undefined);
+      closer.blur();
+      return false;
+    };
+
     if (this.darkThemeService.darkTheme === true) {
       this.map.addLayer(this.cartoDark);
     }
@@ -316,6 +337,61 @@ export class NeighborhoodsComponent implements OnInit {
     }
 
     this.map.addLayer(this.neighborhoodsLayer);
+
+    this.map.on('click', (e: any)=> {
+      popup.setPosition(undefined);
+      let coordinate = e.coordinate;
+
+
+      this.map.forEachFeatureAtPixel(e.pixel, (feature: any, layer: any) => {
+
+        if (layer !== null) {
+
+          if (layer.className_ === 'neighborhoods') {
+            if (feature) {
+              this.clickedFeatureId = feature.get('geitonia_C');
+              let popupTitle = '';
+              let popupValue = '';
+
+              for (let index = 0; index < this.neighborhoods.length; index++) {
+                const element = this.neighborhoods[index];
+                if (element.code == this.clickedFeatureId) {
+                  popupTitle = element.name;
+                  if (this.selectedVariableB) {
+                    console.log(this.selectedVariableB)
+                    popupValue = element[this.selectedVariableB.name];
+                    console.log(popupValue)
+                  }
+                }
+              }
+
+              // coordinate = feature.getGeometry().getCoordinates();
+              // console.log(coordinate)
+              content.innerHTML =
+                // '</a>' +
+                '<p class="popup-title">' +
+                popupTitle +
+                '</p>' +
+                '<p class="popup-value">' +
+                popupValue +
+                '</p>'
+                ;
+              popup.setPosition(coordinate);
+
+            } else {
+
+              popup.setPosition(undefined);
+              closer.blur();
+
+            }
+          }
+        }
+
+      },
+        {
+          hitTolerance: 8,
+        })
+    })
 
 
     this.neighborhoodsSource.once('change', (response: any) => {
@@ -358,7 +434,7 @@ export class NeighborhoodsComponent implements OnInit {
 
 
   filterDk(filter: string) {
-   
+
     if (filter === 'Όλες') {
       this.neighborhoods = this.neighborhoodsRaw;
     }
@@ -410,7 +486,7 @@ export class NeighborhoodsComponent implements OnInit {
 
       this.legendColors = [];
       let colorRamp = chroma.scale('spectral').colors(this.neighborhoods.length);
-   
+
       this.legendColors.push(colorRamp[0]);
       this.legendColors.push(colorRamp[Math.floor(colorRamp.length / 4)]);
       this.legendColors.push(colorRamp[Math.floor(colorRamp.length / 2)]);
@@ -714,6 +790,14 @@ export class NeighborhoodsComponent implements OnInit {
       duration: 3000,
       maxZoom: 18
     });
+  }
+
+  opacityChange(e: any) {
+    this.neighborhoodsLayer.setOpacity(e/100);
+  }
+
+  goToMap() {
+
   }
 
 

@@ -10,27 +10,56 @@
             <div
                 [ngClass]="innerWidth > 670 ? 'front-buttons-inner-container' : 'front-buttons-inner-container-mobile'">
                 <div [ngClass]="innerWidth > 670 ? 'left-container' : 'left-container-mobile'" routerLink="/about">
-                    <div class="front-button-container front-button-container-left background-color-primary border-color-primary">
+                    <div
+                        class="front-button-container front-button-container-left background-color-primary border-color-primary">
                         <div class="front-button-text">
                             {{"HOME.INFO" | translate}}
                         </div>
                     </div>
                 </div>
                 <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/map">
-                    <div class="front-button-container front-button-container-right background-color-accent border-color-accent">
+                    <div
+                        class="front-button-container front-button-container-right background-color-accent border-color-accent">
                         <div class="front-button-text">
                             {{"HOME.MAPS" | translate}}
                         </div>
                     </div>
                 </div>
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/responses">
+                    <div
+                        class="front-button-container front-button-container-left background-color-primary border-color-primary">
+                        <div class="front-button-text">
+                            {{"HOME.QUESTIONNAIRE" | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/neighborhoods">
+                    <div
+                        class="front-button-container front-button-container-right background-color-accent border-color-accent">
+                        <div class="front-button-text">
+                            {{"HOME.NEIGHBORHOODS" | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/strategy">
+                    <div
+                        class="front-button-container front-button-container-left background-color-primary border-color-primary">
+                        <div class="front-button-text">
+                            {{"HOME.STRATEGY" | translate}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="front-image-blend"></div> 
+        <!-- <div class="front-image-blend"></div> -->
         <!-- <div class="front-image-bg" [ngStyle]="getBgStyle()"> -->
-            <div class="front-image-bg">
-        </div>
+        <!-- <div class="front-image-bg">
+        </div> -->
+        <video class="front-image-bg" playsinline autoplay loop muted oncanplay="this.play()" onloadedmetadata="this.muted = true" poster="assets/images/walkable_front.jpg">
+            <source src="assets/videos/walkable_front.mp4" type="video/mp4">
+        </video>
 
-        <div class="front-image-cover"></div>
+        <!-- <div class="front-image-cover"></div> -->
         <!-- <button class="scroll-down" mat-icon-button (click)="scrollDown()">
             <mat-icon>expand_more</mat-icon>
         </button> -->

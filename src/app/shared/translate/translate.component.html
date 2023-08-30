@@ -1,5 +1,5 @@
 <div>
-  <span style="vertical-align: middle;">{{translateService.lang}}</span>
+  <span style="vertical-align: middle;">{{translateService.lang === 'gr' ? 'ελ' : 'en'}}</span>
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
 
     <mat-icon>language</mat-icon>
@@ -9,7 +9,7 @@
       <span>EN</span>
     </button>
     <button mat-menu-item (click)="changeLang('gr')">
-      <span>GR</span>
+      <span>ΕΛ</span>
     </button>
   </mat-menu>
 </div>
