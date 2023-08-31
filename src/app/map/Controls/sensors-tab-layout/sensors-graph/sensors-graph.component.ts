@@ -7,6 +7,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 import { GraphReport } from '../../../api/map.api';
 import { SensorsService } from '../../../Services/map.sensors.service';
+import MapUtils from 'src/app/map/map.helper';
 
 
 @Component({
@@ -200,6 +201,10 @@ export class SensorsGraphComponent implements OnInit {
   private translateLabel(): string{
     return this.sensorsService.translatePipe.transform('MAP.SENS-REPORT') +
     this.sensorsService.translatePipe.transform(this.reportTypes.find(rt => rt.type === this.sensorsService.selReportType).label) +')'
+  }
+
+  public downloadGraphOnCsv(){
+    MapUtils.exportToCsv(this.graphTitle, this.data);
   }
 
   

@@ -248,6 +248,7 @@ export class MapLayersService {
       });
     }
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
+    
   }
 
 

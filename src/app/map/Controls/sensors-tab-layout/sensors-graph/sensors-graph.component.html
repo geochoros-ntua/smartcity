@@ -1,5 +1,11 @@
 
-<h1 mat-dialog-title>{{graphTitle}}</h1>
+<h1 mat-dialog-title>{{graphTitle}}
+  <a mat-button title="doanload data on csv" mat-icon-button (click)="downloadGraphOnCsv()" target="_blank" download>
+     <mat-icon>download</mat-icon>
+  </a>
+</h1>
+
+
 <ng-container>
 <form [formGroup]="graphForm">
 <div class="row">
@@ -38,7 +44,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
+  
 
   
 </div>

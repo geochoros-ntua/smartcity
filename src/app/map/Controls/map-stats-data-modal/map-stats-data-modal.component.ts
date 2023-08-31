@@ -28,11 +28,14 @@ export class MapStatsDataModalComponent implements OnInit {
   public cleanRefreshWebGlLayer(): void{
     this.mapService.smartCityMap.removeLayer(this.mapLayersService.WebGlStatsLayer);
     this.mapLayersService.WebGlStatsLayer.dispose();
+    this.mapLayersService.dataLoaded = false;
     this.mapLayersService.initWebGlStatsLayer(true);
     this.mapService.smartCityMap.addLayer(this.mapLayersService.WebGlStatsLayer);
 
 
+
     this.mapLayersService.webGlStatsSource.once('featuresloadend', (e) => {
+      this.mapLayersService.dataLoaded = true;
       this.mapStatsService.countAll = this.mapLayersService.webGlStatsSource.getFeatures().length;
       this.resetCountersForClasses();
     
