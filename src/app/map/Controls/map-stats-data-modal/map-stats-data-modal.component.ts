@@ -32,6 +32,7 @@ export class MapStatsDataModalComponent implements OnInit {
     this.mapService.smartCityMap.addLayer(this.mapLayersService.WebGlStatsLayer);
 
 
+
     this.mapLayersService.webGlStatsSource.once('featuresloadend', (e) => {
       this.mapStatsService.countAll = this.mapLayersService.webGlStatsSource.getFeatures().length;
       this.resetCountersForClasses();

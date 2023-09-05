@@ -283,6 +283,7 @@ export class MapService {
          this.mapLayersService.MlImagesLayer.setVisible(this.mapLayersService.checkedImg);
          this.mapLayersService.MlPointsLayer.setVisible(true);
          this.mapLayersService.WebGlStatsLayer.setVisible(false);
+         this.mapLayersService.HeatMapLayer.setVisible(false);
          this.mapLayersService.SensorsLayer.setVisible(false);
          this.mapLayersService.DrawRectangleSelectLayer.setVisible(false);
          break; 
@@ -292,6 +293,7 @@ export class MapService {
          this.mapLayersService.MlImagesLayer.setVisible(false);
          this.mapLayersService.MlPointsLayer.setVisible(false);
          this.mapLayersService.WebGlStatsLayer.setVisible(true);
+         this.mapLayersService.HeatMapLayer.setVisible(this.mapStatsService.heatEnable);
          this.mapLayersService.SensorsLayer.setVisible(false);
          this.mapLayersService.DrawRectangleSelectLayer.setVisible(true);
          break; 
@@ -301,6 +303,7 @@ export class MapService {
         this.mapLayersService.MlImagesLayer.setVisible(false);
         this.mapLayersService.MlPointsLayer.setVisible(false);
         this.mapLayersService.WebGlStatsLayer.setVisible(false);
+        this.mapLayersService.HeatMapLayer.setVisible(false);
         this.mapLayersService.SensorsLayer.setVisible(true);
         this.mapLayersService.DrawRectangleSelectLayer.setVisible(false);
         this.sensorsService.initSensors();        
