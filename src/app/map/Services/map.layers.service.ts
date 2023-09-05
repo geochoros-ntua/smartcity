@@ -14,8 +14,8 @@ import { MapStyleService } from './map.styles.service';
 import MultiLineString from 'ol/geom/MultiLineString';
 import Geometry from 'ol/geom/Geometry';
 import { LoadingMethodObject } from '../api/map.api';
-import { StatLayers, VectorLayerNames } from '../api/map.enums';
-import { FEATURE_GROUPS } from '../api/map.datamaps';
+import { StatLayers, StatTypes, VectorLayerNames } from '../api/map.enums';
+import { FEATURE_GROUPS, STATS_INDECES } from '../api/map.datamaps';
 import Polygon from 'ol/geom/Polygon';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { BehaviorSubject } from 'rxjs';
@@ -86,9 +86,11 @@ export class MapLayersService {
   public selectedFeatureGroups$: BehaviorSubject<string[]> = new BehaviorSubject(Array.from( [...FEATURE_GROUPS.keys(), '0']));
   public checkedSeq = true;
   public checkedImg = true;
-  public dataLoaded: boolean;
+  public dataLoaded: boolean = true;
   public heatBlur: number = 35;
   public heatRadius: number = 15;
+
+  private firstTimeWebGl: boolean = true;
 
   constructor(private http: HttpClient, private mapStatsService: StatsService, private mapStyleService: MapStyleService) {
     // format to read the mpl 4326 layers response
@@ -223,7 +225,6 @@ export class MapLayersService {
 
 
   public initWebGlStatsLayer(visible: boolean){
-
     const myurl = './assets/geodata/'+Object.keys(StatLayers).find(
       key => StatLayers[key as keyof typeof StatLayers] === this.mapStatsService.selectedStatsLayer
       ) +'.json';
@@ -248,6 +249,25 @@ export class MapLayersService {
       });
     }
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
+
+    this.webGlStatsSource.once('featuresloadend', (e) => {
+      console.log("data loaded");
+
+      if (this.firstTimeWebGl){
+        
+        
+        this.mapStatsService.selectedStatsIndex = STATS_INDECES.find(idx => idx.code === 'A_14')
+        this.mapStatsService.numericClasses = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
+        this.mapStatsService.getNumericClasses(this.mapStatsService.selectedStatsIndex) : 
+        [];
+
+        this.mapStatsService.generateClassColors();
+        this.firstTimeWebGl = false;
+      }
+      
+    })
+
+    
     
   }
 

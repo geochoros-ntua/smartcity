@@ -15,7 +15,7 @@
 
   <app-popup></app-popup>
 
-  <div *ngIf="mapLayersService.dataLoaded === false" class="loader" >
+  <div *ngIf="!mapLayersService.dataLoaded" class="loader" >
     <mat-spinner color="primary" diameter="70" mode="indeterminate" ></mat-spinner>
   </div>
 

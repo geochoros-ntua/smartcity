@@ -15,6 +15,7 @@ export class MapillaryDataComponent {
   }
 
   public openDialog(): void {
+    this.mapMapillaryService.mplDataDialogRef?.close();
     this.mapMapillaryService.mplDataDialogRef = this.dialog.open(MapillaryDataModalComponent,{
       hasBackdrop: false,
       disableClose : true,
