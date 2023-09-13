@@ -76,7 +76,8 @@ export interface StatsIndices {
     layer: StatLayers,
     min?: number,
     max?: number,
-    classes?: IndiceClass[]
+    classes?: IndiceClass[],
+    desc: string
 }
 
 export interface IndiceClass {
