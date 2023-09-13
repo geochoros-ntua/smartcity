@@ -2,3 +2,8 @@
     width: 420px;
     max-height: 400px;
   }
+
+
+::ng-deep .newline-tooltip {
+    white-space: pre-line;
+}
