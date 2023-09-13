@@ -43,6 +43,7 @@ export class ResponsesComponent implements OnInit {
 
   selectedRespondents: number = 1;
   selectedVariable: number = 61;
+  selectedVariableName: string = '';
   selectedFilterVariable: string = '';
   selectedFilterValues: string[] = [];
   allSelected: boolean = false;
@@ -138,6 +139,24 @@ export class ResponsesComponent implements OnInit {
   }
 
   filterResponses() {
+
+    if (this.selectedRespondents === 1) {
+      for (let index = 0; index < this.variables_residents.length; index++) {
+        const element = this.variables_residents[index];
+        if (element.id === this.selectedVariable) {
+          this.selectedVariableName = element.name;
+        }
+      }
+    }
+    else {
+      for (let index = 0; index < this.variables_students.length; index++) {
+        const element = this.variables_residents[index];
+        if (element.id === this.selectedVariable) {
+          this.selectedVariableName = element.name;
+        }
+      }
+    }
+
     const rawData: any[] = [];
     const stackedRawData: any[] = [];
     const values: any[] = [];

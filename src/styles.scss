@@ -121,6 +121,7 @@ body {
 }
 body {
   margin: 0;
+  height: 100%;
   // font-family: Roboto, "Helvetica Neue", sans-serif;
   font-family: 'Roboto Mono', monospace;
   background: #5e747e;
@@ -494,7 +495,27 @@ a {
 }
 
 .main-menu {
-  max-width: 350px !important;
+  max-width: 440px !important;
+}
+
+.neighborhoods-parent {
+  height: 100%;
+}
+
+.indices-parent {
+  height: 100%;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.neighborhoods-parent {
+  height: 100%; 
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.neighborhoods-parent-mobile {
+  height: 100%;
 }
 
 .neighborhoods-popup-background {
@@ -595,6 +616,41 @@ a {
 .popup-close-container {
   width: 100%;
   display: flex;
+}
+
+.indices-popup-values {
+  display:flex;
+  flex-direction:column;
+  flex-wrap:wrap;
+  height: 25.8em;
+  width: 420px;
+  padding:0;
+}
+
+.indices-popup-value {
+  display:block;
+  padding: 2px;
+}
+
+.indices-header {
+  height: auto !important;
+  padding: 16px !important;
+}
+
+.mat-dialog-container {
+  height: auto !important;
+}
+
+.cb-container-intro {
+  overflow: auto !important;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 1px #000000;
+}
+
+.text-shadow-dark {
+  text-shadow: 1px 1px 1px #ffffff;
 }
 
 @media only screen and (max-width: 700px) {

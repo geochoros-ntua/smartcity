@@ -1,11 +1,10 @@
 import { DarkThemeService } from 'src/app/shared/dark-theme/dark-theme.service';
-import { MapMapillaryService } from './../map/Services/map.mapillary.service';
 import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, transition, animate, query, stagger } from '@angular/animations';
-import { Component, ElementRef, HostListener, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import OlView from "ol/View";
 import OlMap from "ol/Map";
-import { Attribution, ScaleLine } from 'ol/control';
+import { Attribution } from 'ol/control';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -14,6 +13,8 @@ import VectorSource from 'ol/source/Vector';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import * as chroma from 'chroma-js';
 import Overlay from 'ol/Overlay';
+import { TranslateService } from '../shared/translate/translate.service';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-neighborhoods',
@@ -195,7 +196,7 @@ export class NeighborhoodsComponent implements OnInit {
   controlsHeight: string = '198px';
   clickedFeatureId: string = '';
 
-  constructor(private httpClient: HttpClient, private mapMapillaryService: MapMapillaryService, private darkThemeService: DarkThemeService) {
+  constructor(private httpClient: HttpClient, public dialog: MatDialog, private darkThemeService: DarkThemeService) {
 
     this.darkThemeService.isDarkTheme$.subscribe(status => {
       this.isDarkTheme = status;
@@ -800,6 +801,10 @@ export class NeighborhoodsComponent implements OnInit {
 
   }
 
+  moreInfo() {
+    this.dialog.open(MoreInfoDialog);
+  }
+
 
 }
 
@@ -817,3 +822,32 @@ export class MyFilterPipe implements PipeTransform {
   }
 }
 
+
+
+
+@Component({
+  selector: "more-dialog",
+  templateUrl: "more-dialog.html",
+  styleUrls: ["more-dialog.scss"]
+})
+
+export class MoreInfoDialog {
+
+  lang = 'gr';
+  constructor(
+    private translateService: TranslateService,
+    public dialogRef: MatDialogRef<MoreInfoDialog>
+  ) {
+
+    this.translateService.lang$.subscribe(value => {
+      this.lang = value.toString();
+    });
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+}

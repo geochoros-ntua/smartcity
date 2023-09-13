@@ -1,0 +1,149 @@
+.front-teaser-parent {
+  // max-width: 1170px;
+  margin: auto;
+  padding: 32px;
+}
+
+.map-drawer-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  // bottom: 0;
+}
+
+.map-sidenav {
+  padding: 16px;
+  max-width: 640px;
+}
+
+.indices-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.indices-map-mobile {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.cities-controls {
+  max-width: 1170px;
+  margin: auto;
+  text-align: start;
+  margin-bottom: 16px;
+}
+
+.gray-value {
+  color: #5e747e;
+}
+
+.ol-zoom {
+  display: none !important;
+}
+
+.extent-button {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  z-index: 10;
+}
+
+.zoom-in-button {
+  position: absolute;
+  right: 16px;
+  top: 64px;
+  z-index: 10;
+}
+
+.zoom-out-button {
+  position: absolute;
+  right: 16px;
+  top: 112px;
+  z-index: 10;
+}
+
+.legend-parent {
+  position: absolute;
+  bottom: 32px;
+  right: 16px;
+  z-index: 10;
+}
+
+.legend {
+  display: flex;
+}
+
+.legend-color {
+  width: 40px;
+  height: 20px;
+  margin: 8px;
+}
+
+.legend-arrow {
+  padding-top: 8px;
+  padding-right: 8px;
+}
+
+.opacity-slider-parent {
+  position: absolute;
+  right: 64px;
+  top: 16px;
+  z-index: 10;
+}
+
+.loading {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000000;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  opacity: 0.75;
+  // height: 60px;
+}
+
+.loading-parent {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000000;
+  // display: flex;
+  // align-content: center;
+  // align-items: center;
+  opacity: 0.75;
+  // height: 60px;
+}
+
+.spinner {
+  margin: 0 auto;
+}
+
+.neighborhoods-list-dark {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.neighborhoods-list-light {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.intro-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.intro-more {
+  cursor: pointer;
+}

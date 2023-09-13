@@ -8,6 +8,7 @@ import { ResponsesComponent } from './responses/responses.component';
 import { TeamComponent } from './team/team.component';
 import { NeighborhoodsComponent } from './neighborhoods/neighborhoods.component';
 import { StrategyComponent } from './strategy/strategy.component';
+import { IndicesComponent } from './indices/indices.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'responses', component: ResponsesComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'neighborhoods', component: NeighborhoodsComponent },
+  { path: 'indices', component: IndicesComponent },
   { path: 'strategy', component: StrategyComponent }
 ];
 

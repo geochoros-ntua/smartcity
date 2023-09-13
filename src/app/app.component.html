@@ -1,46 +1,12 @@
 <div class="example-container main-parent mat-typography mat-app-background"
   [class.athens-dark-theme]="darkThemeService.isDarkTheme$ | async">
   <mat-toolbar>
-    <!-- <img *ngIf="isDarkTheme" src="assets/icons/walkable_athens_logo_dark.png" style="max-height: calc(7vh - 8px); padding: 4px;">
-    <img *ngIf="!isDarkTheme" src="assets/icons/walkable_athens_logo_light.png" style="max-height: calc(7vh - 8px); padding: 4px;"> -->
-    <div routerLink="/home" class="logo-font"><span style="font-weight: bold; color: #002673">WALKABLE </span><span
+    <div routerLink="/home" class="logo-font" [ngClass]="isDarkTheme ? 'text-shadow-dark':'text-shadow'"><span style="font-weight: bold; color: #002673">WALKABLE </span><span
         style="color: #57B229">ATHENS</span></div>
     <div style="margin-left: 16px; margin-right: 8px;" class="color-primary" *ngIf="innerWidth > 760">{{'MENU.DIGITAL' |
       translate}}</div>
     <div class="color-accent" *ngIf="innerWidth > 760">{{'MENU.OBSERVATORY' | translate}}</div>
     <span class="example-spacer"></span>
-
-    <!-- <div class="menu-whole" *ngIf="innerWidth > 1624">
-      <div class="menu-div" routerLink="/home" [routerLinkActive]="['is-active']"
-        [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.HOME' | translate}}
-      </div>
-      <div class="menu-div" routerLink="/about" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.ABOUT' | translate}}
-      </div>
-      <div class="menu-div" routerLink="/team" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.TEAM' | translate}}
-      </div>
-      <div class="menu-div" routerLink="/map" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.MAP' | translate}}
-      </div>
-      <div class="menu-div" routerLink="/responses" routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.QUESTIONNAIRE' | translate}}
-      </div>
-      <div class="menu-div" routerLink="/neighborhoods" routerLinkActive="is-active"
-      [routerLinkActiveOptions]="{exact: true}">
-      {{'MENU.NEIGHBORHOODS' | translate}}
-    </div>
-      <div class="menu-div" routerLink="/strategy" routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.STRATEGY' | translate}}
-      </div>
-      <div class="menu-div" routerLink="/contact" routerLinkActive="is-active"
-        [routerLinkActiveOptions]="{exact: true}">
-        {{'MENU.CONTACT' | translate}}
-      </div>
-    </div> -->
     <button mat-icon-button [matMenuTriggerFor]="menuParent">
       <mat-icon>menu</mat-icon>
       <mat-menu #menuParent="matMenu" class="main-menu">
@@ -64,10 +30,14 @@
           [routerLinkActiveOptions]="{exact: true}">
           <mat-icon>question_mark</mat-icon>{{'MENU.QUESTIONNAIRE' | translate}}
         </button>
-        <button class="menu-button" mat-menu-item routerLink="/neighborhoods" [routerLinkActive]="['is-active']"
-        [routerLinkActiveOptions]="{exact: true}">
-        <mat-icon>signpost</mat-icon>{{'MENU.NEIGHBORHOODS' | translate}}
-      </button>
+        <button class="menu-button" mat-menu-item routerLink="/neighborhoods" [routerLinkActive]="['is-active']" 
+          [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon>signpost</mat-icon>{{'MENU.NEIGHBORHOODS' | translate}}
+        </button>
+        <button class="menu-button" mat-menu-item routerLink="/indices" [routerLinkActive]="['is-active']" 
+          [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon>design_services</mat-icon>{{'MENU.INDICES' | translate}}
+        </button>
         <button class="menu-button" mat-menu-item routerLink="/strategy" [routerLinkActive]="['is-active']"
           [routerLinkActiveOptions]="{exact: true}">
           <mat-icon>policy</mat-icon>{{'MENU.STRATEGY' | translate}}

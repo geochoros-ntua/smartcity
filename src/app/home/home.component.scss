@@ -12,45 +12,6 @@
   background-image: linear-gradient(transparent 99%, #5e747e);
 }
 
-// .front-image-bg {
-//   position: relative;
-//   background-image: url("../../assets/images/71169c31-5c46-4d80-9aec-bdff92caa8d1.gif");
-//   background-repeat: no-repeat;
-//   background-position: center center;
-//   background-size: cover;
-//   background-attachment: fixed;
-//   width: 100%;
-// }
-
-// .front-image-bg {
-  //   // position: absolute;
-  //   // width: 100%;
-  //   // height: calc(100% - 7vh);
-  //   transition: background-image 1s ease-in-out; // Important for transition
-  //   // background-position:center-top;
-  //   // background-position-x: 50%;
-  //   // background-position-y: 0%;
-  //   // animation: zoomin 100s 1;
-  //   content: "";
-  //   width: 100%;
-  //   height: 100%;
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   -webkit-backface-visibility: hidden;
-  //   -webkit-transform: translateZ(0);
-  //   backface-visibility: hidden;
-  //   scale: (1, 1);
-  //   transform: translateZ(0);
-  //   background-size: cover;
-  //   background-attachment: fixed;
-  //   -webkit-animation: growFront 120s linear 10ms infinite;
-  //   -moz-animation: growFront 120s linear 10ms infinite;
-  //   -o-animation: growFront 120s linear 10ms infinite;
-  //   animation: growFront 120s linear 10ms infinite;
-    // filter: blur(1px);
-    // -webkit-filter: blur(1px);
-  // }
 
 .front-image-bg {
   width: 100vw;
@@ -80,10 +41,6 @@
   width: 100%;
 }
 
-// .front-image-info {
-//   width: 100%;
-//   min-height: calc(100vh - 7vh);
-// }
 
 .ntua-container {
   display: flex;
@@ -163,10 +120,6 @@
   margin: auto;
 }
 
-// .footer {
-//   background: mat-color($watc-app-primary);
-// color: #fff;
-// }
 
 .inner-footer {
   max-width: 1170px;
@@ -262,9 +215,9 @@ footer a {
   padding: 32px 32px 0 32px;
 }
 
-// .footer-member-name {
-//     color: mat-color($watc-app-accent);
-// }
+.footer-container {
+  padding: 32px;
+}
 
 .scroll-down {
   position: absolute;
@@ -348,6 +301,7 @@ footer a {
   text-shadow: 3px 2px 3px rgba(0, 0, 0, 1);
 }
 
+
 .front-image-info {
   position: absolute;
   top: 10%;
@@ -356,6 +310,7 @@ footer a {
   text-align: end;
   z-index: 2;
   color: white;
+  max-width: 800px;
 }
 
 .front-image-info-mobile {

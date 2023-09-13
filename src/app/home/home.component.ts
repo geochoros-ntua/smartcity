@@ -1,3 +1,4 @@
+import { DarkThemeService } from './../shared/dark-theme/dark-theme.service';
 import { TranslateService } from './../shared/translate/translate.service';
 import { Component, HostListener, OnInit } from '@angular/core';
 
@@ -13,7 +14,7 @@ export class HomeComponent implements OnInit {
   imgSrc = '';
 
   lang = 'gr';
-  
+
   innerWidth = window.innerWidth;
 
   @HostListener('window:resize', ['$event'])
@@ -21,11 +22,18 @@ export class HomeComponent implements OnInit {
     this.innerWidth = window.innerWidth;
   }
 
-  constructor(private translateService: TranslateService) {
+  isDarkTheme: boolean = false;
+
+  constructor(private translateService: TranslateService, private darkThemeService: DarkThemeService) {
     this.translateService.lang$.subscribe(value => {
       this.lang = value.toString();
     });
     this.lang = this.translateService.getLang();
+
+    this.darkThemeService.isDarkTheme$.subscribe(status => {
+      this.isDarkTheme = status;
+    });
+
   }
 
   ngOnInit(): void {

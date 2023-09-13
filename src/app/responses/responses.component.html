@@ -19,7 +19,7 @@
             <mat-form-field appearance="fill" class="select-variable">
                 <mat-label>{{ "RESPONSES.VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedVariable" (selectionChange)="filterResponses()">
-                    <mat-option *ngFor="let variable of variables_residents" [value]="variable.id">{{ variable.id + '. '
+                    <mat-option matTooltip="{{variable.name}}" *ngFor="let variable of variables_residents" [value]="variable.id">{{ variable.id + '. '
                         +
                         variable.name}}
                     </mat-option>
@@ -30,7 +30,7 @@
             <mat-form-field appearance="fill" class="select-variable">
                 <mat-label>{{ "RESPONSES.VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedVariable" (selectionChange)="filterResponses()">
-                    <mat-option *ngFor="let variable of variables_students" [value]="variable.id">{{ variable.id + '. '
+                    <mat-option matTooltip="{{variable.name}}" *ngFor="let variable of variables_students" [value]="variable.id">{{ variable.id + '. '
                         +
                         variable.name}}
                     </mat-option>
@@ -42,7 +42,7 @@
                 <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedFilterVariable"
                     (selectionChange)="getFilterValues(selectedFilterVariable)">
-                    <mat-option *ngFor="let filterVariable of filterVariables_residents" [value]="filterVariable">{{
+                    <mat-option matTooltip="{{filterVariable}}" *ngFor="let filterVariable of filterVariables_residents" [value]="filterVariable">{{
                         filterVariable}}
                     </mat-option>
                 </mat-select>
@@ -51,7 +51,7 @@
                 <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedFilterVariable"
                     (selectionChange)="getFilterValues(selectedFilterVariable)">
-                    <mat-option *ngFor="let filterVariable of filterVariables_students" [value]="filterVariable">{{
+                    <mat-option matTooltip="{{filterVariable}}" *ngFor="let filterVariable of filterVariables_students" [value]="filterVariable">{{
                         filterVariable}}
                     </mat-option>
                 </mat-select>
@@ -66,7 +66,7 @@
                             [ngModelOptions]="{standalone: true}" (change)="selectAllValues()">{{"RESPONSES.ALL" |
                             translate}}</mat-checkbox>
                     </div>
-                    <mat-option *ngFor="let value of filterVariableValues" [value]="value">{{
+                    <mat-option matTooltip="{{value}}" *ngFor="let value of filterVariableValues" [value]="value">{{
                         value}}
                     </mat-option>
                 </mat-select>
@@ -120,7 +120,7 @@
 
 
             <ng-container matColumnDef="value">
-                <th class="value-header-cell" mat-header-cell *matHeaderCellDef> Value </th>
+                <th class="value-header-cell" mat-header-cell *matHeaderCellDef> {{selectedVariableName}} </th>
                 <td class="value-cell" mat-cell *matCellDef="let element"> {{element.value}} </td>
             </ng-container>
 

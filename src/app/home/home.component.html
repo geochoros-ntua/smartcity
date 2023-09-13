@@ -1,7 +1,7 @@
 <section>
     <div class="front-image">
         <div [ngClass]="innerWidth > 670 ? 'front-image-info' : 'front-image-info-mobile'">
-            <div class="slide-left">
+            <div class="slide-left title-lines">
                 <h1 class="title-a">{{'TITLE' | translate}}</h1>
             </div>
 
@@ -25,7 +25,8 @@
                         </div>
                     </div>
                 </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/responses">
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'"
+                    routerLink="/responses">
                     <div
                         class="front-button-container front-button-container-left background-color-primary border-color-primary">
                         <div class="front-button-text">
@@ -33,7 +34,8 @@
                         </div>
                     </div>
                 </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/neighborhoods">
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'"
+                    routerLink="/neighborhoods">
                     <div
                         class="front-button-container front-button-container-right background-color-accent border-color-accent">
                         <div class="front-button-text">
@@ -41,9 +43,18 @@
                         </div>
                     </div>
                 </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/strategy">
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'"
+                    routerLink="/indices">
                     <div
                         class="front-button-container front-button-container-left background-color-primary border-color-primary">
+                        <div class="front-button-text">
+                            {{"HOME.INDICES" | translate}}
+                        </div>
+                    </div>
+                </div>
+                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/strategy">
+                    <div
+                        class="front-button-container front-button-container-right background-color-accent border-color-accent">
                         <div class="front-button-text">
                             {{"HOME.STRATEGY" | translate}}
                         </div>
@@ -55,108 +66,37 @@
         <!-- <div class="front-image-bg" [ngStyle]="getBgStyle()"> -->
         <!-- <div class="front-image-bg">
         </div> -->
-        <video class="front-image-bg" playsinline autoplay loop muted oncanplay="this.play()" onloadedmetadata="this.muted = true" poster="assets/images/walkable_front.jpg">
+        <video class="front-image-bg" playsinline autoplay loop muted oncanplay="this.play()"
+            onloadedmetadata="this.muted = true" poster="assets/images/walkable_front.jpg">
             <source src="assets/videos/walkable_front.mp4" type="video/mp4">
         </video>
 
         <!-- <div class="front-image-cover"></div> -->
-        <!-- <button class="scroll-down" mat-icon-button (click)="scrollDown()">
+        <button class="scroll-down" mat-icon-button (click)="scrollDown()">
             <mat-icon>expand_more</mat-icon>
-        </button> -->
+        </button>
     </div>
-    <!-- <div class="front-content">
+
+    <div class="front-content">
         <mat-card class="front-text">
-            <h2>Σκοπός του Ψηφιακού Παρατηρητηρίου</h2>
-            <p>
-                O Δήμος Αθηναίων, σε συνεργασία με τη Μονάδα Βιώσιμης Κινητικότητας του Εθνικού Μετσόβιου Πολυτεχνείου,
-                σχεδίασαν, υλοποίησαν και παραδίδουν στους κατοίκους και τους επισκέπτες του Δήμου τούτη τη ψηφιακή
-                πλατφόρμα που τους παρέχει επίκαιρα στοιχεία, ιδέες για τις δραστηριότητές τους και απαντήσεις σε πολλά
-                ερωτήματα γύρω από την πόλη. Η πλατφόρμα ανήκει σε μια από τις μεγάλες δράσεις του Δήμου, της Χώρας μας
-                και της Ευρώπης απέναντι στην κλιματική κρίση. Ο σκοπός της δεν είναι άσχετος με τα προβλήματα που
-                ζούμε. Αποσκοπεί στο να κάνει τους δρόμους πιο ανθρώπινους, φιλόξενους, ζωντανούς και δραστήριους προς
-                όφελος αυτών που τους κατοικούν, αυτών που έχουν σ’ αυτούς τη δουλειά ή την επιχείρησή τους, αυτών που
-                τους περπατούν, αυτών που επιθυμούν να στέκονται και να συναντώνται. Ο Δήμος της Αθήνας φιλοδοξεί να
-                σπάσει την απομόνωση όσων απομακρύνθηκαν από τον δημόσιο χώρο, ανάπηρων, παιδιών και ηλικιωμένων.
-            </p>
-            <p>
-                Είναι εξαιρετικά σημαντικό μέχρι το 2050 να έχει μηδενιστεί η παραγωγή αερίων του θερμοκηπίου και ήδη
-                άμεσα πρέπει να υπάρξουν τα πρώτα αποτελέσματα. Εκ των πραγμάτων, στο στόχαστρο βρίσκεται το συμβατικό
-                αυτοκίνητο, υπεύθυνο για σημαντικό ποσοστό των αερίων, που οι πόλεις είναι πηγή τους. Πρέπει λοιπόν
-                αυτές να λειτουργούν με πολύ λιγότερα αυτοκίνητα και μόνο ‘καθαρά’. Απαραίτητη επομένως είναι η ενίσχυση
-                της δημόσιας συγκοινωνίας, του ποδηλάτου και του περπατήματος. Συμπληρωματικά, υπάρχουν πολλές ακόμη
-                καινοτόμες εναλλακτικές λύσεις που στηρίζονται σε οχήματα μικροκινητικότητας και κοινής χρήσης (car
-                sharing, car pooling, bike sharing κ.λπ.). Η ηλεκτροκίνηση και η τηλεργασία θα συμβάλουν επίσης
-                καθοριστικά.
-            </p>
-            <p>
-                Το περπάτημα αποτελεί το μεγάλο ζητούμενο της πλατφόρμας. Στο περπάτημα περιλαμβάνονται τόσο η υποδομή
-                του όσο και οι ευρύτερες συνθήκες στο οδόστρωμα, οι χρήσεις γης κ.λπ. Κατά συνέπεια για το περπάτημα
-                στους δρόμους του Δήμου Αθηναίων, εκ οποίων, το μεγαλύτερο ποσοστό του συνολικού μήκους τους, περίπου
-                1.000 χλμ., είναι δρόμοι τοπικής κυκλοφορίας, γίνονται και θα γίνουν έργα:
-            </p>
-            <ul>
-                <li>
-                    Πεζοδρομήσεων,
-                </li>
-                <li>
-                    συστηματικών διαπλατύνσεων πεζοδρομίων,
-                </li>
-                <li>δημιουργίας μικρών εξοχών εξοπλισμένων με παγκάκια, στέγαστρα και πράσινο για στάση και συνάντηση,
-                </li>
-                <li>προστασίας από τις διαμπερείς ροές των γειτονιών, των τοπικών κέντρων και του ιστορικού κέντρου,
-                </li>
-                <li>δημιουργίας περιοχών περιορισμένης παραγωγής αερίων του θερμοκηπίου,</li>
-                <li>εγκατάστασης πληροφοριακής σήμανσης για τον προσανατολισμό των πεζών και ενημέρωσής τους για τις
-                    γειτονικές δραστηριότητες εμβέλειας περπατήματος,</li>
-            </ul>
-            <p>
-                Έτσι θα επιτευχθούν:
-            </p>
-            <ul>
-                <li>αντικατάσταση των μικρού μήκους μετακινήσεων με αυτοκίνητο από μετακινήσεις με τα πόδια, </li>
-                <li>εκτέλεση νέων μετακινήσεων αλλά με τα πόδια, </li>
-                <li>αύξηση του αριθμού εκείνων που περπατούν, ενώ σήμερα το αποφεύγουν (εφαρμογή πολιτικών για
-                    ανάπηρους, για παιδιά κ.λπ.),</li>
-                <li>αύξηση της επισκεψιμότητας ανοιχτών χώρων και δραστηριοτήτων, </li>
-                <li>προσέλκυση μεγαλύτερου αριθμού επισκεπτών Ελλήνων και ξένων, </li>
-                <li>υποστήριξη επενδυτικών πρωτοβουλιών για πολιτισμό, αναψυχή, εστίαση, εμπόριο κ.λπ. </li>
-            </ul>
-            <p>Το Γεωχωρικό Παρατηρητήριο, εκτός από ψηφιακή πλατφόρμα, είναι και βάση δυναμικής παρακολούθησης της
-                εξέλιξης κάθε στοιχείου του δρόμου και πληροφόρησης για όλα τα παραπάνω. Περιλαμβάνει την πλήρη εικόνα
-                του κάθε δρόμου του Δήμου και την ανάλυση και αξιολόγηση όλων των παραμέτρων του. Η εικόνα αυτή θα
-                επικαιροποιείται και κάθε ενδιαφερόμενος για οποιοδήποτε ακίνητο, να ενημερώνεται τόσο για αυτό όσο και
-                για το γειτονικό του περιβάλλον. Θα ενημερώνεται επίσης για την κατανομή της ανθρώπινης παρουσίας, για
-                όσα επηρεάζουν αυτούς που περπατούν στην επιλογή της διαδρομής τους και για τις απόψεις τους και τα
-                προβλήματά τους ως προς το περπάτημα. Ανάλογα ο Δήμος θα τεκμηριώνει τις αποφάσεις του για
-                προτεραιότητες και έργα σχετικά με την ποιότητα ζωής, την κοινωνική συνοχή, το περιβάλλον και την
-                οικονομία. </p>
+            {{"HOME.INTRO" | translate}}
         </mat-card>
 
-    </div> -->
+    </div>
 
+    <div class="footer-container">
 
-    <!-- 
-    <div class="footer">
-        <div class="inner-footer">
-
-            <div class="more-info">
-                <p>For more information,</p>
-                <a href="mailto: geochoros@mail.ntua.gr">abartzok@mail.ntua.gr</a>
-            </div>
-
-
-            <div class="footer-logos">
-                <a class="footer-links" href="https://www.cityofathens.gr/" target="_blank">
-                    <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/Logo_Ath_Mun_gr.jpg">
-                    <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/Logo_Ath_Mun_en.png">
-                </a>
-                <a class="footer-links" href="https://www.smu.gr/" target="_blank">
-                    <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/smu_logo_3_smal.png">
-                    <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/smu_logo_3_smal.png">
-                </a>
-            </div>
-
-            <p class="copyright">&#169; NTUA, 2022. All rights reserved.</p>
+        <div class="footer-logos">
+            <a class="footer-links" href="https://www.cityofathens.gr/" target="_blank">
+                <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/Logo_Ath_Mun_gr.jpg">
+                <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/Logo_Ath_Mun_en.png">
+            </a>
+            <a class="footer-links" href="https://www.smu.gr/" target="_blank">
+                <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/smu_logo_3_smal.png">
+                <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/smu_logo_3_smal.png">
+            </a>
         </div>
-    </div> -->
+
+        <p class="copyright">&#169; NTUA, 2023. All rights reserved.</p>
+    </div>
 </section>
