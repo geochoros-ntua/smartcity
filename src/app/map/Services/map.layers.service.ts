@@ -149,6 +149,10 @@ export class MapLayersService {
    
   }
 
+  private get isLineGeom(): boolean {
+    return [StatLayers.audit_lines, StatLayers.street_lines, StatLayers.crossings].includes(this.mapStatsService.selectedStatsLayer);
+  }
+
   public get GosmLayer(): TileLayer<OSM> {
     return this.GOSMLayer;
   }
@@ -236,7 +240,7 @@ export class MapLayersService {
         featureProjection: 'EPSG:3857'
       })
     });
-    if (this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines || this.mapStatsService.selectedStatsLayer === StatLayers.street_lines){
+    if (this.isLineGeom){
       this.WEBGL_STATS = new WebGLLayer(this.mapStatsService,{
         source: this.webGlStatsSource,
         visible
@@ -251,10 +255,7 @@ export class MapLayersService {
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
 
     this.webGlStatsSource.once('featuresloadend', (e) => {
-      console.log("data loaded");
-
       if (this.firstTimeWebGl){
-        
         
         this.mapStatsService.selectedStatsIndex = STATS_INDECES.find(idx => idx.code === 'A_14')
         this.mapStatsService.numericClasses = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
@@ -266,19 +267,16 @@ export class MapLayersService {
       }
       
     })
-
-    
-    
   }
 
 
   public initHeatmapLayer(visible: boolean){
-    const lineGeom = this.mapStatsService.selectedStatsLayer === StatLayers.audit_lines || this.mapStatsService.selectedStatsLayer === StatLayers.street_lines;
+    
     const allVals: any = this.webGlStatsSource.getFeatures()
     .filter(ff=> this.mapStatsService.getFeatureVisiblity(ff) === 1)
     .map(f => f.getGeometry())
     .map((g:any) => {
-      return {length: lineGeom ? g.getLineString().getLength() : 1, center: lineGeom ? getCenter(g.getLineString().getExtent()) : g.getCoordinates()};
+      return {length: this.isLineGeom ? g.getLineString().getLength() : 1, center: this.isLineGeom ? getCenter(g.getLineString().getExtent()) : g.getCoordinates()};
     });
     const maxLength = Math.max(...allVals.map((val: string | any[]) => val.length));
     const pointFeats = allVals.map((val: any) => {
@@ -306,6 +304,8 @@ export class MapLayersService {
   /**
    * PRIVATES
    */
+
+  
 
   private initMaskLayer(){
       this.ATHENS_MASK = new VectorImage({
