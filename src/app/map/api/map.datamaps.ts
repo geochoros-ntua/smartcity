@@ -82,16 +82,90 @@ export const DHM_GEITONIES: string[] = [
     {code: 'A_114', label: 'Πολυώροφα Πολυκαταστήματα', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:6, desc: 'Αριθμός ανά πλευρά ΟΤ'},
     {code: 'A_115', label: 'Πολυώροφα κτήρια γραφείων', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:6, desc: 'Αριθμός ανά πλευρά ΟΤ'},
     {code: 'A_116', label: 'Εγκαταλελειμμένα κτήρια', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:6, desc: 'Αριθμός ανά πλευρά ΟΤ'},
+    {code: 'A_117', label: 'Συνεργεία αυτοκινήτων μοτοσυκλετών', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:9, desc: ''},
+    {code: 'A_118', label: 'Εστίαση με τραπεζοκαθίσματα στο δημόσιο χώρο',layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:16, desc: 'Αριθμός καταστημάτων ανά πλευρά ΟΤ'},
     {code: 'A_119', label: 'Υπέργειοι/Υπόγειοι Σταθμοί αυτοκινήτων', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:3, desc: 'Αριθμός ανά πλευρά ΟΤ'},
+    {code: 'A_1110', label: 'Υπαίθριοι οργανωμένοι σταθμοί αυτοκινήτων', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:3, desc: ''},
+    {code: 'A_1111', label: 'Είσοδοι σε ιδιωτικούς χώρους στάθμευσης κατοικιών επιχειρήσεων', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:9, desc: ''},
     {code: 'A_1112', label: 'Εκπαίδευση', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:4, desc: 'Αριθμός ανά πλευρά ΟΤ'},
     {code: 'A_1113', label: 'Υγεία', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:3, desc: 'Αριθμός ανά πλευρά ΟΤ'},
     {code: 'A_1114', label: 'Βενζινάδικα', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:3, desc: 'Αριθμός ανά πλευρά ΟΤ'},
-    {code: 'A_118', label: 'Εστίαση με τραπεζοκαθίσματα στο δημόσιο χώρο',layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:16, desc: 'Αριθμός καταστημάτων ανά πλευρά ΟΤ'},
+    {code: 'A_1115', label: 'Εκκλησίες με ελεύθερο χώρο μπροστά', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:3, desc: ''},
+    {code: 'A_1116', label: 'Εκκλησίες χωρίς ελεύθερο χώρο μπροστά', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:2, desc: ''},
+    {code: 'A_12', label: 'Κενά οικόπεδα με πράσινο (σε μέτρα - μέτρηση από χάρτη)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:110, desc: ''},
+    {code: 'A_13', label: 'Προσόψεις χέρσων κενών οικοπέδων (σε μέτρα - μέτρηση από χάρτη)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:150, desc: ''},
     {code: 'A_213', label: 'Παρτέρια (%)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:100, desc: '% μήκους πλευράς ΟΤ με παρτέρια'},
-    {code: 'A_271', label: 'Πεζοδρόμιο',layer: StatLayers.audit_lines, type: StatTypes.class, desc: 'Αξιολόγηση ύπαρξης πεζοδρομίου και μεταβλητότητας του πλάτους του ανά πλευρά ΟΤ', classes:[
-      {value:1, label:'Δεν υπάρχει πεζοδρόμιο'},
-      {value:2, label:'Υπάρχει και έχει Σταθερό πλάτος'},
-      {value:3, label:'Υπάρχει και έχει μεταβαλλόμενο πλάτος'}
+    {code: 'A_214', label: 'Πρασιά (σε μέτρα - μέτρηση από χάρτη)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:490, desc: ''},
+    {code: 'A_215', label: 'Στοά (%)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:100, desc: ''},
+    {code: 'A_216', label: 'Δέντρα (Αριθμός)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:161, desc: ''},
+    {code: 'A_217', label: 'Δημόσιοι χώροι πράσινοι ή πλακόστρωση (%)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:100, desc: ''},
+    {code: 'A_212', label: 'Κολωνάκια ή/και Κιγκλιδώματα (%)', layer: StatLayers.audit_lines, type: StatTypes.number, min:0, max:100, desc: '% μήκους πλευράς ΟΤ με κολωνάκια ή/και κιγκλιδώματα'},
+    {code: 'A_28', label: 'Εσοχές θέσεων στάθμευσης', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+      {value:1, label:'Όχι'},
+      {value:2, label:'Ναι (μέχρι και 3)'},
+      {value:3, label:'Ναι (περισσότερες των 3)'}
+    ]},{
+      code: 'A_219', label: 'Περισσότερα απο 8 σταθμευμένα μηχανάκια', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_220', label: 'Πληροφοριακές ΚΑΦΕ Πινακίδες', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι υπάρχουν και είναι όλες ευδιάκριτες'},
+        {value:3, label:'Ναι υπάρχουν, αλλά δεν είναι ευδιάκριτες'}
+    ]},{
+      code: 'A_2105', label: 'Εμπόδια Καταλήψεις από δενδροστοιχίες', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2113', label: 'Εμπόδια Εξοχές κτηρίων', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2101', label: 'Εμπόδια Περίπτερα', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2104', label: 'Εμπόδια Πάγκοι καταστημάτων', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2106', label: 'Εμπόδια Καταλήψεις από επίπλωση δρόμου', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2107', label: 'Εμπόδια Κατασκευαστικές ανωμαλίες πεζοδρομίου', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2108', label: 'Εμπόδια Στενώσεις από τραπεζοκαθίσματα και πετάσματα', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2109', label: 'Εμπόδια Στύλοι σήμανσης, φωτισμού, φαναριών κολωνάκια κικλιδώματα', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2110', label: 'Εμπόδια ΚΑΦΑΟ ΟΤΕ, ΔΕΗ', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2111', label: 'Εμπόδια Αντικείμενα ιδιωτών', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_2112', label: 'Εμπόδια Στάσεις ΜΜΜ', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'Α_21014', label: 'Εμπόδια Υψομετρικές διαφορές', layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι'}
+    ]},{
+      code: 'A_271', label: 'Πεζοδρόμιο',layer: StatLayers.audit_lines, type: StatTypes.class, desc: 'Αξιολόγηση ύπαρξης πεζοδρομίου και μεταβλητότητας του πλάτους του ανά πλευρά ΟΤ', classes:[
+        {value:1, label:'Δεν υπάρχει πεζοδρόμιο'},
+        {value:2, label:'Υπάρχει και έχει Σταθερό πλάτος'},
+        {value:3, label:'Υπάρχει και έχει μεταβαλλόμενο πλάτος'}
     ]},{
       code: 'A_272', label: 'Πλάτος πεζοδρομίου', layer: StatLayers.audit_lines, type: StatTypes.class, desc: 'Αξιολόγηση μέσου πλάτους πεζοδρομίου ανά πλευρά ΟΤ με βάση την ικανότητα να περπατήσουν ταυτόχρονα σε αυτό περισσότερα από 1 άτομα', classes:[
         {value: 1, label: 'Έως περίπου 1 μ. – στενό (χωράει μέχρι 1 άτομο)'},
@@ -106,18 +180,22 @@ export const DHM_GEITONIES: string[] = [
         {value:4, label:'Εκτελούνται έργα'},
         {value:5, label:'Δεν υπάρχει πεζοδρόμιο'},
     ]},{
-      code: 'A_29', label: 'Όδευση τυφλών', layer: StatLayers.audit_lines, type: StatTypes.class,desc: 'Αξιολόγηση ύπαρξης ειδικών πλακιδίων υποστήριξης των ατόμων με μειωμένη όραση ανά πλευρά πεζοδρομίου ΟΤ', classes:[
+      code: 'A_29', label: 'Όδευση τυφλών', layer: StatLayers.audit_lines, type: StatTypes.class, desc: 'Αξιολόγηση ύπαρξης ειδικών πλακιδίων υποστήριξης των ατόμων με μειωμένη όραση ανά πλευρά πεζοδρομίου ΟΤ', classes:[
         {value:1, label:'Όχι'},
         {value:2, label:'Σε όλο το μήκος'},
         {value:3, label:'Σε τμήμα της πλευράς'}
     ]},{
-      code: 'A_14', label: 'Κατάσταση κτηρίων',layer: StatLayers.audit_lines, type: StatTypes.class,desc: 'Αξιολόγηση μέσης κατάστασης των κτηρίων κάθε πλευράς ΟΤ ξεχωριστά, με βάση την παρατήρηξη ύπαρξης συστηματικών φθορών σε αυτά αλλά και της συνολικής καθαριότητας τους (π.χ. ύπαρξη πολλαπλών γκράφιτι/ταγκς, μούχλας κ.α.)', classes:[
+      code: 'A_14', label: 'Κατάσταση κτηρίων',layer: StatLayers.audit_lines, type: StatTypes.class, desc: 'Αξιολόγηση μέσης κατάστασης των κτηρίων κάθε πλευράς ΟΤ ξεχωριστά, με βάση την παρατήρηξη ύπαρξης συστηματικών φθορών σε αυτά αλλά και της συνολικής καθαριότητας τους (π.χ. ύπαρξη πολλαπλών γκράφιτι/ταγκς, μούχλας κ.α.)', classes:[
         {value:1, label:'Δεν υπάρχουν κτήρια', counter:0},
         {value:2, label:'Κακή', counter:0},
         {value:3, label:'Μέτρια', counter:0},
         {value:4, label:'Καλή', counter:0}
     ]},{
-      code: 'A_17', label: 'Κυριαρχία κατοικίας',layer: StatLayers.audit_lines, type: StatTypes.class,desc: 'Απαρίθμηση χρήσεων γης των ισογείων των κτηρίων ανά πλευρά ΟΤ και εκτίμηση κυριαρχίας της κατοικίας', classes:[
+      code: 'A_16', label: 'Κυριαρχία εστίασης αναψυχής',layer: StatLayers.audit_lines, type: StatTypes.class, desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι (>50% των εισόδων των κτηρίων της πλευράς του ΟΤ)'}
+      ]},{
+      code: 'A_17', label: 'Κυριαρχία κατοικίας',layer: StatLayers.audit_lines, type: StatTypes.class, desc: 'Απαρίθμηση χρήσεων γης των ισογείων των κτηρίων ανά πλευρά ΟΤ και εκτίμηση κυριαρχίας της κατοικίας', classes:[
         {value:1, label:'Όχι'},
         {value:2, label:'Ναι (>50% των εισόδων των κτηρίων της πλευράς του ΟΤ)'}
       ]},{
@@ -166,18 +244,9 @@ export const DHM_GEITONIES: string[] = [
   
        ]
     },
+    // street_lines
     {code: 'G_24', label: 'Μέσο πλάτος δρόμου (σε μ.) ',layer: StatLayers.street_lines, type: StatTypes.number, min:0, max:36, desc: 'Μέτρηση από κράσπεδο του ενός πεζοδρομίου στο κράσπεδο του απέναντι, δεν λαμβάνεται υπόψη η κεντρική νησίδα, αν υπάρχει', },
     {code: 'G_26', label: 'Μονόδορομος ',layer: StatLayers.street_lines, type: StatTypes.number, min:0, max:4, desc: ''},
-    {
-      code: 'G_27', label: 'Νησίδα', desc: '', layer: StatLayers.street_lines, type: StatTypes.class, classes:[
-        {value:1, label:'Είναι πεζόδρομος/σκάλες'},
-        {value:2, label:'Όχι'},
-        {value:3, label:'Ναι, χωρίς πράσινο βατή'},
-        {value:5, label:'Ναι, με πράσινο βατή'},
-        {value:6, label:'Ναι, με πράσινο μη βατή'},
-  
-       ]
-    },
     {
       code: 'G_28', label: 'Χαρακτήρας δρόμου', layer: StatLayers.street_lines, type: StatTypes.class, desc: '', classes:[
         {value:1, label:'Πεζόδρομος με σήμανση ΚΟΚ'},
@@ -197,10 +266,43 @@ export const DHM_GEITONIES: string[] = [
   
        ]
     },
-    
-  ]
-
-
-
-
-
+    // crossings
+    {
+      code: 'Category', label: 'Category', layer: StatLayers.crossings, type: StatTypes.class,  desc: '', classes:[
+        {value:1, label:'Διασταύρωση δρόμων κυκλοφορίας οχημάτων'},
+        {value:2, label:'Ισοσταθμία ή πεζόδρομος'},
+        {value:4, label:'Πεζογέφυρα'},
+        {value:5, label:'Ενδιάμεση διάβαση μεταξύ δύο OT'},
+        
+      ]},{
+      code: 'B_21', label: 'Λευκή διαγράμμιση', layer: StatLayers.crossings, type: StatTypes.class,  desc: '', classes:[
+        {value:1, label:'Όχι'},
+        {value:2, label:'Ναι, εμφανής'},
+        {value:3, label:'Ναι, όμως είναι φθαρμένη'}
+      ]},{
+      code: 'B_22', label: 'Ράμπες ΑμεΑ', layer: StatLayers.crossings, type: StatTypes.class,  desc: '', classes:[
+        {value:1, label:'Όχι, σε καμία άκρη'},
+        {value:2, label:'Ναι, στη μια άκρη'},
+        {value:3, label:'Ναι, στις δύο άκρες'}
+      ]},
+    // ramps
+    {
+      code: 'B_23', label: 'Κατάσταση Ράμπας', layer: StatLayers.ramps, type: StatTypes.class,  desc: '', classes:[
+        {value:1, label:'Κακή'},
+        {value:2, label:'Εκτελούνται έργα'},
+        {value:3, label:'Καλή'},
+        
+      ]},{
+      code: 'B_24', label: 'Ελιγμός Αμαξιδίου', layer: StatLayers.ramps, type: StatTypes.class,  desc: '', classes:[
+        {value:1, label:'Οχι'},
+        {value:2, label:'Ναι'},
+  
+      ]},
+  ];
+	
+	
+	
+	
+	
+	
+	
