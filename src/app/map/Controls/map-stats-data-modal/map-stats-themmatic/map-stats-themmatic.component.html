@@ -12,10 +12,13 @@
         <mat-form-field >
             <mat-label>{{'MAP.STATS-INDEX' | translate }}</mat-label>
                 <mat-select color="primary" [(value)]="mapStatsService.selectedStatsIndex" (selectionChange)="setIndice($event.value)" >
-                    <mat-option matTooltipClass="newline-tooltip" matTooltip="{{idx.label + '\n' + idx.desc  }}" *ngFor="let idx of mapStatsService.getIndecesForLayer(mapStatsService.selectedStatsLayer)" [value]="idx">{{idx.label}}
+                    <mat-option matTooltipClass="newline-tooltip" title="{{idx.label + '\n' + idx.desc  }}" *ngFor="let idx of mapStatsService.getIndecesForLayer(mapStatsService.selectedStatsLayer)" [value]="idx">{{idx.label}}
                     </mat-option>
                 </mat-select>
         </mat-form-field>
+        <a mat-button title="doanload data on csv" mat-icon-button (click)="downloadIndexOnCsv()" target="_blank"  [href]="fileUrl" download="{{filename}}">
+            <mat-icon>download</mat-icon>
+         </a>
     </div>
     <div *ngIf="mapStatsService.selectedStatsIndex?.type === statTypeNum" class="row">
         <table>
