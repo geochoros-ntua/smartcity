@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Feature } from 'ol';
+import GeoJSON from 'ol/format/GeoJSON';
 import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 import { MapService } from 'src/app/map/Services/map.service';
 import { StatsService } from 'src/app/map/Services/map.stats.service';
@@ -19,8 +22,11 @@ export class MapStatsThemmaticComponent implements OnInit {
 
 
   @Output() redrawWebGlLayer$ = new EventEmitter();
-  
+  public fileUrl: SafeResourceUrl;
+  public filename: string = 'file.geojson';
   constructor(
+
+    private sanitizer: DomSanitizer,
     public mapStatsService: StatsService,
     public mapLayersService: MapLayersService,
     private mapMessagesService : AppMessagesService, 
@@ -73,6 +79,27 @@ export class MapStatsThemmaticComponent implements OnInit {
     this.cleanRefreshWebGlLayer();
   }
 
+
+  public downloadIndexOnCsv(){
+    const allFeats = this.mapLayersService.webGlStatsSource.getFeatures();
+    const writer = new GeoJSON({
+      featureProjection : 'EPSG:3857'
+    });
+    const data = writer.writeFeatures(allFeats.map(f =>  {
+          const feat = new Feature({
+            geometry: f.getGeometry()
+          });
+          const selIndex = this.mapStatsService.selectedStatsIndex;
+          feat.set(selIndex.code, 
+            selIndex.type === StatTypes.number ? f.get(selIndex.code) : selIndex.classes.find(cls => cls.value == f.get(selIndex.code))?.label);
+          return feat;
+      }
+    ));
+    this.filename = this.mapStatsService.selectedStatsIndex.label +'.geojson';
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+
+    this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+  }
 
   
 }
