@@ -359,15 +359,17 @@ export class NeighborhoodsComponent implements OnInit {
                 if (element.code == this.clickedFeatureId) {
                   popupTitle = element.name;
                   if (this.selectedVariableB) {
-                    console.log(this.selectedVariableB)
-                    popupValue = element[this.selectedVariableB.name];
-                    console.log(popupValue)
+
+                    if (element[this.selectedVariableB.name]) {
+                      popupValue = (element[this.selectedVariableB.name] * 100) + '%';
+                    }
+                    else {
+                      popupValue = 'N/A'
+                    }
                   }
                 }
               }
 
-              // coordinate = feature.getGeometry().getCoordinates();
-              // console.log(coordinate)
               content.innerHTML =
                 // '</a>' +
                 '<p class="popup-title">' +
@@ -390,7 +392,7 @@ export class NeighborhoodsComponent implements OnInit {
 
       },
         {
-          hitTolerance: 8,
+          hitTolerance: 2,
         })
     })
 
@@ -517,6 +519,9 @@ export class NeighborhoodsComponent implements OnInit {
         }
         else {
           this.neighborhoods[index].color = colorRamp[this.neighborhoods.length - index - 1]
+        }
+        if (!this.neighborhoods[index][variable.name]) {
+          this.neighborhoods[index].color = 'rgba(255,255,255,0)';
         }
         this.neighborhoods[index].selected_variable = this.neighborhoods[index][variable.name];
       }

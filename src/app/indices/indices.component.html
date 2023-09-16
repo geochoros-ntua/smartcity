@@ -21,12 +21,14 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-
+            <p>{{selectedVariable.desc}}</p>
             <a title="Download .geojson" class="neighborhoods-download" mat-icon-button color="accent"
                 href="assets/geodata/indices_3857.geojson" target="_blank" download>
                 <mat-icon>download</mat-icon>
             </a>
+            <button mat-icon-button (click)="toggleDesc()"><mat-icon>info</mat-icon></button>
         </div>
+        <div [hidden]="!showDesc">{{selectedvariableDesc}}</div>
     </div>
 
     <mat-drawer-container class="map-drawer-container" autosize

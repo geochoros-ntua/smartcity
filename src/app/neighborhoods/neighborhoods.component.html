@@ -65,10 +65,10 @@
                 </div>
         
                 <div id="popup-content"></div>
-                <div class="popup-more-container">
+                <!-- <div class="popup-more-container">
                     <div class="spacer"></div>
-                    <button mat-button color="primary" (click)="goToMap()">{{ 'NEIGHBORHOODS.ANALYTICS' | translate}}</button>
-                </div>
+                    <button mat-button color="primary" disabled="true" (click)="goToMap()">{{ 'NEIGHBORHOODS.ANALYTICS' | translate}}, NYA</button>
+                </div> -->
             </div>
             <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()">
                 <mat-icon>zoom_out_map</mat-icon>
@@ -132,7 +132,7 @@
                         <span *ngIf="selectedVariableB?.name !== 'Μέσος όρος από Στοά (%)' && selectedVariableB?.name !== 'Μέσος όρος από Παρτέρια (%)' &&
                     selectedVariableB?.name !== 'Μέσος όρος από Δέντρα (Αριθμός)' && selectedVariableB?.name !== 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)' &&
                     selectedVariableB?.name !== 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'"
-                            class="yellow-value">{{neighborhood.selected_variable * 100 | number : '1.0-2'}}%</span>
+                            class="yellow-value">{{neighborhood.selected_variable? (neighborhood.selected_variable * 100 | number : '1.0-2') : 'N/A'}}{{neighborhood.selected_variable? '%' : ''}}</span>
 
                         &nbsp;
                     </p>
