@@ -1,9 +1,10 @@
 import { MapLayersService } from './Services/map.layers.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MapService } from './Services/map.service';
 import { MapBrowserEvent } from 'ol';
 import { MapMode } from './api/map.enums';
 import { SensorsService } from './Services/map.sensors.service';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 
 @Component({
@@ -17,6 +18,10 @@ import { SensorsService } from './Services/map.sensors.service';
 export class MapComponent implements OnInit {
   isStreet: boolean; 
   isStats: boolean; 
+
+  contextmenu = false;
+  contextmenuX = 0;
+  contextmenuY = 0;
 
   constructor(
     private mapService: MapService, public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
@@ -54,7 +59,17 @@ export class MapComponent implements OnInit {
 
      // click on map event
     this.mapService.smartCityMap.on('click', (event: MapBrowserEvent<UIEvent>) => {
+      this.disableContextMenu();
       this.mapService.onMapClicked(event);
+    });
+
+    // right click on map event
+    this.mapService.smartCityMap.getViewport().addEventListener('contextmenu',  (evt) => {
+      evt.preventDefault();
+      this.contextmenuX = evt.clientX
+      this.contextmenuY = evt.clientY
+      this.contextmenu = true;
+      //this.rightClickEvent
     });
 
 
@@ -74,13 +89,21 @@ export class MapComponent implements OnInit {
       const hit = thisP.mapService.smartCityMap.forEachFeatureAtPixel(pixel, (f, l) => {
         return (f && l);
       }); 
-      // const hit = thisP.mapService.smartCityMap.hasFeatureAtPixel(pixel,{ 
-      //     layerFilter: (layer) => { //some ol bug is complaining sometimes 
-      //       return layer !== null;
-      //     }
-      // });
+
       thisP.mapService.smartCityMap.getViewport().style.cursor = hit ? 'pointer' : '';
     });
   }
 
+
+
+  //activates the menu with the coordinates
+  public onMapRightClick(event: any){
+      this.contextmenuX = event.clientX
+      this.contextmenuY = event.clientY - 50;
+      this.contextmenu = true;
+  }
+  //disables the menu
+  public disableContextMenu(){
+     this.contextmenu = false;
+  }
 }

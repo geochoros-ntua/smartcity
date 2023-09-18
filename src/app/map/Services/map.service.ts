@@ -47,7 +47,7 @@ export class MapService {
   private tooltip: HTMLElement;
   private overlay: Overlay;
 
-  private smartCityMapConfig: SmartCityMapConfig = {
+  public smartCityMapConfig: SmartCityMapConfig = {
     mapDivId: 'map_div',
     mapillaryDivId: 'mapillaryDiv',
     zoomLevel: 13,
@@ -210,8 +210,9 @@ export class MapService {
         if (feature.get('layer')) {
           switch (feature.get('layer')) {
             case VectorLayerNames.seq: {
+              console.log("feature.get('image_id')", feature.get('image_id'));
               const mapillaryViewerConfig: SmartCityMapillaryConfig = {
-                imageId: feature.get('image_id'),
+                imageId: feature.get('image_id'), //1031530617445402
                 mapillaryDivId: this.smartCityMapConfig.mapillaryDivId,
                 map: this.smartCityMap
               };

@@ -62,6 +62,7 @@ import { NgxColorsModule } from 'ngx-colors';
 import { MoreInfoDialog, MyFilterPipe, NeighborhoodsComponent } from './neighborhoods/neighborhoods.component';
 import { StrategyComponent } from './strategy/strategy.component';
 import { DescIndicesDialog, IndicesComponent, MoreInfoIndicesDialog, indicesFilterPipe } from './indices/indices.component';
+import { ContextMenuComponent } from './map/Controls/context-menu/context-menu.component';
 
 
 export function setupTranslateFactory(
@@ -103,7 +104,8 @@ export function setupTranslateFactory(
     indicesFilterPipe,
     MoreInfoDialog,
     MoreInfoIndicesDialog,
-    DescIndicesDialog
+    DescIndicesDialog,
+    ContextMenuComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
