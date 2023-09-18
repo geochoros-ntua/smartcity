@@ -4,7 +4,7 @@
 />
 
 
-<div id="map_div">
+<div id="map_div" (contextmenu)="onMapRightClick($event)">
 
   <app-tileselector></app-tileselector>
   <app-mapillary-data *ngIf="isStreet"></app-mapillary-data>
@@ -14,6 +14,8 @@
   <app-map-stats-data *ngIf="isStats"></app-map-stats-data>
 
   <app-popup></app-popup>
+
+  <app-context-menu *ngIf="contextmenu" (closeCtxMenu$) = 'disableContextMenu()'  [x]="contextmenuX" [y]="contextmenuY"></app-context-menu>
 
   <div *ngIf="!mapLayersService.dataLoaded" class="loader" >
     <mat-spinner color="primary" diameter="70" mode="indeterminate" ></mat-spinner>
