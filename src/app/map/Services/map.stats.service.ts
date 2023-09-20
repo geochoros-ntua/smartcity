@@ -39,10 +39,8 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
 
 
     public getLayerFormIndex(idx: string): StatLayers{
-        return STATS_INDECES.find(idc => idc.code === idx).layer
+        return STATS_INDECES.find(idc => idc.code === idx).layer;
     }
-
-    
 
 
     

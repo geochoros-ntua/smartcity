@@ -10,6 +10,7 @@ import MapUtils from './map.helper';
 import { StatsService } from './Services/map.stats.service';
 import { STATS_INDECES } from './api/map.datamaps';
 import { MapStatsDataModalComponent } from './Controls/map-stats-data-modal/map-stats-data-modal.component';
+import { ShareMapParams } from './api/map.api';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class MapComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
     this.resetMapType(this.mapService.mapMode);
@@ -46,31 +47,30 @@ export class MapComponent implements OnInit {
       this.resetMapType(mode);
     });
    
-    //http://localhost:4200/map?zoom=15&mode=stats&layer=
 
-    this.router.queryParams.subscribe((params: any) => {
-      console.log('params',params)
-      if (params.zoom ) {
-        
-        const zoomLevel: number = parseInt(params.zoom);
-        // const coords: number[] = params.center.split(',').map((co:any) => parseFloat(co));
-        //this.mapService.smartCityMap.getView().setCenter(coords);
-        console.log('zoom level',zoomLevel)
-        this.mapService.smartCityMap.getView().setZoom(zoomLevel);
-      }
+    this.router.queryParams.subscribe((params: ShareMapParams) => {
+      if (params.zoom) this.mapService.smartCityMap.getView().setZoom(parseInt(params.zoom));
+      if (params.center) this.mapService.smartCityMap.getView().setCenter(params.center.split(',').map((co: string) => parseFloat(co)));
 
       if (params.mode) {
-        console.log('set map mode',params.mode)
         this.mapService.mapMode$.next(MapUtils.getEnumByEnumValue(MapMode, params.mode));
-        if (params.mode === MapMode.stats){
+        if (params.mode === MapMode.stats && params.index){
 
           this.mapStatsService.selectedStatsLayer = this.mapStatsService.getLayerFormIndex(params.index);
           this.mapService.smartCityMap.removeLayer(this.mapLayersService.WebGlStatsLayer);
           this.mapLayersService.WebGlStatsLayer.dispose();
+
+          this.mapStatsService.selectedStatsIndex = params.index ? 
+          STATS_INDECES.find(idx => idx.code === params.index) : 
+          STATS_INDECES.find(idx => idx.code === 'A_14');
+  
+          this.mapStatsService.numericClasses = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
+          this.mapStatsService.getNumericClasses(this.mapStatsService.selectedStatsIndex) : 
+          [];
+          this.mapStatsService.generateClassColors();
+
           this.mapLayersService.initWebGlStatsLayer(true, params.index);
           this.mapService.smartCityMap.addLayer(this.mapLayersService.WebGlStatsLayer);
-        } else {
-
         }
       }
     })
@@ -78,7 +78,7 @@ export class MapComponent implements OnInit {
     
   }
 
-  ngOnDestroy(){
+  public ngOnDestroy(){
     this.mapSensorsService.stopReportAutoLoad();
     this.mapService.stopFlashIntervals();
   }

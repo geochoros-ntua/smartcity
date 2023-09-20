@@ -260,21 +260,22 @@ export class MapLayersService {
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
 
     this.webGlStatsSource.once('featuresloadend', () => {
-      if (this.firstTimeWebGl){
+
+      if (this.firstTimeWebGl && !this.linkIndex){
+        
         this.mapStatsService.selectedStatsIndex = this.linkIndex ? 
         STATS_INDECES.find(idx => idx.code === this.linkIndex) : 
         STATS_INDECES.find(idx => idx.code === 'A_14');
 
-        console.log('this.mapStatsService.selectedStatsIndex', this.mapStatsService.selectedStatsIndex);
 
         this.mapStatsService.numericClasses = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
         this.mapStatsService.getNumericClasses(this.mapStatsService.selectedStatsIndex) : 
         [];
+
         this.mapStatsService.generateClassColors();
-        // this.mapService.smartCityMap.render();
-        this.WebGlStatsLayer.getSource().changed();
-        this.firstTimeWebGl = false;
+        
       }
+      this.firstTimeWebGl = false;
     });
   }
 
