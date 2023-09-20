@@ -63,6 +63,8 @@ import { MoreInfoDialog, MyFilterPipe, NeighborhoodsComponent } from './neighbor
 import { StrategyComponent } from './strategy/strategy.component';
 import { DescIndicesDialog, IndicesComponent, MoreInfoIndicesDialog, indicesFilterPipe } from './indices/indices.component';
 import { ContextMenuComponent } from './map/Controls/context-menu/context-menu.component';
+import { MapShareComponent } from './map/Controls/map-share/map-share.component';
+import { MapShareModalComponent } from './map/Controls/map-share-modal/map-share-modal.component';
 
 
 export function setupTranslateFactory(
@@ -105,7 +107,9 @@ export function setupTranslateFactory(
     MoreInfoDialog,
     MoreInfoIndicesDialog,
     DescIndicesDialog,
-    ContextMenuComponent
+    ContextMenuComponent,
+    MapShareComponent,
+    MapShareModalComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
