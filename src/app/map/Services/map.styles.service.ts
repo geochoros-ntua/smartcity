@@ -3,7 +3,6 @@ import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import RenderFeature from 'ol/render/Feature';
 import { Fill, Icon, Stroke, Style, Circle, Text } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
 
 @Injectable({
   providedIn: 'root'

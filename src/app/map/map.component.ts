@@ -2,9 +2,14 @@ import { MapLayersService } from './Services/map.layers.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MapService } from './Services/map.service';
 import { MapBrowserEvent } from 'ol';
-import { MapMode } from './api/map.enums';
+import { MapMode, StatLayers, StatTypes } from './api/map.enums';
 import { SensorsService } from './Services/map.sensors.service';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { ActivatedRoute } from '@angular/router';
+import MapUtils from './map.helper';
+import { StatsService } from './Services/map.stats.service';
+import { STATS_INDECES } from './api/map.datamaps';
+import { MapStatsDataModalComponent } from './Controls/map-stats-data-modal/map-stats-data-modal.component';
 
 
 @Component({
@@ -23,8 +28,13 @@ export class MapComponent implements OnInit {
   contextmenuX = 0;
   contextmenuY = 0;
 
+
   constructor(
-    private mapService: MapService, public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
+    private mapService: MapService, 
+    private router: ActivatedRoute,
+    public mapLayersService: MapLayersService, 
+    public mapStatsService: StatsService,
+    public mapSensorsService: SensorsService) {
 
   }
 
@@ -34,6 +44,35 @@ export class MapComponent implements OnInit {
     this.resetMapType(this.mapService.mapMode);
     this.mapService.mapMode$.subscribe( mode =>{
       this.resetMapType(mode);
+    });
+   
+    //http://localhost:4200/map?zoom=15&mode=stats&layer=
+
+    this.router.queryParams.subscribe((params: any) => {
+      console.log('params',params)
+      if (params.zoom ) {
+        
+        const zoomLevel: number = parseInt(params.zoom);
+        // const coords: number[] = params.center.split(',').map((co:any) => parseFloat(co));
+        //this.mapService.smartCityMap.getView().setCenter(coords);
+        console.log('zoom level',zoomLevel)
+        this.mapService.smartCityMap.getView().setZoom(zoomLevel);
+      }
+
+      if (params.mode) {
+        console.log('set map mode',params.mode)
+        this.mapService.mapMode$.next(MapUtils.getEnumByEnumValue(MapMode, params.mode));
+        if (params.mode === MapMode.stats){
+
+          this.mapStatsService.selectedStatsLayer = this.mapStatsService.getLayerFormIndex(params.index);
+          this.mapService.smartCityMap.removeLayer(this.mapLayersService.WebGlStatsLayer);
+          this.mapLayersService.WebGlStatsLayer.dispose();
+          this.mapLayersService.initWebGlStatsLayer(true, params.index);
+          this.mapService.smartCityMap.addLayer(this.mapLayersService.WebGlStatsLayer);
+        } else {
+
+        }
+      }
     })
     
     
@@ -69,7 +108,6 @@ export class MapComponent implements OnInit {
       this.contextmenuX = evt.clientX
       this.contextmenuY = evt.clientY
       this.contextmenu = true;
-      //this.rightClickEvent
     });
 
 
