@@ -36,6 +36,13 @@ import { MapStatsDataModalComponent } from "../Controls/map-stats-data-modal/map
     public getIndecesForLayer(lyr: StatLayers): StatsIndices[]{
         return STATS_INDECES.filter(idc => idc.layer === lyr)
     }
+
+
+    public getLayerFormIndex(idx: string): StatLayers{
+        return STATS_INDECES.find(idc => idc.code === idx).layer;
+    }
+
+
     
     public generateClassColors(): void{
         this.classColors = this.selectedStatsIndex.type === StatTypes.number ? 

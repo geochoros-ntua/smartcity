@@ -31,7 +31,7 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { Heatmap } from 'ol/layer';
 
 import {getCenter} from 'ol/extent'
-import { Coordinate } from 'ol/coordinate';
+import { MapService } from './map.service';
 
 
 /**
@@ -91,8 +91,12 @@ export class MapLayersService {
   public heatRadius: number = 15;
 
   private firstTimeWebGl: boolean = true;
+  private linkIndex: any = null;
 
-  constructor(private http: HttpClient, private mapStatsService: StatsService, private mapStyleService: MapStyleService) {
+  constructor(
+    private http: HttpClient, 
+    private mapStatsService: StatsService, 
+    private mapStyleService: MapStyleService) {
     // format to read the mpl 4326 layers response
     this.mplFormat = new GeoJSON({
       dataProjection: 'EPSG:4326',
@@ -228,7 +232,8 @@ export class MapLayersService {
   }
 
 
-  public initWebGlStatsLayer(visible: boolean){
+  public initWebGlStatsLayer(visible: boolean, index?: any){
+    this.linkIndex = index;
     const myurl = './assets/geodata/'+Object.keys(StatLayers).find(
       key => StatLayers[key as keyof typeof StatLayers] === this.mapStatsService.selectedStatsLayer
       ) +'.json';
@@ -254,19 +259,24 @@ export class MapLayersService {
     }
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
 
-    this.webGlStatsSource.once('featuresloadend', (e) => {
-      if (this.firstTimeWebGl){
+    this.webGlStatsSource.once('featuresloadend', () => {
+
+      if (this.firstTimeWebGl && !this.linkIndex){
         
-        this.mapStatsService.selectedStatsIndex = STATS_INDECES.find(idx => idx.code === 'A_14')
+        this.mapStatsService.selectedStatsIndex = this.linkIndex ? 
+        STATS_INDECES.find(idx => idx.code === this.linkIndex) : 
+        STATS_INDECES.find(idx => idx.code === 'A_14');
+
+
         this.mapStatsService.numericClasses = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
         this.mapStatsService.getNumericClasses(this.mapStatsService.selectedStatsIndex) : 
         [];
 
         this.mapStatsService.generateClassColors();
-        this.firstTimeWebGl = false;
+        
       }
-      
-    })
+      this.firstTimeWebGl = false;
+    });
   }
 
 
@@ -276,7 +286,10 @@ export class MapLayersService {
     .filter(ff=> this.mapStatsService.getFeatureVisiblity(ff) === 1)
     .map(f => f.getGeometry())
     .map((g:any) => {
-      return {length: this.isLineGeom ? g.getLineString().getLength() : 1, center: this.isLineGeom ? getCenter(g.getLineString().getExtent()) : g.getCoordinates()};
+      return {
+        length: this.isLineGeom ? g.getLineString().getLength() : 1, 
+        center: this.isLineGeom ? getCenter(g.getLineString().getExtent()) : g.getCoordinates()
+      };
     });
     const maxLength = Math.max(...allVals.map((val: string | any[]) => val.length));
     const pointFeats = allVals.map((val: any) => {
@@ -293,8 +306,6 @@ export class MapLayersService {
       radius: this.heatRadius,
       visible,
       weight:  (ff: any) => {
-        // const weight = ff.getGeometry().getLength()/maxLength;
-        // console.log('ff',ff);
         return ff.get('length')/maxLength;
       },
     });
@@ -304,8 +315,6 @@ export class MapLayersService {
   /**
    * PRIVATES
    */
-
-  
 
   private initMaskLayer(){
       this.ATHENS_MASK = new VectorImage({

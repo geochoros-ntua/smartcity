@@ -2,9 +2,15 @@ import { MapLayersService } from './Services/map.layers.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MapService } from './Services/map.service';
 import { MapBrowserEvent } from 'ol';
-import { MapMode } from './api/map.enums';
+import { MapMode, StatLayers, StatTypes } from './api/map.enums';
 import { SensorsService } from './Services/map.sensors.service';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { ActivatedRoute } from '@angular/router';
+import MapUtils from './map.helper';
+import { StatsService } from './Services/map.stats.service';
+import { STATS_INDECES } from './api/map.datamaps';
+import { MapStatsDataModalComponent } from './Controls/map-stats-data-modal/map-stats-data-modal.component';
+import { ShareMapParams } from './api/map.api';
 
 
 @Component({
@@ -23,23 +29,56 @@ export class MapComponent implements OnInit {
   contextmenuX = 0;
   contextmenuY = 0;
 
+
   constructor(
-    private mapService: MapService, public mapLayersService: MapLayersService, public mapSensorsService: SensorsService) {
+    private mapService: MapService, 
+    private router: ActivatedRoute,
+    public mapLayersService: MapLayersService, 
+    public mapStatsService: StatsService,
+    public mapSensorsService: SensorsService) {
 
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.mapService.initMap();
     this.registerMapEvents(this);
     this.resetMapType(this.mapService.mapMode);
     this.mapService.mapMode$.subscribe( mode =>{
       this.resetMapType(mode);
+    });
+   
+
+    this.router.queryParams.subscribe((params: ShareMapParams) => {
+      if (params.zoom) this.mapService.smartCityMap.getView().setZoom(parseInt(params.zoom));
+      if (params.center) this.mapService.smartCityMap.getView().setCenter(params.center.split(',').map((co: string) => parseFloat(co)));
+
+      if (params.mode) {
+        this.mapService.mapMode$.next(MapUtils.getEnumByEnumValue(MapMode, params.mode));
+        if (params.mode === MapMode.stats && params.index){
+
+          this.mapStatsService.selectedStatsLayer = this.mapStatsService.getLayerFormIndex(params.index);
+          this.mapService.smartCityMap.removeLayer(this.mapLayersService.WebGlStatsLayer);
+          this.mapLayersService.WebGlStatsLayer.dispose();
+
+          this.mapStatsService.selectedStatsIndex = params.index ? 
+          STATS_INDECES.find(idx => idx.code === params.index) : 
+          STATS_INDECES.find(idx => idx.code === 'A_14');
+  
+          this.mapStatsService.numericClasses = this.mapStatsService.selectedStatsIndex.type === StatTypes.number ?
+          this.mapStatsService.getNumericClasses(this.mapStatsService.selectedStatsIndex) : 
+          [];
+          this.mapStatsService.generateClassColors();
+
+          this.mapLayersService.initWebGlStatsLayer(true, params.index);
+          this.mapService.smartCityMap.addLayer(this.mapLayersService.WebGlStatsLayer);
+        }
+      }
     })
     
     
   }
 
-  ngOnDestroy(){
+  public ngOnDestroy(){
     this.mapSensorsService.stopReportAutoLoad();
     this.mapService.stopFlashIntervals();
   }
@@ -69,7 +108,6 @@ export class MapComponent implements OnInit {
       this.contextmenuX = evt.clientX
       this.contextmenuY = evt.clientY
       this.contextmenu = true;
-      //this.rightClickEvent
     });
 
 

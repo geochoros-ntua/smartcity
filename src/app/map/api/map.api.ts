@@ -120,5 +120,12 @@ export interface IndexFilter{
     classes: IndiceClass[]
 }
 
+export interface ShareMapParams {
+    zoom?: string,
+    center?: string,
+    mode?: string,
+    index?: string
+}
+
 
 

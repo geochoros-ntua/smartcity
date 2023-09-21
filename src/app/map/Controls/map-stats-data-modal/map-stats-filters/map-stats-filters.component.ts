@@ -1,7 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import Draw, { createBox } from 'ol/interaction/Draw';
-import VectorSource from 'ol/source/Vector';
 import { MapLayersService } from 'src/app/map/Services/map.layers.service';
 import { MapService } from 'src/app/map/Services/map.service';
 import { StatsService } from 'src/app/map/Services/map.stats.service';
