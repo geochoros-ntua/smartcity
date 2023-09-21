@@ -1,8 +1,8 @@
-<h3> Share your map</h3>
+<h3>{{"MAP.MAP-SHARE" | translate}}</h3>
 <input disabled type="text" #mapUrl
     value="https://walkable.cityofathens.gr/map?zoom={{currentZoomLevel}}&center={{currentCenter}}&mode={{currentMode}}&index={{currentIndex}}">
 <p>
-    <button color="primary" class="copy-button" type="button" (click)="copyInputMessage(mapUrl)" matTooltip="Copy map link to clipboard" mat-raised-button        >
+    <button color="primary" class="copy-button" type="button" (click)="copyInputMessage(mapUrl)" matTooltip="{{'MAP.MAP-SHARE-BTN' | translate}}" mat-raised-button        >
         <mat-icon>copy_all</mat-icon>Copy
     </button>
 </p>

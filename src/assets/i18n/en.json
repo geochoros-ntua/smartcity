@@ -52,7 +52,10 @@
       "STATS-SPATIAL-AREA":"Select area on map",
       "STATS-SPATIAL-AREA-REMOVE":"Clear map area",
       "STATS-SPATIAL-FILTER":"Spatial filter",
-      "STATS-FILTER-CLEAR-ALL":"Clear all filters"                                       
+      "STATS-FILTER-CLEAR-ALL":"Clear all filters",
+      "MAP-SHARE":"Share your map",
+      "MAP-SHARE-TOOLTIP":"Get a sharable link",
+      "MAP-SHARE-BTN":"Copy map link to clipboard"                                            
   },
   "GRAPH" :{
     "LINE": "Line", 

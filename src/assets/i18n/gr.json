@@ -52,7 +52,11 @@
     "STATS-SPATIAL-AREA": "Επιλογή περιοχής στον χάρτη",
     "STATS-SPATIAL-AREA-REMOVE": "Καθαρισμός περιοχής απο τον χάρτη",
     "STATS-SPATIAL-FILTER": "Χωρικό φίλτρο",
-    "STATS-FILTER-CLEAR-ALL": "Καθαρισμός όλων των φίλτρων"
+    "STATS-FILTER-CLEAR-ALL": "Καθαρισμός όλων των φίλτρων",
+    "MAP-SHARE":"Σύνδεσμος κοινής χρήσης",
+    "MAP-SHARE-TOOLTIP":"Δημιουργία συνδέσμου κοινής χρήσης",
+    "MAP-SHARE-BTN":"Αντιγραφή του συνδέσμου στο πρόχειρο"
+                        
   },
   "GRAPH": {
     "LINE": "Γραμμή ",
