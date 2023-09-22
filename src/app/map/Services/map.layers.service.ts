@@ -234,6 +234,7 @@ export class MapLayersService {
 
   public initWebGlStatsLayer(visible: boolean, index?: any){
     this.linkIndex = index;
+    
     const myurl = './assets/geodata/'+Object.keys(StatLayers).find(
       key => StatLayers[key as keyof typeof StatLayers] === this.mapStatsService.selectedStatsLayer
       ) +'.json';
@@ -258,6 +259,10 @@ export class MapLayersService {
       });
     }
     this.WEBGL_STATS.set('name', 'webgl_stats_layer');
+    
+    this.webGlStatsSource.on('featuresloadstart', () => this.dataLoaded = false);
+    this.webGlStatsSource.on('featuresloadend', () => this.dataLoaded = true);
+
 
     this.webGlStatsSource.once('featuresloadend', () => {
 
