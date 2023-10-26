@@ -22,7 +22,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## License
 
 This project is funded by the Municipality of Athens and is implemented by the NTUA, School of Rural Geography.
-The source code is released under the MIT license.  
+The source code is released under the GNU General Public License v3.0 (GPL-3.0) license.  
 
 See [LICENSE](LICENSE) file for details.
 
