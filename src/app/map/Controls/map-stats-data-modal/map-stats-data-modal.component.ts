@@ -3,7 +3,7 @@ import { MapLayersService } from '../../Services/map.layers.service';
 import { StatsService } from '../../Services/map.stats.service';
 import { MapService } from '../../Services/map.service';
 import { StatTypes } from '../../api/map.enums';
-import { FeatureLike } from 'ol/Feature';
+import { LineString } from 'ol/geom';
 
 
 @Component({
@@ -74,27 +74,44 @@ export class MapStatsDataModalComponent implements OnInit {
     if (this.mapStatsService.selectedStatsIndex?.type === StatTypes.class){
       this.mapStatsService.selectedStatsIndex.classes.forEach(cls => {
         cls.counter = 0;
+        cls.totalLength = 0;
       })
     }  else {
       this.mapStatsService.numericClasses?.forEach(cls => {
         cls.counter = 0;
+        cls.totalLength = 0;
       })
     }
   }
 
-  private calcCountersForClasses(feat: FeatureLike): void {
+  private calcCountersForClasses(feat: any): void {
     if (this.mapStatsService.selectedStatsIndex?.type === StatTypes.class){
       const featVal = feat.get(this.mapStatsService.selectedStatsIndex.code);
       const idx = this.mapStatsService.selectedStatsIndex.classes.findIndex(cls => cls.value === featVal);
       this.mapStatsService.selectedStatsIndex.classes[idx !== -1 ? idx : 0].counter++;
-    } else {
-      const featVal = feat.get(this.mapStatsService.selectedStatsIndex?.code);
-      const classIdx = this.mapStatsService.numericClasses?.findIndex(
-        (cls,i) => featVal >= cls.min && ((i !== this.mapStatsService.numericClasses.length-1) ? (featVal -1 < cls.max) : true)
-      );
-
+      this.calcLengthForClass(feat,idx);
+    } else {   
       if(this.mapStatsService.numericClasses && this.mapStatsService.numericClasses.length>0){
+        const featVal = feat.get(this.mapStatsService.selectedStatsIndex?.code);
+        const classIdx = this.mapStatsService.numericClasses?.findIndex(
+          (cls,i) => featVal >= cls.min && ((i !== this.mapStatsService.numericClasses.length-1) ? (featVal -1 < cls.max) : true)
+        );
           this.mapStatsService.numericClasses[classIdx && classIdx !== -1 ? classIdx : 0].counter++;
+          this.calcLengthForClass(feat,classIdx);
+        
+      }
+    }
+  }
+
+  private calcLengthForClass(feat: any, classIdx: number): void {
+    if (['LineString', 'MultiLineString'].includes(feat.getGeometry().getType())){
+      const line = new LineString(feat.getGeometry().getCoordinates()[0]);
+      if (this.mapStatsService.selectedStatsIndex?.type === StatTypes.class ){
+        this.mapStatsService.selectedStatsIndex.classes[classIdx !== -1 ? classIdx : 0].totalLength = 
+        this.mapStatsService.selectedStatsIndex.classes[classIdx !== -1 ? classIdx : 0].totalLength + line.getLength();
+      } else {
+        this.mapStatsService.numericClasses[classIdx && classIdx !== -1 ? classIdx : 0].totalLength = 
+        this.mapStatsService.numericClasses[classIdx && classIdx !== -1 ? classIdx : 0].totalLength + line.getLength();
       }
     }
   }

@@ -67,7 +67,7 @@ export class MapLayersService {
   private ATHENS_MASK!: VectorImage<VectorSource<Polygon | MultiPolygon>>;
   private SENSORS!: VectorLayer<VectorSource<Point>>;
 
-  public webGlStatsSource!: VectorSource<Point>;
+  public webGlStatsSource!: VectorSource<Point | any>;
   private WEBGL_STATS!: WebGLLayer | WebGLPointsLayer<VectorSource<Point>>;
 
   public heatMapSource!: VectorSource<Point>;

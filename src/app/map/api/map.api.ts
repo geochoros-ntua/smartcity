@@ -63,68 +63,69 @@ export interface FeatureClickedWithPos {
 }
 
 export interface GraphReport {
-    title: string,
-    label: string, 
-    date: string, 
-    value: string, 
+    title: string;
+    label: string; 
+    date: string;
+    value: string; 
 }
 
 export interface StatsIndices {
-    code: string,
-    label: string,
-    type: StatTypes,
-    layer: StatLayers,
-    min?: number,
-    max?: number,
-    classes?: IndiceClass[],
-    desc: string
+    code: string;
+    label: string;
+    type: StatTypes;
+    layer: StatLayers;
+    min?: number;
+    max?: number;
+    classes?: IndiceClass[];
+    desc: string;
 }
 
 export interface IndiceClass {
-    label: string,
-    value?: number,
-    min?: number,
-    max?: number,
-    counter?: number
+    label: string;
+    value?: number;
+    min?: number;
+    max?: number;
+    counter?: number;
+    totalLength?: number;
    
 }
 
 export interface WebGlPointSymbol{ 
     filter: ExpressionValue,
     symbol: { 
-        symbolType: string,
-         size: number,  
-         color: string | number[], 
-         offset: number[], 
-         opacity: number, 
+        symbolType: string;
+         size: number;
+         color: string | number[];
+         offset: number[];
+         opacity: number;
     } 
 }
 
 
 export interface DummyStyle{
-    Point: Style,
-    LineString: Style,
-    LinearRing: Style,
-    MultiLineString: Style,
-    MultiPoint: Style,
-    MultiPolygon: Style,
-    Polygon: Style,
-    GeometryCollection: Style,
-    Circle: Style
+    Point: Style;
+    LineString: Style;
+    LinearRing: Style;
+    MultiLineString: Style;
+    MultiPoint: Style;
+    MultiPolygon: Style;
+    Polygon: Style;
+    GeometryCollection: Style;
+    Circle: Style;
 }
 
 
 export interface IndexFilter{
-    sindex: StatsIndices,
-    values: IndiceClass[],
-    classes: IndiceClass[]
+    sindex: StatsIndices;
+    values: IndiceClass[];
+    classes: IndiceClass[];
 }
 
 export interface ShareMapParams {
-    zoom?: string,
-    center?: string,
-    mode?: string,
-    index?: string
+    zoom?: string;
+    center?: string;
+    mode?: string;
+    index?: string;
 }
 
 
