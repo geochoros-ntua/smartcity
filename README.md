@@ -18,10 +18,12 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## License
 
-## Further help
+This project is funded by the Municipality of Athens and is implemented by the NTUA, School of Rural Geography.
+The source code is released under the GNU General Public License v3.0 (GPL-3.0) license.  
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+See [LICENSE](LICENSE) file for details.
+
+

@@ -31,6 +31,7 @@
                 {{mapStatsService.numericClasses[i].counter}}
                 ({{(100*(mapStatsService.numericClasses[i].counter/
                     (mapStatsService.countFiltered === 0 ? mapStatsService.countAll : mapStatsService.countFiltered))).toFixed(2)}}%)
+                    <span style="font-size: 12px !important;">({{(mapStatsService.numericClasses[i].totalLength/1000).toFixed(0)}} km)</span>
             </td>
             </tr>
         </table>
@@ -46,6 +47,7 @@
                 {{mapStatsService.selectedStatsIndex.classes[i].counter}}
                 ({{(100*(mapStatsService.selectedStatsIndex.classes[i].counter/
                     (mapStatsService.countFiltered === 0 ? mapStatsService.countAll : mapStatsService.countFiltered))).toFixed(2)}}%)
+                    <span style="font-size: 12px !important;">({{(mapStatsService.selectedStatsIndex.classes[i].totalLength/1000).toFixed(0)}} km)</span>
             </td>
             </tr>
         </table>
