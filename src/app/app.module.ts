@@ -109,7 +109,7 @@ export function setupTranslateFactory(
     DescIndicesDialog,
     ContextMenuComponent,
     MapShareComponent,
-    MapShareModalComponent
+    MapShareModalComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,

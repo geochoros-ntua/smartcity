@@ -2,7 +2,8 @@
     <div #controls class="front-teaser-parent">
         <div class="cities-header">
             <h1>{{ "NEIGHBORHOODS.NEIGHBORHOODS_OF_ATHENS" | translate }}</h1>
-            <p><span class="intro-text">{{ "NEIGHBORHOODS.INTRO" | translate }}</span><span class="intro-more"><a (click)="moreInfo()">{{ "NEIGHBORHOODS.MORE" | translate }}</a></span></p>
+            <p><span class="intro-text">{{ "NEIGHBORHOODS.INTRO" | translate }}</span><span class="intro-more"><a
+                        (click)="moreInfo()">{{ "NEIGHBORHOODS.MORE" | translate }}</a></span></p>
         </div>
 
         <div class="cities-controls">
@@ -30,11 +31,14 @@
                 <mat-label>{{ "NEIGHBORHOODS.CATEGORY" | translate }}</mat-label>
                 <mat-select [(value)]="selectedVariableB"
                     (selectionChange)="sortCities(selectedVariableB, reverse, true, labels)">
-                    <mat-option matTooltip="{{header.name}}" *ngFor="let header of headersB | myfilter:selectedVariableA" [value]="header">
+                    <mat-option matTooltip="{{header.name}}"
+                        *ngFor="let header of headersB | myfilter:selectedVariableA" [value]="header">
                         {{header.name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <button [disabled]="!selectedVariableB" mat-icon-button
+                (click)="toggleDesc()"><mat-icon>info</mat-icon></button>
             <mat-slide-toggle class="cities-download" [disabled]="selectedVariableB === null" [checked]="false"
                 [(ngModel)]="reverse" (change)="sortCities(selectedVariableB, reverse, true, labels)">
                 {{ "NEIGHBORHOODS.REVERSE_ORDER" | translate }}
@@ -56,14 +60,18 @@
                 <mat-icon>download</mat-icon>
             </a>
         </div>
+        <!-- (contextmenu)="onMapRightClick($event)" -->
         <div id="neighborhoods-map" [ngClass]="innerWidth > 855 ? 'neighborhoods-map' : 'neighborhoods-map-mobile'"
-            [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}">
-            <div id="popup" [ngClass]="isDarkTheme ? 'neighborhoods-popup-dark neighborhoods-popup-background-dark' : 'neighborhoods-popup neighborhoods-popup-background'">
+             [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}">
+            <!-- <app-second-context-menu *ngIf="contextmenu" (closeCtxMenu$)='disableContextMenu()' [x]="contextmenuX" [map]="map"
+                [y]="contextmenuY"></app-second-context-menu> -->
+            <div id="popup"
+                [ngClass]="isDarkTheme ? 'neighborhoods-popup-dark neighborhoods-popup-background-dark' : 'neighborhoods-popup neighborhoods-popup-background'">
                 <div class="popup-close-container">
                     <div class="spacer"></div> <a href="#" id="popup-closer"
-                    [ngClass]="isDarkTheme ? 'neighborhoods-popup-closer-dark' : 'neighborhoods-popup-closer'"><mat-icon>close</mat-icon></a>
+                        [ngClass]="isDarkTheme ? 'neighborhoods-popup-closer-dark' : 'neighborhoods-popup-closer'"><mat-icon>close</mat-icon></a>
                 </div>
-        
+
                 <div id="popup-content"></div>
                 <!-- <div class="popup-more-container">
                     <div class="spacer"></div>
@@ -80,11 +88,10 @@
             <button class="zoom-out-button" mat-mini-fab (click)="$event.stopPropagation(); zoomOut()">
                 <mat-icon>zoom_out</mat-icon>
             </button>
-            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}" >
+            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}">
                 <label class="example-value-label">{{layerOpacity}}</label>
-                <mat-slider class="opacity-slider" [max]="100" [min]="0" [step]="1" 
-                     [(ngModel)]="layerOpacity" (valueChange)="opacityChange($event)"
-                    aria-labelledby="example-name-label">
+                <mat-slider class="opacity-slider" [max]="100" [min]="0" [step]="1" [(ngModel)]="layerOpacity"
+                    (valueChange)="opacityChange($event)" aria-labelledby="example-name-label">
                 </mat-slider>
             </div>
             <div *ngIf="selectedVariableB" class="legend-parent"
@@ -132,7 +139,8 @@
                         <span *ngIf="selectedVariableB?.name !== 'Μέσος όρος από Στοά (%)' && selectedVariableB?.name !== 'Μέσος όρος από Παρτέρια (%)' &&
                     selectedVariableB?.name !== 'Μέσος όρος από Δέντρα (Αριθμός)' && selectedVariableB?.name !== 'Μέσος όρος από Κολωνάκια ή/και Κιγκλιδώματα (%)' &&
                     selectedVariableB?.name !== 'Μέσος όρος από Μέσο Πλάτος Δρόμου (σε μ.)'"
-                            class="yellow-value">{{neighborhood.selected_variable? (neighborhood.selected_variable * 100 | number : '1.0-2') : 'N/A'}}{{neighborhood.selected_variable? '%' : ''}}</span>
+                            class="yellow-value">{{neighborhood.selected_variable? (neighborhood.selected_variable * 100
+                            | number : '1.0-2') : 'N/A'}}{{neighborhood.selected_variable? '%' : ''}}</span>
 
                         &nbsp;
                     </p>
