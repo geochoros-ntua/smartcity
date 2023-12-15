@@ -12,7 +12,7 @@
         </div>
         <div class="cities-controls">
 
-            <mat-form-field style="width: 90%; max-width: 90%;" class="cities-download" appearance="fill">
+            <mat-form-field style="width: 90%; max-width: 90%;" class="cities-download" appearance="fill"  tourAnchor="23">
                 <mat-label>{{ "INDICES.SELECT_INDEX" | translate }}</mat-label>
                 <mat-select [(value)]="selectedVariable" (selectionChange)="selectVariable(selectedVariable)">
                     <mat-option matTooltip="{{variable.label}}"
@@ -23,10 +23,10 @@
             </mat-form-field>
             <p>{{selectedVariable.desc}}</p>
             <a title="Download .geojson" class="neighborhoods-download" mat-icon-button color="accent"
-                href="assets/geodata/indices_3857.geojson" target="_blank" download>
+                href="assets/geodata/indices_3857.geojson" target="_blank" download  tourAnchor="24">
                 <mat-icon>download</mat-icon>
             </a>
-            <button mat-icon-button (click)="toggleDesc()"><mat-icon>info</mat-icon></button>
+            <button mat-icon-button (click)="toggleDesc()"  tourAnchor="25"><mat-icon>info</mat-icon></button>
         </div>
         <div [hidden]="!showDesc">{{selectedvariableDesc}}</div>
     </div>
@@ -89,8 +89,8 @@
             </div>
 
         </mat-drawer>
-        <div id="indices-map" class="indices-map">
-            <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()">
+        <div id="indices-map" class="indices-map"  tourAnchor="26">
+            <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()"  tourAnchor="28">
                 <mat-icon>zoom_out_map</mat-icon>
             </button>
 
@@ -100,14 +100,14 @@
             <button class="zoom-out-button" mat-mini-fab (click)="$event.stopPropagation(); zoomOut()">
                 <mat-icon>zoom_out</mat-icon>
             </button>
-            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}">
+            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}"  tourAnchor="27">
                 <label class="example-value-label">{{layerOpacity}}</label>
                 <mat-slider class="opacity-slider" [max]="100" [min]="0" [step]="1" [(ngModel)]="layerOpacity"
                     (valueChange)="opacityChange($event)" aria-labelledby="example-name-label">
                 </mat-slider>
             </div>
             <div *ngIf="selectedVariable" class="legend-parent"
-                [ngClass]="isDarkTheme? 'neighborhoods-list-dark' : 'neighborhoods-list-light'">
+                [ngClass]="isDarkTheme? 'neighborhoods-list-dark' : 'neighborhoods-list-light'"  tourAnchor="29">
                 <div class="legend">
                     <div class="legend-colors">
                         <div class="legend-color">{{ breakPoints[5] | number : '1.0-2' }}</div>

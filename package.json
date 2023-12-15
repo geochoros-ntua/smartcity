@@ -1,6 +1,6 @@
 {
   "name": "athens-smartcity",
-  "version": "0.5.9",
+  "version": "0.6.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -30,6 +30,7 @@
     "font-awesome": "^4.7.0",
     "mapillary-js": "^4.1.0",
     "ngx-colors": "~3.0.5",
+    "ngx-ui-tour-md-menu": "^8.1.2",
     "ol": "7.3.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",

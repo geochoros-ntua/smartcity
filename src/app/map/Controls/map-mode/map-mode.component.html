@@ -1,4 +1,4 @@
-<mat-button-toggle-group (change)="setMapMode($event.value)" value="{{mapService.mapMode}}" class="mapModeControl" name="mapModeControl" aria-label="Font Style">
+<mat-button-toggle-group (change)="setMapMode($event.value)" value="{{mapService.mapMode}}" class="mapModeControl" name="mapModeControl" aria-label="Font Style" tourAnchor="33">
     <mat-button-toggle matTooltip="{{'MAP.MODE-MPLR' | translate }}" value="street"><mat-icon>streetview</mat-icon></mat-button-toggle>
     <mat-button-toggle matTooltip="{{'MAP.MODE-FACTORS' | translate }}" value="stats"><mat-icon>question_answer</mat-icon></mat-button-toggle>
     <mat-button-toggle matTooltip="{{'MAP.MODE-SENSORS' | translate }}" value = "sens"><mat-icon>wifi_tethering</mat-icon></mat-button-toggle>

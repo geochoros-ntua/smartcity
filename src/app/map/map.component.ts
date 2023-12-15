@@ -1,3 +1,4 @@
+import { MyTourService } from './../my-tour.service';
 import { MapLayersService } from './Services/map.layers.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MapService } from './Services/map.service';
@@ -23,7 +24,8 @@ import { ShareMapParams } from './api/map.api';
 
 export class MapComponent implements OnInit {
   isStreet: boolean; 
-  isStats: boolean; 
+  isStats: boolean;
+  isStatsForGuide: boolean; 
 
   contextmenu = false;
   contextmenuX = 0;
@@ -35,8 +37,33 @@ export class MapComponent implements OnInit {
     private router: ActivatedRoute,
     public mapLayersService: MapLayersService, 
     public mapStatsService: StatsService,
-    public mapSensorsService: SensorsService) {
+    public mapSensorsService: SensorsService,
+    private myTourService:MyTourService) {
 
+      this.myTourService.tourStep$.subscribe(step=> {
+        if (!this.isStats) {
+          if (step === 35) {
+            this.isStats = true;
+          }
+          else {
+            this.isStats = false;
+          }
+        }
+      });
+
+      this.myTourService.startGuide$.subscribe(status=> {
+        if (status) {
+          console.log(this.isStats)
+          this.isStatsForGuide = this.isStats;
+        }
+      });
+
+      this.myTourService.closeGuide$.subscribe(status=> {
+        if (status) {
+          console.log(this.isStatsForGuide)
+          this.isStats = this.isStatsForGuide;
+        }
+      });
   }
 
   public ngOnInit(): void {

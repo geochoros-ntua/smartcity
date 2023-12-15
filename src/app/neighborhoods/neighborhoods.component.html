@@ -7,7 +7,7 @@
         </div>
 
         <div class="cities-controls">
-            <mat-form-field style="width: 150px; max-width: 50%;" appearance="fill">
+            <mat-form-field style="width: 150px; max-width: 50%;" appearance="fill" tourAnchor="13">
                 <mat-label>{{ "NEIGHBORHOODS.DK" | translate }}</mat-label>
                 <mat-select [(value)]="selectedDk" (selectionChange)="filterDk(selectedDk)">
                     <mat-option [value]="'Όλες'">
@@ -18,7 +18,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field style="width: 250px; max-width: 50%;" appearance="fill">
+            <mat-form-field style="width: 250px; max-width: 50%;" appearance="fill" tourAnchor="14">
                 <mat-label>{{ "NEIGHBORHOODS.GENERAL_CATEGORY" | translate }}</mat-label>
                 <mat-select [(value)]="selectedVariableA">
                     <mat-option *ngFor="let header of headersA" [value]="header">
@@ -40,11 +40,11 @@
             <button [disabled]="!selectedVariableB" mat-icon-button
                 (click)="toggleDesc()"><mat-icon>info</mat-icon></button>
             <mat-slide-toggle class="cities-download" [disabled]="selectedVariableB === null" [checked]="false"
-                [(ngModel)]="reverse" (change)="sortCities(selectedVariableB, reverse, true, labels)">
+                [(ngModel)]="reverse" (change)="sortCities(selectedVariableB, reverse, true, labels)"  tourAnchor="15">
                 {{ "NEIGHBORHOODS.REVERSE_ORDER" | translate }}
             </mat-slide-toggle>
             <mat-slide-toggle class="cities-download" [checked]="true" [(ngModel)]="labels"
-                (change)="sortCities(selectedVariableB, reverse, true, labels)">
+                (change)="sortCities(selectedVariableB, reverse, true, labels)"  tourAnchor="16">
                 {{ "NEIGHBORHOODS.LABELS" | translate }}
             </mat-slide-toggle>
             <!-- <mat-slide-toggle class="cities-download" [checked]="false" [(ngModel)]="capitals"
@@ -52,17 +52,17 @@
                 Capitals
             </mat-slide-toggle> -->
             <button title="CLear all selections" class="neighborhoods-clear" mat-icon-button color="accent"
-                (click)="clear()">
+                (click)="clear()"  tourAnchor="17">
                 <mat-icon>cleaning_services</mat-icon>
             </button>
             <a title="Download .csv" class="neighborhoods-download" mat-icon-button color="accent"
-                href="assets/other/neighborhoods_data.csv" target="_blank" download>
+                href="assets/other/neighborhoods_data.csv" target="_blank" download  tourAnchor="18">
                 <mat-icon>download</mat-icon>
             </a>
         </div>
         <!-- (contextmenu)="onMapRightClick($event)" -->
         <div id="neighborhoods-map" [ngClass]="innerWidth > 855 ? 'neighborhoods-map' : 'neighborhoods-map-mobile'"
-             [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}">
+            [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}"  tourAnchor="20">
             <!-- <app-second-context-menu *ngIf="contextmenu" (closeCtxMenu$)='disableContextMenu()' [x]="contextmenuX" [map]="map"
                 [y]="contextmenuY"></app-second-context-menu> -->
             <div id="popup"
@@ -78,7 +78,7 @@
                     <button mat-button color="primary" disabled="true" (click)="goToMap()">{{ 'NEIGHBORHOODS.ANALYTICS' | translate}}, NYA</button>
                 </div> -->
             </div>
-            <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()">
+            <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()" tourAnchor="22">
                 <mat-icon>zoom_out_map</mat-icon>
             </button>
 
@@ -88,7 +88,7 @@
             <button class="zoom-out-button" mat-mini-fab (click)="$event.stopPropagation(); zoomOut()">
                 <mat-icon>zoom_out</mat-icon>
             </button>
-            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}">
+            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}"  tourAnchor="21">
                 <label class="example-value-label">{{layerOpacity}}</label>
                 <mat-slider class="opacity-slider" [max]="100" [min]="0" [step]="1" [(ngModel)]="layerOpacity"
                     (valueChange)="opacityChange($event)" aria-labelledby="example-name-label">
@@ -118,7 +118,7 @@
         </div>
         <mat-list *ngIf="neighborhoods.length > 0"
             [ngClass]="[innerWidth > 855 ? 'neighborhoods-list' : 'neighborhoods-list-mobile', isDarkTheme? 'neighborhoods-list-dark' : 'neighborhoods-list-light']"
-            [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}" [@listAnimationList]="suffleCards">
+            [ngStyle]="innerWidth > 855 ? {'top':controlsHeight}: {}" [@listAnimationList]="suffleCards"  tourAnchor="19">
 
             <mat-list-item class="item-list" *ngFor="let neighborhood of neighborhoods"
                 (mouseenter)="hoverStyle(neighborhood.code,  neighborhood.order_number ? neighborhood.order_number + '. ' + neighborhood.name : neighborhood.name, labels)"

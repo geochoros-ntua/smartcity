@@ -6,7 +6,7 @@
     </div>
     <div class="responses-container">
         <div class="variables-container">
-            <mat-form-field appearance="fill" class="select-variable">
+            <mat-form-field appearance="fill" class="select-variable" tourAnchor="5">
                 <mat-label>{{ "RESPONSES.RESPONDENTS" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedRespondents" (selectionChange)="resetFilters()">
                     <mat-option *ngFor="let respondent of respondents" [value]="respondent.id">{{ respondent.id + '. ' +
@@ -15,7 +15,7 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div *ngIf="selectedRespondents === 1" class="variables-container">
+        <div *ngIf="selectedRespondents === 1" class="variables-container" tourAnchor="6">
             <mat-form-field appearance="fill" class="select-variable">
                 <mat-label>{{ "RESPONSES.VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedVariable" (selectionChange)="filterResponses()">
@@ -38,7 +38,7 @@
             </mat-form-field>
         </div>
         <div class="filters-container">
-            <mat-form-field *ngIf="selectedRespondents === 1" appearance="fill" class="select-filter-variable">
+            <mat-form-field *ngIf="selectedRespondents === 1" appearance="fill" class="select-filter-variable" tourAnchor="7">
                 <mat-label>{{ "RESPONSES.FILTER_VARIABLE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedFilterVariable"
                     (selectionChange)="getFilterValues(selectedFilterVariable)">
@@ -74,7 +74,7 @@
         </div>
         <div class="filters-container">
 
-            <mat-form-field [hidden]="showStudentsWishes" appearance="fill" class="select-filter-variable">
+            <mat-form-field [hidden]="showStudentsWishes" appearance="fill" class="select-filter-variable" tourAnchor="8">
                 <mat-label>{{ "RESPONSES.CHART_TYPE" | translate }}</mat-label>
                 <mat-select [(ngModel)]="selectedChartType" (selectionChange)="filterResponses()">
                     <mat-option *ngFor="let value of chartTypeValues" [value]="value.id">{{ lang === 'en' ?
@@ -90,11 +90,11 @@
                     }}</mat-slide-toggle>
             </div>
             <div class="filter-button"> <button mat-icon-button (click)="resetFilters()"
-                    matTooltip="{{ 'RESPONSES.CLEAR' | translate }}" matTooltipClass="tooltip">
+                    matTooltip="{{ 'RESPONSES.CLEAR' | translate }}" matTooltipClass="tooltip" tourAnchor="9">
                     <mat-icon>cleaning_services</mat-icon>
                 </button></div>
             <div class="spacer"></div>
-            <div class="filter-button">
+            <div class="filter-button" tourAnchor="10">
                 <a *ngIf="selectedRespondents === 1" mat-raised-button download
                     href="assets/other/responses_residents.csv">{{ "RESPONSES.DOWNLOAD" | translate
                     }}</a>
@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" tourAnchor="11">
             <div [hidden]="showStudentsWishes">
                 <canvas #graphCanvas class="chart-canvas"></canvas>
                 <hr color="primary">
@@ -116,7 +116,7 @@
             </div>
         </div>
 
-        <table mat-table [dataSource]="tableSource" class="data-table mat-elevation-z8">
+        <table mat-table [dataSource]="tableSource" class="data-table mat-elevation-z8" tourAnchor="12">
 
 
             <ng-container matColumnDef="value">

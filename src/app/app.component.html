@@ -7,7 +7,10 @@
       translate}}</div>
     <div class="color-accent" *ngIf="innerWidth > 760">{{'MENU.OBSERVATORY' | translate}}</div>
     <span class="example-spacer"></span>
-    <button mat-icon-button [matMenuTriggerFor]="menuParent">
+    <button *ngIf="showGuide" mat-icon-button (click)="startGuide()" tourAnchor="1">
+    <mat-icon>help</mat-icon>
+  </button>
+    <button mat-icon-button [matMenuTriggerFor]="menuParent" tourAnchor="2"> 
       <mat-icon>menu</mat-icon>
       <mat-menu #menuParent="matMenu" class="main-menu">
         <button class="menu-button" mat-menu-item routerLink="/home" [routerLinkActive]="['is-active']"
@@ -48,8 +51,8 @@
         </button>
       </mat-menu>
     </button>
-    <app-translate></app-translate>
-    <app-dark-theme></app-dark-theme>
+    <app-translate tourAnchor="3"></app-translate>
+    <app-dark-theme tourAnchor="4"></app-dark-theme>
 
   </mat-toolbar>
 
@@ -59,3 +62,29 @@
   </div>
 
 </div>
+<tour-step-template>
+  <ng-template let-step="step">
+    <mat-card (click)="$event.stopPropagation()">
+      <mat-card-header>
+        <mat-card-title>
+          {{step?.title}}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{step?.content}}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-icon-button [disabled]="!tourService.hasPrev(step) || tourButtonsDis"
+          (click)=" toggleSideNavPrev(step?.anchorId)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button mat-icon-button [disabled]="!tourService.hasNext(step) || tourButtonsDis"
+          (click)="toggleSideNavNext(step?.anchorId)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <!-- <button mat-button (click)="tourService.end(); toggleSideNav();">{{step?.endBtnTitle}}</button> -->
+        <button mat-button (click)="tourService.end(); closeGuide();">{{'HOME.END' | translate}}</button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-template>
+</tour-step-template>

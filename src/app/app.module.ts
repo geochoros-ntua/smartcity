@@ -65,6 +65,8 @@ import { DescIndicesDialog, IndicesComponent, MoreInfoIndicesDialog, indicesFilt
 import { ContextMenuComponent } from './map/Controls/context-menu/context-menu.component';
 import { MapShareComponent } from './map/Controls/map-share/map-share.component';
 import { MapShareModalComponent } from './map/Controls/map-share-modal/map-share-modal.component';
+import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
+import { MyTourService } from './my-tour.service';
 
 
 export function setupTranslateFactory(
@@ -118,7 +120,7 @@ export function setupTranslateFactory(
     MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
     MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule,
-    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule, NgxColorsModule
+    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule, NgxColorsModule, TourMatMenuModule.forRoot()
   ],
   providers: [
     TranslateService,
@@ -128,6 +130,7 @@ export function setupTranslateFactory(
       deps: [TranslateService],
       multi: true
     },
+    MyTourService, TourService
   ],
   bootstrap: [AppComponent]
 })

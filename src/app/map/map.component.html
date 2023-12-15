@@ -1,10 +1,7 @@
-<link
-  href="https://unpkg.com/mapillary-js@4.0.0/dist/mapillary.css"
-  rel="stylesheet"
-/>
+<link href="https://unpkg.com/mapillary-js@4.0.0/dist/mapillary.css" rel="stylesheet" />
 
 
-<div id="map_div" (contextmenu)="onMapRightClick($event)">
+<div id="map_div" (contextmenu)="onMapRightClick($event)" tourAnchor="30">
 
   <app-tileselector></app-tileselector>
   <app-mapillary-data *ngIf="isStreet"></app-mapillary-data>
@@ -16,10 +13,11 @@
 
   <app-popup></app-popup>
 
-  <app-context-menu *ngIf="contextmenu" (closeCtxMenu$) = 'disableContextMenu()'  [x]="contextmenuX" [y]="contextmenuY"></app-context-menu>
+  <app-context-menu *ngIf="contextmenu" (closeCtxMenu$)='disableContextMenu()' [x]="contextmenuX"
+    [y]="contextmenuY"></app-context-menu>
 
-  <div *ngIf="!mapLayersService.dataLoaded" class="loader" >
-    <mat-spinner color="primary" diameter="70" mode="indeterminate" ></mat-spinner>
+  <div *ngIf="!mapLayersService.dataLoaded" class="loader">
+    <mat-spinner color="primary" diameter="70" mode="indeterminate"></mat-spinner>
   </div>
 
   <div #tooltip id="tooltip" class="tooltip"></div>
