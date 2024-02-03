@@ -55,7 +55,8 @@
       "STATS-FILTER-CLEAR-ALL":"Clear all filters",
       "MAP-SHARE":"Share your map",
       "MAP-SHARE-TOOLTIP":"Get a sharable link",
-      "MAP-SHARE-BTN":"Copy map link to clipboard"                                            
+      "MAP-SHARE-BTN":"Copy map link to clipboard",
+      "MAP-GEOCODE": "Search address"                                         
   },
   "GRAPH" :{
     "LINE": "Line", 

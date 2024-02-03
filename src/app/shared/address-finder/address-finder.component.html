@@ -1,0 +1,47 @@
+<div
+  [style.left.px]="position[0]"
+  [style.top.px]="position[1]"
+  [class]="darkThemeService.darkTheme ? 'geocode' : 'gecode-light'"
+>
+  <form>
+    <mat-form-field class="geocode-field">
+      <mat-label>{{ "MAP.MAP-GEOCODE" | translate }}</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="geocodeControl"
+        [matAutocomplete]="auto"
+      />
+
+      <button
+        *ngIf="geocodeControl.value"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="
+          geocodeControl.setValue('', { emitEvent: false });
+          map.removeOverlay(marker)
+        "
+      >
+        <mat-icon *ngIf="!loading" (click)="map.removeOverlay(marker)"
+          >close</mat-icon
+        >
+        <mat-spinner *ngIf="loading" diameter="15"></mat-spinner>
+      </button>
+      <mat-autocomplete
+        [displayWith]="displayFn.bind(this)"
+        (optionSelected)="locate($event.option.value)"
+        #auto="matAutocomplete"
+      >
+        <mat-option
+          class="geocode-options"
+          *ngFor="let option of options"
+          title="{{ option.displayName }}"
+          [value]="option"
+        >
+          {{ option.displayName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>

@@ -1,0 +1,34 @@
+.geocode {
+  position: absolute;
+  left: 120px;
+  top: 10px;
+  z-index: 9999;
+  background: rgba(35, 35, 35, 1);
+  color: white;
+  border-radius: 8px !important;
+  box-shadow: 5px 5px 10px 2px rgb(0 0 0 / 80%);
+}
+
+.gecode-light {
+  position: absolute;
+  left: 120px;
+  top: 10px;
+  z-index: 9999;
+  background: rgb(231, 231, 231);
+  color: black;
+  border-radius: 8px !important;
+  box-shadow: 5px 5px 10px 2px rgb(0 0 0 / 80%);
+}
+
+.geocode-field {
+  width: 250px;
+  margin: 0px 10px 0px 10px;
+}
+
+.geocode-options.mat-option {
+  font-size: 12px;
+}
+
+.geocode-options.mat-option-text {
+  line-height: initial !important;
+}
