@@ -1,130 +1,247 @@
 <div class="indices-parent">
-    <div *ngIf="isLoading" class="mat-typography mat-app-background loading" [class.athens-dark-theme]="isDarkTheme">
-        <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
-        </mat-progress-spinner>
+  <div
+    *ngIf="isLoading"
+    class="mat-typography mat-app-background loading"
+    [class.athens-dark-theme]="isDarkTheme"
+  >
+    <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+  </div>
+
+  <div #controls class="front-teaser-parent">
+    <div class="cities-header">
+      <h1>{{ "INDICES.TITLE" | translate }}</h1>
+      <p>
+        <span class="intro-text">{{ "INDICES.INTRO" | translate }}</span
+        ><span class="intro-more"
+          ><a (click)="moreInfo()">{{
+            "NEIGHBORHOODS.MORE" | translate
+          }}</a></span
+        >
+      </p>
     </div>
-
-    <div #controls class="front-teaser-parent">
-        <div class="cities-header">
-            <h1>{{ "INDICES.TITLE" | translate }}</h1>
-            <p><span class="intro-text">{{ "INDICES.INTRO" | translate }}</span><span class="intro-more"><a
-                        (click)="moreInfo()">{{ "NEIGHBORHOODS.MORE" | translate }}</a></span></p>
-        </div>
-        <div class="cities-controls">
-
-            <mat-form-field style="width: 90%; max-width: 90%;" class="cities-download" appearance="fill"  tourAnchor="23">
-                <mat-label>{{ "INDICES.SELECT_INDEX" | translate }}</mat-label>
-                <mat-select [(value)]="selectedVariable" (selectionChange)="selectVariable(selectedVariable)">
-                    <mat-option matTooltip="{{variable.label}}"
-                        *ngFor="let variable of variables | myfilter:selectedVariable" [value]="variable.id">
-                        {{variable.label}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <p>{{selectedVariable.desc}}</p>
-            <a title="Download .geojson" class="neighborhoods-download" mat-icon-button color="accent"
-                href="assets/geodata/indices_3857.geojson" target="_blank" download  tourAnchor="24">
-                <mat-icon>download</mat-icon>
-            </a>
-            <button mat-icon-button (click)="toggleDesc()"  tourAnchor="25"><mat-icon>info</mat-icon></button>
-        </div>
-        <div [hidden]="!showDesc">{{selectedvariableDesc}}</div>
+    <div class="cities-controls">
+      <mat-form-field
+        style="width: 90%; max-width: 90%"
+        class="cities-download"
+        appearance="fill"
+        tourAnchor="23"
+      >
+        <mat-label>{{ "INDICES.SELECT_INDEX" | translate }}</mat-label>
+        <mat-select
+          [(value)]="selectedVariable"
+          (selectionChange)="selectVariable(selectedVariable)"
+        >
+          <mat-option
+            matTooltip="{{ variable.label }}"
+            *ngFor="let variable of variables | myfilter : selectedVariable"
+            [value]="variable.id"
+          >
+            {{ variable.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p>{{ selectedVariable.desc }}</p>
+      <a
+        title="Download .geojson"
+        class="neighborhoods-download"
+        mat-icon-button
+        color="accent"
+        href="assets/geodata/indices_3857.geojson"
+        target="_blank"
+        download
+        tourAnchor="24"
+      >
+        <mat-icon>download</mat-icon>
+      </a>
+      <button mat-icon-button (click)="toggleDesc()" tourAnchor="25">
+        <mat-icon>info</mat-icon>
+      </button>
     </div>
+    <div [hidden]="!showDesc">{{ selectedvariableDesc }}</div>
+  </div>
 
-    <mat-drawer-container class="map-drawer-container" autosize
-        [ngStyle]="{'top':controlsHeight, 'height': 'calc(100% - ' + controlsHeight + ')'}">
-        <mat-drawer #drawer class="map-sidenav" mode="side">
-            <div>
-                <div style="display: flex;">
-                    <div class="spacer"></div><button mat-icon-button
-                        (click)="drawer.close()"><mat-icon>close</mat-icon></button>
-                </div>
-                <div class="stats">
-                    <mat-accordion>
-
-                        <mat-expansion-panel
-                            *ngFor="let variable of variables | indicesFilter:{level: 1, parent_index: null}"
-                            expanded="true">
-                            <mat-expansion-panel-header class="indices-header">
-                                <mat-panel-title>
-                                    {{variable.label}}
-                                </mat-panel-title>
-                                <mat-panel-description [ngStyle]="{'color':variable.color}"
-                                    [ngClass]="isDarkTheme ? 'text-shadow-dark':'text-shadow'">
-                                    {{variable.value}}
-                                </mat-panel-description>
-                            </mat-expansion-panel-header>
-
-                            <mat-accordion
-                                *ngFor="let variable2 of variables | indicesFilter:{level: 2, parent_index: variable.id}"
-                                expanded="true">
-                                <mat-expansion-panel>
-                                    <mat-expansion-panel-header class="indices-header">
-                                        <mat-panel-title>
-                                            {{variable2.label}}
-                                        </mat-panel-title>
-                                        <mat-panel-description [ngStyle]="{'color':variable2.color}"
-                                            [ngClass]="isDarkTheme ? 'text-shadow-dark':'text-shadow'">
-                                            {{variable2.value}}
-                                        </mat-panel-description>
-                                    </mat-expansion-panel-header>
-                                    <mat-card
-                                        *ngFor="let variable3 of variables | indicesFilter:{level: 3, parent_index: variable2.id}">
-                                        <div style="display: flex;">
-                                            <div>{{variable3.label}}</div>
-                                            <div class="spacer"></div>
-                                            <div [ngStyle]="{'color':variable3.color}"
-                                                [ngClass]="isDarkTheme ? 'text-shadow-dark':'text-shadow'">
-                                                {{variable3.value}}</div>
-                                        </div>
-                                    </mat-card>
-                                </mat-expansion-panel>
-                            </mat-accordion>
-
-                        </mat-expansion-panel>
-
-                    </mat-accordion>
-
-                </div>
-            </div>
-
-        </mat-drawer>
-        <div id="indices-map" class="indices-map"  tourAnchor="26">
-            <button class="extent-button" mat-mini-fab (click)="$event.stopPropagation(); resetExtent()"  tourAnchor="28">
-                <mat-icon>zoom_out_map</mat-icon>
-            </button>
-
-            <button class="zoom-in-button" mat-mini-fab (click)="$event.stopPropagation(); zoomIn()">
-                <mat-icon>zoom_in</mat-icon>
-            </button>
-            <button class="zoom-out-button" mat-mini-fab (click)="$event.stopPropagation(); zoomOut()">
-                <mat-icon>zoom_out</mat-icon>
-            </button>
-            <div class="opacity-slider-parent" matTooltip="{{'NEIGHBORHOODS.OPACITY' | translate }}"  tourAnchor="27">
-                <label class="example-value-label">{{layerOpacity}}</label>
-                <mat-slider class="opacity-slider" [max]="100" [min]="0" [step]="1" [(ngModel)]="layerOpacity"
-                    (valueChange)="opacityChange($event)" aria-labelledby="example-name-label">
-                </mat-slider>
-            </div>
-            <div *ngIf="selectedVariable" class="legend-parent"
-                [ngClass]="isDarkTheme? 'neighborhoods-list-dark' : 'neighborhoods-list-light'"  tourAnchor="29">
-                <div class="legend">
-                    <div class="legend-colors">
-                        <div class="legend-color">{{ breakPoints[5] | number : '1.0-2' }}</div>
-                        <div class="legend-color">{{ breakPoints[4] | number : '1.0-2' }}</div>
-                        <div class="legend-color">{{ breakPoints[3] | number : '1.0-2' }}</div>
-                        <div class="legend-color">{{ breakPoints[2] | number : '1.0-2' }}</div>
-                        <div class="legend-color">{{ breakPoints[1] | number : '1.0-2' }}</div>
-                    </div>
-                    <div class="legend-colors">
-                        <div class="legend-color" [ngStyle]="{'background-color':colorRamp[4]}"></div>
-                        <div class="legend-color" [ngStyle]="{'background-color':colorRamp[3]}"></div>
-                        <div class="legend-color" [ngStyle]="{'background-color':colorRamp[2]}"></div>
-                        <div class="legend-color" [ngStyle]="{'background-color':colorRamp[1]}"></div>
-                        <div class="legend-color" [ngStyle]="{'background-color':colorRamp[0]}"></div>
-                    </div>
-                </div>
-            </div>
+  <mat-drawer-container
+    class="map-drawer-container"
+    autosize
+    [ngStyle]="{
+      top: controlsHeight,
+      height: 'calc(100% - ' + controlsHeight + ')'
+    }"
+  >
+    <mat-drawer #drawer class="map-sidenav" mode="side">
+      <div>
+        <div style="display: flex">
+          <div class="spacer"></div>
+          <button mat-icon-button (click)="drawer.close()">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
-    </mat-drawer-container>
+        <div class="stats">
+          <mat-accordion>
+            <mat-expansion-panel
+              *ngFor="
+                let variable of variables
+                  | indicesFilter : { level: 1, parent_index: null }
+              "
+              expanded="true"
+            >
+              <mat-expansion-panel-header class="indices-header">
+                <mat-panel-title>
+                  {{ variable.label }}
+                </mat-panel-title>
+                <mat-panel-description
+                  [ngStyle]="{ color: variable.color }"
+                  [ngClass]="isDarkTheme ? 'text-shadow-dark' : 'text-shadow'"
+                >
+                  {{ variable.value }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-accordion
+                *ngFor="
+                  let variable2 of variables
+                    | indicesFilter : { level: 2, parent_index: variable.id }
+                "
+                expanded="true"
+              >
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="indices-header">
+                    <mat-panel-title>
+                      {{ variable2.label }}
+                    </mat-panel-title>
+                    <mat-panel-description
+                      [ngStyle]="{ color: variable2.color }"
+                      [ngClass]="
+                        isDarkTheme ? 'text-shadow-dark' : 'text-shadow'
+                      "
+                    >
+                      {{ variable2.value }}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <mat-card
+                    *ngFor="
+                      let variable3 of variables
+                        | indicesFilter
+                          : { level: 3, parent_index: variable2.id }
+                    "
+                  >
+                    <div style="display: flex">
+                      <div>{{ variable3.label }}</div>
+                      <div class="spacer"></div>
+                      <div
+                        [ngStyle]="{ color: variable3.color }"
+                        [ngClass]="
+                          isDarkTheme ? 'text-shadow-dark' : 'text-shadow'
+                        "
+                      >
+                        {{ variable3.value }}
+                      </div>
+                    </div>
+                  </mat-card>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </mat-drawer>
+    <div id="indices-map" class="indices-map" tourAnchor="26">
+      <button
+        class="extent-button"
+        mat-mini-fab
+        (click)="$event.stopPropagation(); resetExtent()"
+        tourAnchor="28"
+      >
+        <mat-icon>zoom_out_map</mat-icon>
+      </button>
+
+      <button
+        class="zoom-in-button"
+        mat-mini-fab
+        (click)="$event.stopPropagation(); zoomIn()"
+      >
+        <mat-icon>zoom_in</mat-icon>
+      </button>
+      <button
+        class="zoom-out-button"
+        mat-mini-fab
+        (click)="$event.stopPropagation(); zoomOut()"
+      >
+        <mat-icon>zoom_out</mat-icon>
+      </button>
+      <div
+        class="opacity-slider-parent"
+        matTooltip="{{ 'NEIGHBORHOODS.OPACITY' | translate }}"
+        tourAnchor="27"
+      >
+        <label class="example-value-label">{{ layerOpacity }}</label>
+        <mat-slider
+          class="opacity-slider"
+          [max]="100"
+          [min]="0"
+          [step]="1"
+          [(ngModel)]="layerOpacity"
+          (valueChange)="opacityChange($event)"
+          aria-labelledby="example-name-label"
+        >
+        </mat-slider>
+      </div>
+      <div
+        *ngIf="selectedVariable"
+        class="legend-parent"
+        [ngClass]="
+          isDarkTheme ? 'neighborhoods-list-dark' : 'neighborhoods-list-light'
+        "
+        tourAnchor="29"
+      >
+        <div class="legend">
+          <div class="legend-colors">
+            <div class="legend-color">
+              {{ breakPoints[5] | number : "1.0-2" }}
+            </div>
+            <div class="legend-color">
+              {{ breakPoints[4] | number : "1.0-2" }}
+            </div>
+            <div class="legend-color">
+              {{ breakPoints[3] | number : "1.0-2" }}
+            </div>
+            <div class="legend-color">
+              {{ breakPoints[2] | number : "1.0-2" }}
+            </div>
+            <div class="legend-color">
+              {{ breakPoints[1] | number : "1.0-2" }}
+            </div>
+          </div>
+          <div class="legend-colors">
+            <div
+              class="legend-color"
+              [ngStyle]="{ 'background-color': colorRamp[4] }"
+            ></div>
+            <div
+              class="legend-color"
+              [ngStyle]="{ 'background-color': colorRamp[3] }"
+            ></div>
+            <div
+              class="legend-color"
+              [ngStyle]="{ 'background-color': colorRamp[2] }"
+            ></div>
+            <div
+              class="legend-color"
+              [ngStyle]="{ 'background-color': colorRamp[1] }"
+            ></div>
+            <div
+              class="legend-color"
+              [ngStyle]="{ 'background-color': colorRamp[0] }"
+            ></div>
+          </div>
+        </div>
+      </div>
+      <app-address-finder
+        *ngIf="mapReady"
+        [position]="[20, 10]"
+        [map]="map"
+      ></app-address-finder>
+    </div>
+  </mat-drawer-container>
 </div>

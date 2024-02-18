@@ -46,8 +46,8 @@ import { DarkThemeComponent } from './shared/dark-theme/dark-theme.component';
 import { SensorsGraphComponent } from './map/Controls/sensors-tab-layout/sensors-graph/sensors-graph.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatTabsModule } from '@angular/material/tabs'; 
-import { MatCardModule } from '@angular/material/card'; 
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
 import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
 import { AboutComponent } from './about/about.component';
@@ -59,18 +59,27 @@ import { MapStatsDataModalComponent } from './map/Controls/map-stats-data-modal/
 import { MapStatsThemmaticComponent } from './map/Controls/map-stats-data-modal/map-stats-themmatic/map-stats-themmatic.component';
 import { MapStatsFiltersComponent } from './map/Controls/map-stats-data-modal/map-stats-filters/map-stats-filters.component';
 import { NgxColorsModule } from 'ngx-colors';
-import { MoreInfoDialog, MyFilterPipe, NeighborhoodsComponent } from './neighborhoods/neighborhoods.component';
+import {
+  MoreInfoDialog,
+  MyFilterPipe,
+  NeighborhoodsComponent,
+} from './neighborhoods/neighborhoods.component';
 import { StrategyComponent } from './strategy/strategy.component';
-import { DescIndicesDialog, IndicesComponent, MoreInfoIndicesDialog, indicesFilterPipe } from './indices/indices.component';
+import {
+  DescIndicesDialog,
+  IndicesComponent,
+  MoreInfoIndicesDialog,
+  indicesFilterPipe,
+} from './indices/indices.component';
 import { ContextMenuComponent } from './map/Controls/context-menu/context-menu.component';
 import { MapShareComponent } from './map/Controls/map-share/map-share.component';
 import { MapShareModalComponent } from './map/Controls/map-share-modal/map-share-modal.component';
 import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { MyTourService } from './my-tour.service';
+import { AddressFinderComponent } from './shared/address-finder/address-finder.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-
-export function setupTranslateFactory(
-  service: TranslateService): Function {
+export function setupTranslateFactory(service: TranslateService): Function {
   return () => service.use('gr');
 }
 
@@ -112,15 +121,52 @@ export function setupTranslateFactory(
     ContextMenuComponent,
     MapShareComponent,
     MapShareModalComponent,
+    AddressFinderComponent,
   ],
   imports: [
-    BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule,
-    MatIconModule, MatButtonModule, MatButtonToggleModule, MatSliderModule, MatSidenavModule, MatToolbarModule,
-    MatSelectModule, MatMenuModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
-    MatListModule, MatGridListModule, MatProgressSpinnerModule, MatTableModule, MatTooltipModule,
-    MatDialogModule, MatStepperModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
-    HttpClientModule, MatExpansionModule, MatSlideToggleModule, DragDropModule, MatSnackBarModule,
-    MatDatepickerModule, MatNativeDateModule, MatTabsModule, MatCardModule, NgxColorsModule, TourMatMenuModule.forRoot()
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatSliderModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatTooltipModule,
+    MatListModule,
+    MatGridListModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatStepperModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    HttpClientModule,
+    MatExpansionModule,
+    MatSlideToggleModule,
+    DragDropModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule,
+    MatCardModule,
+    NgxColorsModule,
+    TourMatMenuModule.forRoot(),
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTabsModule,
+    MatCardModule,
+    MatAutocompleteModule,
+    NgxColorsModule,
   ],
   providers: [
     TranslateService,
@@ -128,10 +174,11 @@ export function setupTranslateFactory(
       provide: APP_INITIALIZER,
       useFactory: setupTranslateFactory,
       deps: [TranslateService],
-      multi: true
+      multi: true,
     },
-    MyTourService, TourService
+    MyTourService,
+    TourService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
