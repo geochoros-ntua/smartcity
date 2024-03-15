@@ -1,103 +1,176 @@
 <section>
-    <div class="front-image">
-        <div [ngClass]="innerWidth > 670 ? 'front-image-info' : 'front-image-info-mobile'">
-            <div class="slide-left title-lines">
-                <h1 class="title-a">{{'TITLE' | translate}}</h1>
+  <div class="front-image">
+    <div
+      [ngClass]="
+        innerWidth > 670 ? 'front-image-info' : 'front-image-info-mobile'
+      "
+    >
+      <div class="slide-left title-lines">
+        <h1 class="title-a">{{ "TITLE" | translate }}</h1>
+      </div>
+    </div>
+    <div
+      [ngClass]="
+        innerWidth > 670
+          ? 'front-buttons-container'
+          : 'front-buttons-container-mobile'
+      "
+    >
+      <div
+        [ngClass]="
+          innerWidth > 670
+            ? 'front-buttons-inner-container'
+            : 'front-buttons-inner-container-mobile'
+        "
+      >
+        <div
+          [ngClass]="
+            innerWidth > 670 ? 'left-container' : 'left-container-mobile'
+          "
+          routerLink="/about"
+        >
+          <div
+            class="front-button-container front-button-container-left background-color-primary border-color-primary"
+          >
+            <div class="front-button-text">
+              {{ "HOME.INFO" | translate }}
             </div>
-
+          </div>
         </div>
-        <div [ngClass]="innerWidth > 670 ? 'front-buttons-container' : 'front-buttons-container-mobile'">
-            <div
-                [ngClass]="innerWidth > 670 ? 'front-buttons-inner-container' : 'front-buttons-inner-container-mobile'">
-                <div [ngClass]="innerWidth > 670 ? 'left-container' : 'left-container-mobile'" routerLink="/about">
-                    <div
-                        class="front-button-container front-button-container-left background-color-primary border-color-primary">
-                        <div class="front-button-text">
-                            {{"HOME.INFO" | translate}}
-                        </div>
-                    </div>
-                </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/map">
-                    <div
-                        class="front-button-container front-button-container-right background-color-accent border-color-accent">
-                        <div class="front-button-text">
-                            {{"HOME.MAPS" | translate}}
-                        </div>
-                    </div>
-                </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'"
-                    routerLink="/responses">
-                    <div
-                        class="front-button-container front-button-container-left background-color-primary border-color-primary">
-                        <div class="front-button-text">
-                            {{"HOME.QUESTIONNAIRE" | translate}}
-                        </div>
-                    </div>
-                </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'"
-                    routerLink="/neighborhoods">
-                    <div
-                        class="front-button-container front-button-container-right background-color-accent border-color-accent">
-                        <div class="front-button-text">
-                            {{"HOME.NEIGHBORHOODS" | translate}}
-                        </div>
-                    </div>
-                </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'"
-                    routerLink="/indices">
-                    <div
-                        class="front-button-container front-button-container-left background-color-primary border-color-primary">
-                        <div class="front-button-text">
-                            {{"HOME.INDICES" | translate}}
-                        </div>
-                    </div>
-                </div>
-                <div [ngClass]="innerWidth > 670 ? 'right-container' : 'right-container-mobile'" routerLink="/strategy">
-                    <div
-                        class="front-button-container front-button-container-right background-color-accent border-color-accent">
-                        <div class="front-button-text">
-                            {{"HOME.STRATEGY" | translate}}
-                        </div>
-                    </div>
-                </div>
+        <div
+          [ngClass]="
+            innerWidth > 670 ? 'right-container' : 'right-container-mobile'
+          "
+          routerLink="/map"
+        >
+          <div
+            class="front-button-container front-button-container-right background-color-accent border-color-accent"
+          >
+            <div class="front-button-text">
+              {{ "HOME.MAPS" | translate }}
             </div>
+          </div>
         </div>
-        <!-- <div class="front-image-blend"></div> -->
-        <!-- <div class="front-image-bg" [ngStyle]="getBgStyle()"> -->
-        <!-- <div class="front-image-bg">
+        <div
+          [ngClass]="
+            innerWidth > 670 ? 'right-container' : 'right-container-mobile'
+          "
+          routerLink="/responses"
+        >
+          <div
+            class="front-button-container front-button-container-left background-color-primary border-color-primary"
+          >
+            <div class="front-button-text">
+              {{ "HOME.QUESTIONNAIRE" | translate }}
+            </div>
+          </div>
+        </div>
+        <div
+          [ngClass]="
+            innerWidth > 670 ? 'right-container' : 'right-container-mobile'
+          "
+          routerLink="/neighborhoods"
+        >
+          <div
+            class="front-button-container front-button-container-right background-color-accent border-color-accent"
+          >
+            <div class="front-button-text">
+              {{ "HOME.NEIGHBORHOODS" | translate }}
+            </div>
+          </div>
+        </div>
+        <div
+          [ngClass]="
+            innerWidth > 670 ? 'right-container' : 'right-container-mobile'
+          "
+          routerLink="/indices"
+        >
+          <div
+            class="front-button-container front-button-container-left background-color-primary border-color-primary"
+          >
+            <div class="front-button-text">
+              {{ "HOME.INDICES" | translate }}
+            </div>
+          </div>
+        </div>
+        <div
+          [ngClass]="
+            innerWidth > 670 ? 'right-container' : 'right-container-mobile'
+          "
+          routerLink="/strategy"
+        >
+          <div
+            class="front-button-container front-button-container-right background-color-accent border-color-accent"
+          >
+            <div class="front-button-text">
+              {{ "HOME.STRATEGY" | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="front-image-blend"></div> -->
+    <!-- <div class="front-image-bg" [ngStyle]="getBgStyle()"> -->
+    <!-- <div class="front-image-bg">
         </div> -->
-        <video class="front-image-bg" playsinline autoplay loop muted oncanplay="this.play()"
-            onloadedmetadata="this.muted = true" poster="assets/images/walkable_front.jpg">
-            <source src="assets/videos/walkable_front.mp4" type="video/mp4">
-        </video>
+    <video
+      class="front-image-bg"
+      playsinline
+      autoplay
+      loop
+      muted
+      oncanplay="this.play()"
+      onloadedmetadata="this.muted = true"
+      poster="assets/images/walkable_front.jpg"
+    >
+      <source src="assets/videos/walkable_front.mp4" type="video/mp4" />
+    </video>
 
-        <!-- <div class="front-image-cover"></div> -->
-        <button class="scroll-down" mat-icon-button (click)="scrollDown()">
-            <mat-icon>expand_more</mat-icon>
-        </button>
+    <!-- <div class="front-image-cover"></div> -->
+    <button class="scroll-down" mat-icon-button (click)="scrollDown()">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+  </div>
+
+  <div class="front-content">
+    <mat-card class="front-text">
+      <p>{{ "HOME.INTRO_A" | translate }}</p>
+      <p>{{ "HOME.INTRO_B" | translate }}</p>
+    </mat-card>
+  </div>
+
+  <div class="footer-container">
+    <div class="footer-logos">
+      <a
+        class="footer-links"
+        href="https://www.cityofathens.gr/"
+        target="_blank"
+      >
+        <img
+          class="footer-logo"
+          *ngIf="lang === 'gr'"
+          src="assets/icons/Logo_Ath_Mun_gr.jpeg"
+        />
+        <img
+          class="footer-logo"
+          *ngIf="lang !== 'gr'"
+          src="assets/icons/Logo_Ath_Mun_en.jpeg"
+        />
+      </a>
+      <a class="footer-links" href="https://www.smu.gr/" target="_blank">
+        <img
+          class="footer-logo"
+          *ngIf="lang === 'gr'"
+          src="assets/icons/smu_logo_3_smal.png"
+        />
+        <img
+          class="footer-logo"
+          *ngIf="lang !== 'gr'"
+          src="assets/icons/smu_logo_3_smal.png"
+        />
+      </a>
     </div>
 
-    <div class="front-content">
-        <mat-card class="front-text">
-           <p>{{"HOME.INTRO_A" | translate}}</p>
-           <p>{{"HOME.INTRO_B" | translate}}</p>
-        </mat-card>
-
-    </div>
-
-    <div class="footer-container">
-
-        <div class="footer-logos">
-            <a class="footer-links" href="https://www.cityofathens.gr/" target="_blank">
-                <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/Logo_Ath_Mun_gr.jpg">
-                <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/Logo_Ath_Mun_en.png">
-            </a>
-            <a class="footer-links" href="https://www.smu.gr/" target="_blank">
-                <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/smu_logo_3_smal.png">
-                <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/smu_logo_3_smal.png">
-            </a>
-        </div>
-
-        <p class="copyright">&#169; NTUA, 2023. All rights reserved.</p>
-    </div>
+    <p class="copyright">&#169; NTUA, 2023. All rights reserved.</p>
+  </div>
 </section>

@@ -146,6 +146,7 @@ export class SensorsGraphComponent implements OnInit {
       this.sensorsService
         .getHistoryReport(this.sensorsService.selMeasureId)
         .subscribe((res: GraphReport[]) => {
+          this.data = res;
           this.sensChart.data.labels = res.map(
             (item: GraphReport) => item.label
           );
@@ -172,6 +173,7 @@ export class SensorsGraphComponent implements OnInit {
     this.sensorsService
       .getHistoryReport(this.sensorsService.selMeasureId)
       .subscribe((res: GraphReport[]) => {
+        this.data = res;
         this.sensChart.data.labels = res.map((item: GraphReport) => item.label);
         this.sensChart.data.datasets[0].data = res.map(
           (item: GraphReport) => item.value

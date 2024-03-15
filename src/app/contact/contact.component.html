@@ -1,20 +1,35 @@
 <div class="contact-container">
-    <div class="more-info">
-        <p>For more information,</p>
-        <a href="mailto: geochoros@mail.ntua.gr">abartzok@mail.ntua.gr</a>
-    </div>
+  <div class="more-info">
+    <p>For more information,</p>
+    <a href="mailto: geochoros@mail.ntua.gr">abartzok@mail.ntua.gr</a>
+  </div>
 
+  <div class="footer-logos">
+    <a class="footer-links" href="https://www.cityofathens.gr/" target="_blank">
+      <img
+        class="footer-logo"
+        *ngIf="lang === 'gr'"
+        src="assets/icons/Logo_Ath_Mun_gr.jpeg"
+      />
+      <img
+        class="footer-logo"
+        *ngIf="lang !== 'gr'"
+        src="assets/icons/Logo_Ath_Mun_en.jpeg"
+      />
+    </a>
+    <a class="footer-links" href="https://www.smu.gr/" target="_blank">
+      <img
+        class="footer-logo"
+        *ngIf="lang === 'gr'"
+        src="assets/icons/smu_logo_3_smal.png"
+      />
+      <img
+        class="footer-logo"
+        *ngIf="lang !== 'gr'"
+        src="assets/icons/smu_logo_3_smal.png"
+      />
+    </a>
+  </div>
 
-    <div class="footer-logos">
-        <a class="footer-links" href="https://www.cityofathens.gr/" target="_blank">
-            <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/Logo_Ath_Mun_gr.jpg">
-            <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/Logo_Ath_Mun_en.png">
-        </a>
-        <a class="footer-links" href="https://www.smu.gr/" target="_blank">
-            <img class="footer-logo" *ngIf="lang === 'gr'" src="assets/icons/smu_logo_3_smal.png">
-            <img class="footer-logo" *ngIf="lang !== 'gr'" src="assets/icons/smu_logo_3_smal.png">
-        </a>
-    </div>
-
-    <p class="copyright">&#169; NTUA, 2023. All rights reserved.</p>
+  <p class="copyright">&#169; NTUA, 2023. All rights reserved.</p>
 </div>

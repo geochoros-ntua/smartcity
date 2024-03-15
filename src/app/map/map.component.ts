@@ -123,12 +123,6 @@ export class MapComponent implements OnInit {
     this.isStats = mode === MapMode.stats;
   }
 
-  public getAddress(result: any): void {
-    console.log('result', result);
-    // this.mapService.pointClicked$.next({lon: parseFloat(result.lon!), lat: parseFloat(result.lat!), loc: result.displayName});
-    // this.mapService.changeCenter(parseFloat(result.lon!),parseFloat(result.lat!));
-  }
-
   private registerMapEvents(thisP: MapComponent): void {
     // once first map render
     this.mapService.smartCityMap.once('rendercomplete', () => {

@@ -9,6 +9,7 @@ import { MessageOptions } from './api';
 
 
 export class AppMessagesService {
+  eventDialogViewed = false;
 
   constructor(private matSnackBar: MatSnackBar) { }
 /**

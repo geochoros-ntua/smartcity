@@ -42,7 +42,7 @@ export class MapService {
   map!: Map;
 
   public mapMode$: Subject<MapMode> = new Subject<MapMode>();
-  public mapMode: MapMode = MapMode.sens;
+  public mapMode: MapMode = MapMode.stats;
   public featureClickedWithPos$: Subject<FeatureClickedWithPos> =
     new Subject<FeatureClickedWithPos>();
   private translatePipe: TranslatePipe;

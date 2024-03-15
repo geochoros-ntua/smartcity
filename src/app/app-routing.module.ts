@@ -9,7 +9,7 @@ import { TeamComponent } from './team/team.component';
 import { NeighborhoodsComponent } from './neighborhoods/neighborhoods.component';
 import { StrategyComponent } from './strategy/strategy.component';
 import { IndicesComponent } from './indices/indices.component';
-
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,11 +22,12 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'neighborhoods', component: NeighborhoodsComponent },
   { path: 'indices', component: IndicesComponent },
-  { path: 'strategy', component: StrategyComponent }
+  { path: 'strategy', component: StrategyComponent },
+  { path: 'events', component: EventsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

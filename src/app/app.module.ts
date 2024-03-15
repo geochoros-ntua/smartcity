@@ -78,6 +78,8 @@ import { TourMatMenuModule, TourService } from 'ngx-ui-tour-md-menu';
 import { MyTourService } from './my-tour.service';
 import { AddressFinderComponent } from './shared/address-finder/address-finder.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { EventDialogComponent } from './shared/event-dialog/event-dialog.component';
+import { EventsComponent } from './events/events.component';
 
 export function setupTranslateFactory(service: TranslateService): Function {
   return () => service.use('gr');
@@ -122,6 +124,8 @@ export function setupTranslateFactory(service: TranslateService): Function {
     MapShareComponent,
     MapShareModalComponent,
     AddressFinderComponent,
+    EventDialogComponent,
+    EventsComponent,
   ],
   imports: [
     BrowserModule,
