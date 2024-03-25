@@ -50,7 +50,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { SensorsTabLayoutComponent } from './map/Controls/sensors-tab-layout/sensors-tab-layout.component';
 import { SensorsCardComponent } from './map/Controls/sensors-tab-layout/sensors-card/sensors-card.component';
-import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ResponsesComponent } from './responses/responses.component';
 import { TeamComponent } from './team/team.component';
@@ -80,6 +79,9 @@ import { AddressFinderComponent } from './shared/address-finder/address-finder.c
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { EventDialogComponent } from './shared/event-dialog/event-dialog.component';
 import { EventsComponent } from './events/events.component';
+import { AboutContainerComponent } from './about/about-container.component';
+import { ObjectiveComponent } from './about/objective/objective.component';
+import { MaterialComponent } from './about/material/material.component';
 
 export function setupTranslateFactory(service: TranslateService): Function {
   return () => service.use('gr');
@@ -104,7 +106,6 @@ export function setupTranslateFactory(service: TranslateService): Function {
     SensorsTabLayoutComponent,
     SensorsCardComponent,
     HomeComponent,
-    AboutComponent,
     ResponsesComponent,
     TeamComponent,
     ContactComponent,
@@ -126,6 +127,9 @@ export function setupTranslateFactory(service: TranslateService): Function {
     AddressFinderComponent,
     EventDialogComponent,
     EventsComponent,
+    AboutContainerComponent,
+    ObjectiveComponent,
+    MaterialComponent,
   ],
   imports: [
     BrowserModule,
